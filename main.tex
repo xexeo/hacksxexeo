@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[show]{comentario} % \usepackage[hide]{comentario} para ocultar os comentários
+
+% vamos usar o biblatex, recomendação
+%citestyle=alphabetic,bibstyle=authortitle
+%\usepackage[citestyle=authoryear,articlein=false,
+%style=ext-authoryear-comp,natbib=true]{biblatex}
+%\bibliographystyle{Estilos/coppe-plain}
+%\addbibresource{biblio.bib}
+
+\title{testes de comentario}
+\author{Eduardo Mangeli}
+\date{October 2019}
+
+\begin{document}
+
+\listofcomentario
+
+\maketitle
+
+\section{Introduction}
+
+%----- instruções de uso
+%
+%  copiar o arquivo comentario.sty para o diretório raiz do projeto
+%
+%  importar o pacote no arquivo principal usando o comando 
+%  \usepackage{comentario} no preâmbulo do documento
+%
+%  comentar o texto com o comando abaixo:
+%  \comentario[cor opcional]{comentário}{texto do documento}
+%
+%  para ocultar os comentários usar a opção hide no comando inicial
+%  \usepackage[hide]{comentario} no preâmbulo do documento
+
+
+
+Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi.  Morbi
+auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et,
+tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna,
+vitae \comentario{isso vai ficar comentado. A citação precisa ficar entre \{ \}}{ornare odio metus {\cite{Juran2010}} a mi. Morbi ac orci et nisl hendrerit mollis.} \comentario[red]{Esse é um comentário muito longo para testar o truncate, e você não pode pedir para ele ser menor}{Suspendisse}
+ut massa. Cras nec ante. Pellentesque a nulla. Cum sociis natoque penatibus et
+magnis dis parturient \comentario[magenta]{um comentário de um texto com nota de rodapé}{montes\footnote{Só uma nota de rodapé real de exemplo}}, nascetur ridiculus mus. Aliquam tincidunt urna.
+Nulla ullamcorper \comentario[green]{esse aqui é um outro comentario mudando a cor}{vestibulum} turpis. Pellentesque cursus \comentario[cyan]{A cor padrão é amarelo mas outras podem ser usadas}{luctus mauris}.
+
+
+
+
+Parece ser uma questão bem interessante. De toda forma, esperar mais que isso não me parece ser muito interessante. Essa coisas nem sempre acontecem quando queremos e isso não parece ser bom. Contudo, quanto mais próximos do que queremos certamente melhores estaremos.
+
+\bibliographystyle{apalike}
+\bibliography{biblio.bib}
+%\printbibliography
+
+\end{document}
