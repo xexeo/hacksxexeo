@@ -1,0 +1,43 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{comentario}[2019/10/06 Pacote de comentário personalizados]
+
+\RequirePackage{soul}
+\RequirePackage{color}
+\RequirePackage{tocloft}
+\RequirePackage[fit]{truncate}
+
+\DeclareOption{show}{} % only for comfort ;)
+
+\newif\if@showcomentario\@showcomentariotrue
+\DeclareOption{hide}{
+    \@showcomentariofalse}
+    
+% \newif\if@showlist\@showlistfalse
+% \DeclareOption{list}{
+%     \@showlisttrue}
+
+\ProcessOptions\relax
+
+% cria uma nova lista
+\if@showcomentario
+\newcommand{\listcomentario}{Lista de Comentários}
+\@ifundefined{chapter}{\newlistof[section]{comentario}{com}{\listcomentario}}{\newlistof[chapter]{comentario}{com}{\listcomentario}}
+\else
+\newcommand{\listofcomentario}{}
+\fi
+% 
+
+
+\newcommand{\comentario}[3][yellow]{%
+\if@showcomentario
+\refstepcounter{comentario}
+\sethlcolor{#1}%
+\hl{#3\footnote{#2}}%
+\addcontentsline{com}{comentario}{\protect\numberline{\thecomentario}\truncate{0.8\linewidth}{#2}}%
+\else
+#3%
+\fi
+}
+
+
+\endinput
