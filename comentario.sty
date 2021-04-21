@@ -21,7 +21,7 @@
 % cria uma nova lista
 \if@showcomentario
 \newcommand{\listcomentario}{Lista de Comentários}
-\@ifundefined{chapter}{\newlistof[section]{comentario}{com}{\listcomentario}}{\newlistof[chapter]{comentario}{com}{\listcomentario}}
+\@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}
 \else
 \newcommand{\listofcomentario}{}
 \fi
@@ -33,7 +33,7 @@
 \refstepcounter{comentario}
 \sethlcolor{#1}%
 \hl{#3\footnote{#2}}%
-\addcontentsline{com}{comentario}{\protect\numberline{\thecomentario}\truncate{0.8\linewidth}{#2}}%
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}\truncate{0.8\linewidth}{#2}}%
 \else
 #3%
 \fi
