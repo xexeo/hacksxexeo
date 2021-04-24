@@ -1,8 +1,9 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{hacksxexeo}[2021/04/20 - Para trabalhar com o orientador Geraldo Xexéo]
 
-\RequirePackage {xcolor}
+\RequirePackage{xcolor}
 \RequirePackage{ed}
+
 
 \newcommand{\edx}[2]{\ednote{\textcolor{#1}{#2}}}
 \newcommand{\prof}[1]{\ednote{\textcolor{red}{#1}}}
@@ -11,6 +12,22 @@
 \newcommand{\profsug}[1]{\textcolor{red}{#1}}
 \newcommand{\candsug}[1]{\textcolor{blue}{#1}}
 
-\newcommand{\defineauthor}[2]{
-    \expandafter\newcommand\csname #1\endcsname[1]{\ednote{\textcolor{#2}{#1 - ##1}}}
+% Anonimização
+%\def\xanonimizar{} %% set to true
+%% or:
+\newcommand{\xanon}[1]{#1}
+\newcommand{\xanoncitep}[1]{\citep{#1}}
+\newcommand{\xanoncitet}[1]{\citet{#1}}
+\newcommand{\xassunto}[1]{}
+
+
+\DeclareOption{anonimizar}{
+\renewcommand{\xanon}[1]{Anonymous}
+\renewcommand{\xanoncitep}[1]{(Anonymous,Year)}
+\renewcommand{\xanoncitet}[1]{Anonymous (Year)}
 }
+\DeclareOption{assuntos}{
+\renewcommand{\xassunto}[1]{\colorbox{green}{#1\par\par}}
+}
+\ProcessOptions\relax
+

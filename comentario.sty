@@ -39,5 +39,10 @@
 \fi
 }
 
+o\newcommand{\defineauthorc}[2]{
+    \expandafter\newcommand\csname #1\endcsname[1]{\comentario[#2]{#1 - #2}{##3}}
+}
+
+
 
 \endinput

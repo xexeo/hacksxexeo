@@ -1,9 +1,7 @@
 \documentclass{article}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}
-\usepackage{ed}
 \usepackage[show]{comentario} % \usepackage[hide]{comentario} para ocultar os comentários
-\usepackage{hacksxexeo}
 
 % vamos usar o biblatex, recomendação
 %citestyle=alphabetic,bibstyle=authortitle
@@ -15,6 +13,7 @@
 \title{testes de comentario e hacksxexeo}
 \author{Eduardo Mangeli e Geraldo Xexéo}
 
+\defineauthorc{xexeo}{red}
 
 \begin{document}
 
@@ -50,7 +49,7 @@ Nulla ullamcorper \comentario[green]{esse aqui é um outro comentario mudando a 
 
 
 
-Parece ser uma questão bem interessante. De toda forma, esperar mais que isso não me parece ser muito interessante. Essa coisas nem sempre acontecem quando queremos e isso não parece ser bom. Contudo, quanto mais próximos do que queremos certamente melhores estaremos.
+Parece ser uma questão bem interessante. De toda forma, esperar mais que isso não me parece ser muito interessante. Essa coisas nem sempre acontecem quando queremos e isso não parece ser bom. Contudo, quanto mais próximos do que queremos certamente melhores estaremos\xexeo{eu teste}.
 
 \bibliographystyle{apalike}
 \bibliography{biblio.bib}
