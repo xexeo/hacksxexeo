@@ -1,58 +1,155 @@
 \documentclass{article}
 \usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage[brazilian]{babel}
 \usepackage{xcolor}
-\usepackage[show]{comentario} % \usepackage[hide]{comentario} para ocultar os comentários
+\usepackage[comentarios,anonimizar,assuntos]{hacksxexeo} 
 
-% vamos usar o biblatex, recomendação
-%citestyle=alphabetic,bibstyle=authortitle
-%\usepackage[citestyle=authoryear,articlein=false,
-%style=ext-authoryear-comp,natbib=true]{biblatex}
-%\bibliographystyle{Estilos/coppe-plain}
-%\addbibresource{biblio.bib}
 
-\title{testes de comentario e hacksxexeo}
-\author{Eduardo Mangeli e Geraldo Xexéo}
+\usepackage[citestyle=authoryear,articlein=false,
+style=ext-authoryear-comp,natbib=true]{biblatex}
+\addbibresource{biblio.bib}
 
-\defineauthorc{xexeo}{red}
+\title{O Estilo hacksxexeo}
+\author{Geraldo Xexéo}
+
+%\defineauthorc{xexeo}{red}
+ 
+
 
 \begin{document}
 
-\listofcomentario
+
 
 \maketitle
+\thanks{Agradecimentos ao código original de Eduardo Mangeli, fartamente copiado e estendido}
 
-\section{Introduction}
+\section{Introdução}
 
-%----- instruções de uso
-%
-%  copiar o arquivo comentario.sty para o diretório raiz do projeto
-%
-%  importar o pacote no arquivo principal usando o comando 
-%  \usepackage{comentario} no preâmbulo do documento
-%
-%  comentar o texto com o comando abaixo:
-%  \comentario[cor opcional]{comentário}{texto do documento}
-%
-%  para ocultar os comentários usar a opção hide no comando inicial
-%  \usepackage[hide]{comentario} no preâmbulo do documento
+Este é o pacote em evolução para fazer a edição de artigos dissertações e teses orientadas por Geraldo Xexéo.
 
+O objetivo é ser um front-end para vários comandos, de forma que eu possa mudar os pacotes que uso e manter como os comentários são feitos.
 
+A retro-compatibilidade é essencial.
 
-Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi.  Morbi
-auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et,
-tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna,
-vitae \comentario{isso vai ficar comentado. A citação precisa ficar entre \{ \}}{ornare odio metus {\cite{Juran2010}} a mi. Morbi ac orci et nisl hendrerit mollis.} \comentario[red]{Esse é um comentário muito longo para testar o truncate, e você não pode pedir para ele ser menor}{Suspendisse}
-ut massa. Cras nec ante. Pellentesque a nulla. Cum sociis natoque penatibus et
-magnis dis parturient \comentario[magenta]{um comentário de um texto com nota de rodapé}{montes\footnote{Só uma nota de rodapé real de exemplo}}, nascetur ridiculus mus. Aliquam tincidunt urna.
-Nulla ullamcorper \comentario[green]{esse aqui é um outro comentario mudando a cor}{vestibulum} turpis. Pellentesque cursus \comentario[cyan]{A cor padrão é amarelo mas outras podem ser usadas}{luctus mauris}.
+\section{Como usar}
+
+\begin{enumerate}
+    \item Importar o arquivos hacksxexeo.sty para um diretório.
+    \item Ativar as opções desejadas entre:
+    \begin{enumerate}
+        \item assuntos,
+        \item comentarios,
+        \item anonimizar.
+    \end{enumerate}
+    \item Asar os comandos como explicado a seguir.
+\end{enumerate}
 
 
+\section{Assuntos}
+
+Os assuntos são habilitados com a opção \verb!assuntos!. Caso ela não seja ativada, eles não apareceram.
+
+O objetivo dos assuntos é identificar no topo de cada parágrafo sobre que assunto ele trata. Cada parágrafo só deve tratar de um assunto.
+
+Esse comando deve ser melhorado no futuro para o visual ser mais interessante.
+
+O comando é simples:
+
+\begin{verbatim}
+\xassunto[cor]{texto do assunto}
+\end{verbatim}
+
+A versão atual é bem feia e estou pensando em algo melhor. Ela coloca um texto com highlight, cujo default é verde, na posição.
+
+Por exemplo, o comando:
+\begin{verbatim}
+\xassunto{Este é um assunto default}    
+\end{verbatim}
+
+Gera:
+
+\xassunto{Este é um assunto default}      
+
+Já o comando:
+\begin{verbatim}
+\xassunto[pink]{Este é um assunto rosa}   
+\end{verbatim}
+
+Gera:
+
+\xassunto[pink]{Este é um assunto rosa}       
+
+Uma lista de assuntos pode ser gerada com o comando
+\verb!\listofassunto!. Um exemplo é dado no final desse texto.
+
+\section{Anonimizador}
+
+A opção anonimizar tem 3 comandos:
+\begin{enumerate}
+    \item \verb!\xanon{Texto}!
+    \item \verb!\xanoncitep{entradabibtex}!
+    \item \verb!\xanoncitet{entradabibtex}!
+\end{enumerate}
+
+Ela substitui o texto, ou a citação, pela palavra \textit{Anonymous}, ou uma citação como \textit{(Anonymous, Year)} ou \textit{Anonymous (Year)}.
+
+Por exemplo, o ideal é que \xanon{Geraldo Xexéo} não seja citado. Nem quando falamos que \xanoncitet{costa_igualdade_2021} é um texto nosso, nem citando ele com parenteses\xanoncitep{costa_igualdade_2021}. Uma citação normal, como do \citet{Juran2010} continua aparecendo, as anonimizadas são suprimidas das referências.
+
+\section{Comentários}
+
+O maior esforço está sendo feito para criar uma comunicação via comentários entre orientador e aluno. 
+
+Vários comandos foram criados, mas os que devem ser usados são:
+\begin{enumerate}
+\item \verb!\prof[texto a colorir]{comentário}!, pelo professor, ou
+\item \verb!\cand[texto a colorir]{comentário}!, pelo candidato.
+\item \verb!\favorcitar[instrução adicional]!, que pede uma citação, possivelmente com instruções adicionais.
+\end{enumerate}
+
+Os comentários podem ser listados com o comando \verb!\listofcomentario!.
+
+A seção abaixo tem alguns exemplos.
+
+\section{Exemplos}
+
+O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}. O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}.
+
+Um comentário do candidato é similar professor\cand{Primeira comentário do candidato é simples.}. A segunda citação tera \cand[uma parte colorida]{O quarto exemplo é com uma parte marcada}.
+
+Uma referência pode ser pedida em um lugar sem\favorcitar, ou com\favorcitar[o experimento].
+
+\subsection{O comando de comentários avançado}
+
+O comando \verb!xcomment! é uma versão genérica do comando de comentário. Ele deve ser usado para criar comentários específicos para cada autor, na forma.
+
+\begin{verbatim}
+\newcommand{\xexeo}[2][]{\xcomment[#1]{red}{Xexéo - #2}}
+\end{verbatim}
+
+Sua sintaxe é:
+\begin{verbatim}
+\xcomment[texto a colorir]{cor}{comentário}
+\end{verbatim}
+
+\section{Pacotes exigidos}
+
+Os seguintes pacotes são exigidos:
+\begin{itemize}
+    \item xcolor, para usar as cores avançadas;
+    \item soulutf8, para os highlights e suportando utf-u;
+    \item ed, para suportar os comentários
+    \item tocloft, para definir as listas 
+    \item fit, cargo cult que chegou via Mangeli.
+\end{itemize}
 
 
-Parece ser uma questão bem interessante. De toda forma, esperar mais que isso não me parece ser muito interessante. Essa coisas nem sempre acontecem quando queremos e isso não parece ser bom. Contudo, quanto mais próximos do que queremos certamente melhores estaremos\xexeo{eu teste}.
+\printbibliography
 
-\bibliographystyle{apalike}
-\bibliography{biblio.bib}
-%\printbibliography
+
+\newpage
+\listofassunto
+\newpage
+\listofcomentario
 
 \end{document}

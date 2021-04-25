@@ -1,15 +1,9 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{hacksxexeo}[2021/04/20 - Para trabalhar com o orientador Geraldo Xexéo]
 
-% Genérico
-\RequirePackage{xcolor}
-
-%para os comentários e a lista
-\RequirePackage{ed}
-\RequirePackage{tocloft}
-\RequirePackage[fit]{truncate}
-
-% as opções comentario, assuntos e anonimizar
+\newif\if@showcomentario\@showcomentariofalse
+\DeclareOption{comentarios}{
+    \@showcomentariotrue}
 
 \newif\if@showcomentario\@showcomentariofalse
 \DeclareOption{comentarios}{
@@ -22,6 +16,24 @@
 \DeclareOption{anonimizar}{\@beanonymoustrue}
 
 \ProcessOptions\relax
+ 
+ 
+    
+% Genérico
+%\RequirePackage{color}
+\RequirePackage{xcolor}
+\RequirePackage{soulutf8 }
+%para os comentários e a lista
+\if@showcomentario
+\RequirePackage[show]{ed}
+\else
+\RequirePackage{ed}
+\fi
+\RequirePackage{tocloft}
+\RequirePackage[fit]{truncate}
+
+% as opções comentario, assuntos e anonimizar
+
 
 
 
@@ -60,12 +72,12 @@
 % Esse comando é para isolar o pacote ed
 % Que não atende todas as minhas expectativas
 \if@showassuntos
-\newcommand{\xassunto}[1]{
+\newcommand{\xassunto}[2][green]{
 \refstepcounter{assunto}
-\colorbox{green}{#1\par}
-\addcontentsline{aaa}{assunto}{\protect\numberline{\theassunto}
-%\truncate{0.8\linewidth}
-{#1}}%
+\sethlcolor{#1}%
+\hl{#2}
+\par
+\addcontentsline{aaa}{assunto}{\protect\numberline{\theassunto}{#2}}%
 }
 \else
 \newcommand{\xassunto}[1]{}
@@ -90,21 +102,23 @@
 % Esse comando é para isolar o pacote ed
 % Que não atende todas as minhas expectativas
 \if@showcomentario
-\newcommand{\xcomment}[1]{
+\newcommand{\xcomment}[3][]{
 \refstepcounter{comentario}
-\ednote{#1}
-\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}
-%\truncate{0.8\linewidth}
-{#1}}%
+\sethlcolor{#2}%
+\hl{#1}%
+\ednote{\textcolor{#2}{#3}}
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
 }
 \else
-\newcommand{\xcomment}[1]{}
+\newcommand{\xcomment}[3]{}
 \fi
 
 
 %\newcommand{\edx}[2]{\xcomment{\textcolor{#1}{#2}}}
-\newcommand{\prof}[1]{\xcomment{\textcolor{red}{#1}}}
-\newcommand{\cand}[1]{\xcomment{\textcolor{blue}{#1}}}
+\newcommand{\prof}[2][]{\xcomment[#1]{red}{#2}}
+\newcommand{\cand}[2][]{\xcomment[#1]{blue}{#2}}
+
+
 
 \newcommand{\profsug}[1]{\textcolor{red}{#1}}
 \newcommand{\candsug}[1]{\textcolor{blue}{#1}}
