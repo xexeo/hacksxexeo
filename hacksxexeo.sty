@@ -1,33 +1,88 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{hacksxexeo}[2021/04/20 - Para trabalhar com o orientador Geraldo Xexéo]
+\ProvidesPackage{hacksxexeo}[2021/04/25 - Para trabalhar com o orientador Geraldo Xexéo]
 
+% Obrigado Eduardo Mangeli pela cola
+
+% Genérico
 \RequirePackage{xcolor}
+
+%para os comentários e a lista
 \RequirePackage{ed}
+\RequirePackage{tocloft}
+\RequirePackage[fit]{truncate}
+
+% as opções comentario, assuntos e anonimizar
+
+\newif\if@showcomentario\@showcomentariofalse
+\DeclareOption{comentarios}{
+    \@showcomentariotrue}
+
+\newif\if@showassuntos\@showassuntosfalse
+\DeclareOption{assuntos}{\@showassuntostrue}
+
+\newif\if@beanonymous\@beanonymousfalse
+\DeclareOption{anonimizar}{\@beanonymoustrue}
+
+\ProcessOptions\relax
 
 
-\newcommand{\edx}[2]{\ednote{\textcolor{#1}{#2}}}
-\newcommand{\prof}[1]{\ednote{\textcolor{red}{#1}}}
-\newcommand{\cand}[1]{\ednote{\textcolor{blue}{#1}}}
-
-\newcommand{\profsug}[1]{\textcolor{red}{#1}}
-\newcommand{\candsug}[1]{\textcolor{blue}{#1}}
 
 % Anonimização
 %\def\xanonimizar{} %% set to true
 %% or:
+
+% Se anonimiza, escreve anonymous
+% se não escreve o texto
+\if@beanonymous
+\newcommand{\xanon}[1]{Anonymous}
+\newcommand{\xanoncitep}[1]{(Anonymous,Year)}
+\newcommand{\xanoncitet}[1]{Anonymous (Year)}
+\else
 \newcommand{\xanon}[1]{#1}
 \newcommand{\xanoncitep}[1]{\citep{#1}}
 \newcommand{\xanoncitet}[1]{\citet{#1}}
+\fi
+
+%
+% Assuntos colore o texto apenas, pode melhorar
+
+\if@showassuntos
+\newcommand{\xassunto}[1]{\colorbox{green}{#1\par}}
+\else
 \newcommand{\xassunto}[1]{}
+\fi
 
+% Agora vamos arrumar os comentários
 
-\DeclareOption{anonimizar}{
-\renewcommand{\xanon}[1]{Anonymous}
-\renewcommand{\xanoncitep}[1]{(Anonymous,Year)}
-\renewcommand{\xanoncitet}[1]{Anonymous (Year)}
+% Cria a lista
+\if@showcomentario
+% cria o título
+\newcommand{\listcomentario}{Lista de Comentários}
+% cria a lista
+\@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}
+\else
+% se não é para mostrar, não faz nada
+\newcommand{\listofcomentario}{}
+\fi
+
+% Esse comando é para isolar o pacote ed
+% Que não atende todas as minhas expectativas
+\if@showcomentario
+\newcommand{\xcomment}[1]{
+\refstepcounter{comentario}
+\ednote{#1}
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}
+%\truncate{0.8\linewidth}
+{#1}}%
 }
-\DeclareOption{assuntos}{
-\renewcommand{\xassunto}[1]{\colorbox{green}{#1\par\par}}
-}
-\ProcessOptions\relax
+\else
+\newcommand{\xcomment}[1]{}
+\fi
 
+
+%\newcommand{\edx}[2]{\xcomment{\textcolor{#1}{#2}}}
+\newcommand{\prof}[1]{\xcomment{\textcolor{red}{#1}}}
+\newcommand{\cand}[1]{\xcomment{\textcolor{blue}{#1}}}
+
+\newcommand{\profsug}[1]{\textcolor{red}{#1}}
+\newcommand{\candsug}[1]{\textcolor{blue}{#1}}
