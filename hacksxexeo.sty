@@ -44,11 +44,35 @@
 %
 % Assuntos colore o texto apenas, pode melhorar
 
+
+
+% Cria a lista
 \if@showassuntos
-\newcommand{\xassunto}[1]{\colorbox{green}{#1\par}}
+% cria o título
+\newcommand{\listassunto}{Lista de Assuntos}
+% cria a lista
+\@ifundefined{chapter}{\newlistof[section]{assunto}{aaa}{\listassunto}}{\newlistof[chapter]{assunto}{aaa}{\listassunto}}
+\else
+% se não é para mostrar, não faz nada
+\newcommand{\listofassunto}{}
+\fi
+
+% Esse comando é para isolar o pacote ed
+% Que não atende todas as minhas expectativas
+\if@showassuntos
+\newcommand{\xassunto}[1]{
+\refstepcounter{assunto}
+\colorbox{green}{#1\par}
+\addcontentsline{aaa}{assunto}{\protect\numberline{\theassunto}
+%\truncate{0.8\linewidth}
+{#1}}%
+}
 \else
 \newcommand{\xassunto}[1]{}
 \fi
+
+
+
 
 % Agora vamos arrumar os comentários
 
