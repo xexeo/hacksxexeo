@@ -1,17 +1,21 @@
+% Versão 2.0
 \documentclass{article}
 \usepackage[T1]{fontenc}
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 \usepackage{xcolor}
 \usepackage[rascunho,comentarios,anonimizar,assuntos]{hacksxexeo} 
+\usepackage{datetime}
+\usepackage{hyperref}
 
 
 \usepackage[citestyle=authoryear,articlein=false,
 style=ext-authoryear-comp,natbib=true]{biblatex}
 \addbibresource{biblio.bib}
 
-\title{O Estilo hacksxexeo}
+\title{O Estilo hacksxexeo v\ \hacksxexeoversion}
 \author{Geraldo Xexéo}
+\date{\today\ - \ \currenttime}
 
 %\defineauthorc{xexeo}{red}
  
@@ -33,10 +37,15 @@ O objetivo é ser um front-end para vários comandos, de forma que eu possa muda
 
 A retro-compatibilidade é essencial.
 
+\section{Atenção}
+
+Este pacote usa outro pacote que transforma o comportamento padrão do sumário e das listas no \LaTeX, que deixam de pular a página automaticamente. Não há por enquanto solução para esse problema, a não ser o óbvio: usar o comando \verb!\newpage! antes dos comandos \verb!\tableofcontents!, etc.
+
 \section{Como usar}
 
 \begin{enumerate}
-    \item Importar o arquivos hacksxexeo.sty para um diretório.
+    \item Importar o arquivos hacksxexeo.sty\footnote{\url{https://github.com/xexeo/hacksxexeo}} para o seu  projeto. Um diretório \textbf{dist} contém a última distribuição.
+    \item Ler o arquivo hacksxexeo.pdf
     \item Ativar as opções desejadas entre:
     \begin{enumerate}
         \item \verb!assuntos!,
@@ -54,7 +63,7 @@ Os assuntos são habilitados com a opção \verb!assuntos!. Caso ela não seja a
 
 O objetivo dos assuntos é identificar no topo de cada parágrafo sobre que assunto ele trata. Cada parágrafo só deve tratar de um assunto.
 
-Esse comando deve ser melhorado no futuro para o visual ser mais interessante.
+Esse comando deve ser melhorado no futuro para o visual ser mais interessante, ele surgiu da necessidade de entender um artigo sendo escrito em conjunto com o Luis.
 
 O comando é simples:
 
@@ -86,6 +95,8 @@ Uma lista de assuntos pode ser gerada com o comando
 \verb!\listofassunto!. Um exemplo é dado no final desse texto.
 
 \section{Anonimizador}
+
+Este comando é para artigos, não será usado em dissertações e tese. Ele permite anonimizar mais facilmente um artigo e as citações feitas dentro dele. Alguns pacotes de revistas já tem o próprio anonimizador.
 
 A opção anonimizar tem 3 comandos:
 \begin{enumerate}
@@ -167,16 +178,18 @@ Cores podem ser trocadas redefinindo o valor das variáveis.
 
 \section{Rascunho}
 
-A opção rascunho imprimirá rascunhos escritos dentro de um ambiente rascunho. Se não estiver habilitada os rascunhos não aparecerão.
+A opção rascunho imprimirá rascunhos escritos dentro de um ambiente rascunho. Se não estiver habilitada os rascunhos não aparecerão. Se não usar o parâmetro opcional aparecerá a palavra \textbf{Rascunho}. 
 
 \begin{verbatim}
-\begin{rascunho}
-texto
+\begin{rascunho}[Um Título de Rascunho]
+Esse é um exemplo de rascunho. 
+Deve aparecer uma borda do lado interno de impressão.
 \end{rascunho}
 \end{verbatim}
 
-\begin{rascunho}
-Esse é um exemplo de rascunho. Deve aparecer uma borda do lado interno de impressão.
+\begin{rascunho}[Um Título de Rascunho]
+Esse é um exemplo de rascunho. 
+Deve aparecer uma borda do lado interno de impressão.
 \end{rascunho}
 
 \section{Pacotes exigidos}
@@ -187,6 +200,8 @@ Os seguintes pacotes são exigidos:
     \item soulutf8, para os \textit{highlights} e suportando utf-8;
     \item ed, para suportar os comentários
     \item tocloft, para definir as listas 
+    \item comment, para o rascunho
+    \item changebar, para o rascunho
 %    \item fit, cargo cult que chegou via Mangeli.
     \item xparse
 \end{itemize}
