@@ -41,7 +41,7 @@
 \newcommand{\cor@assunto}{green}
 \newcommand{\cor@citar}{purple}
 % Suaviação nas cores para o hilight
-\newcommand{\cor@suavizacao}{50}
+\newcommand{\cor@suavizacao}{40}
 
 
 
@@ -98,6 +98,7 @@
 % Agora vamos arrumar os comentários
 
 %Isso é um truque para o \hl do soulutf8 funcionar
+%https://tex.stackexchange.com/questions/410295/soul-color-transparency
 \if@showcomentario
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
 \newcommand{\x@hl}[2]{\colorlet{x@coraqui}{\corleve{#1}}\IfValueTF{#1}{\sethlcolor{x@coraqui}\hl{#2}}{}}
@@ -118,10 +119,16 @@
 
 % Esse comando é para isolar o pacote ed
 % Que não atende todas as minhas expectativas
+% Ele tem algumas variações
 \if@showcomentario
-\newcommand{\xcomment}[3][]{\refstepcounter{comentario}\x@hl{#2}{#1}\ednote{\textcolor{#2}{#3}}\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
-}\else
-\newcommand{\xcomment}[3]{}
+\newcommand{\xcomment}[3][]{%
+\refstepcounter{comentario}% soma um ao contador
+\x@hl{#2}{#1}% ver subfunção de impressão com hl
+\ednote{\textcolor{#2}{#3}}% faz a nota de rodapé do ed 
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
+}%
+\else%
+\newcommand{\xcomment}[3]{}%
 \fi
 
 \if@showcomentario
@@ -144,8 +151,6 @@
 \newcommand{\cand}[2][]{\xcomment[#1]{\cor@cand}{#2}}
 \newcommand{\profr}[3][]{\xcommentLabeled[#1]{\cor@prof}{#2}{#3}}
 \newcommand{\candr}[3][]{\xcommentLabeled[#1]{\cor@cand}{#2}{#3}}
-
-
 
 \newcommand{\profsug}[1]{\textcolor{\cor@prof}{#1}}
 \newcommand{\candsug}[1]{\textcolor{\cor@cand}{#1}}
