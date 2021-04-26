@@ -38,11 +38,11 @@ A retro-compatibilidade é essencial.
     \item Importar o arquivos hacksxexeo.sty para um diretório.
     \item Ativar as opções desejadas entre:
     \begin{enumerate}
-        \item assuntos,
-        \item comentarios,
-        \item anonimizar.
+        \item \verb!assuntos!,
+        \item \verb!comentarios!,
+        \item \verb!anonimizar!.
     \end{enumerate}
-    \item Asar os comandos como explicado a seguir.
+    \item Usar os comandos como explicado a seguir.
 \end{enumerate}
 
 
@@ -103,7 +103,9 @@ O maior esforço está sendo feito para criar uma comunicação via comentários
 Vários comandos foram criados, mas os que devem ser usados são:
 \begin{enumerate}
 \item \verb!\prof[texto a colorir]{comentário}!, pelo professor, ou
+\item \verb!\profr[texto a colorir]{comentário}{rótulo}!, pelo professor, que permite dar um rótulo ao comentário, que deve ser únido, 
 \item \verb!\cand[texto a colorir]{comentário}!, pelo candidato.
+\item \verb!\candr[texto a colorir]{comentário}{rótulo}!, pelo candidato, que permite dar um rótulo ao comentário, que deve ser únido, 
 \item \verb!\favorcitar[instrução adicional]!, que pede uma citação, possivelmente com instruções adicionais.
 \end{enumerate}
 
@@ -116,6 +118,8 @@ A seção abaixo tem alguns exemplos.
 O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}. O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}.
 
 Um comentário do candidato é similar professor\cand{Primeira comentário do candidato é simples.}. A segunda citação tera \cand[uma parte colorida]{O quarto exemplo é com uma parte marcada}.
+
+Finalmente, os rotulados, tanto para professor\profr{Exemplo rotulado}{Rot1}, como para candidato\candr{Olha a resposta}{Resposta para Rot1}. Que permitem também as versões \profr[com marcação]{Exemplo rotulado 2}{Rot2}, para \candr[ambos]{Olha a resposta 2}{Resposta para Rot2}.
 
 Uma referência pode ser pedida em um lugar sem\favorcitar, ou com\favorcitar[o experimento].
 
@@ -143,6 +147,9 @@ Os seguintes pacotes são exigidos:
     \item fit, cargo cult que chegou via Mangeli.
 \end{itemize}
 
+\section{Testes para o futuro}
+
+Um teste de colocar coisas na margem\namargem{Teste}\ednote[Xexéo]{Olá}\ednote[Xexéo 2]{Oi}.
 
 \printbibliography
 
