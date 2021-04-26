@@ -113,10 +113,25 @@
 \newcommand{\xcomment}[3]{}
 \fi
 
+\if@showcomentario
+\newcommand{\xcommentLabeled}[4][]{
+\refstepcounter{comentario}
+\sethlcolor{#2}%
+\hl{#1}%
+\ednote[#4]{\textcolor{#2}{#3}}
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
+}
+\else
+\newcommand{\xcommentLabeled}[4]{}
+\fi
+
+
 
 %\newcommand{\edx}[2]{\xcomment{\textcolor{#1}{#2}}}
 \newcommand{\prof}[2][]{\xcomment[#1]{red}{#2}}
 \newcommand{\cand}[2][]{\xcomment[#1]{blue}{#2}}
+\newcommand{\profr}[3][]{\xcommentLabeled[#1]{red}{#2}{#3}}
+\newcommand{\candr}[3][]{\xcommentLabeled[#1]{blue}{#2}{#3}}
 
 
 
@@ -124,3 +139,5 @@
 \newcommand{\candsug}[1]{\textcolor{blue}{#1}}
 
 \newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\prof{Por favor citar #1}}
+
+\newcommand{\namargem}{\ed@margin{Teste}}
