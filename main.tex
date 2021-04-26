@@ -3,7 +3,7 @@
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 \usepackage{xcolor}
-\usepackage[comentarios,anonimizar,assuntos]{hacksxexeo} 
+\usepackage[rascunho,comentarios,anonimizar,assuntos]{hacksxexeo} 
 
 
 \usepackage[citestyle=authoryear,articlein=false,
@@ -42,6 +42,7 @@ A retro-compatibilidade é essencial.
         \item \verb!assuntos!,
         \item \verb!comentarios!,
         \item \verb!anonimizar!.
+        \item \verb!rascunho!.
     \end{enumerate}
     \item Usar os comandos como explicado a seguir.
 \end{enumerate}
@@ -152,6 +153,32 @@ Os comandos possíveis são:
 \setlength{\cftcomentariorefnumwidth}{2.5em}
 \end{verbatim}
 
+\subsection{Trocando cores}
+Cores podem ser trocadas redefinindo o valor das variáveis.
+\begin{verbatim}
+\makeatlettee=r
+\renewcommand{\cor@prof}{red}
+\renewcommand{\cor@cand}{blue}
+\renewcommand{\cor@assunto}{green}
+\renewcommand{\cor@citar}{purple}
+\renewcommand{\cor@suavizacao}{50}
+\makeatother
+\end{verbatim}
+
+\section{Rascunho}
+
+A opção rascunho imprimirá rascunhos escritos dentro de um ambiente rascunho. Se não estiver habilitada os rascunhos não aparecerão.
+
+\begin{verbatim}
+\begin{rascunho}
+texto
+\end{rascunho}
+\end{verbatim}
+
+\begin{rascunho}
+Esse é um exemplo de rascunho. Deve aparecer uma borda do lado interno de impressão.
+\end{rascunho}
+
 \section{Pacotes exigidos}
 
 Os seguintes pacotes são exigidos:
@@ -164,17 +191,7 @@ Os seguintes pacotes são exigidos:
     \item xparse
 \end{itemize}
 
-%Trocando cores
-Cores podem ser trocadas redefinindo o valor das variáveis.
-\begin{verbatim}
-\makeatlettee=r
-\renewcommand{\cor@prof}{red}
-\renewcommand{\cor@cand}{blue}
-\renewcommand{\cor@assunto}{green}
-\renewcommand{\cor@citar}{purple}
-\renewcommand{\cor@suavizacao}{50}
-\makeatother
-\end{verbatim}
+
 
 
 

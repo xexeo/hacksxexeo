@@ -5,15 +5,14 @@
 \DeclareOption{comentarios}{
     \@showcomentariotrue}
 
-\newif\if@showcomentario\@showcomentariofalse
-\DeclareOption{comentarios}{
-    \@showcomentariotrue}
+\newif\if@beanonymous\@beanonymousfalse
+\DeclareOption{anonimizar}{\@beanonymoustrue}
 
 \newif\if@showassuntos\@showassuntosfalse
 \DeclareOption{assuntos}{\@showassuntostrue}
 
-\newif\if@beanonymous\@beanonymousfalse
-\DeclareOption{anonimizar}{\@beanonymoustrue}
+\newif\if@markrascunho\@markrascunhofalse
+\DeclareOption{rascunho}{\@markrascunhotrue}
 
 \ProcessOptions\relax
  
@@ -29,8 +28,10 @@
 \else
 \RequirePackage{ed}
 \fi
+\RequirePackage{comment}
 \RequirePackage{tocloft}
 \RequirePackage{xparse}
+\RequirePackage[xcolor,leftbars]{changebar}
 %\RequirePackage[fit]{truncate}
 
 % as opções comentario, assuntos e anonimizar
@@ -40,8 +41,11 @@
 \newcommand{\cor@cand}{blue}
 \newcommand{\cor@assunto}{green}
 \newcommand{\cor@citar}{purple}
+\newcommand{\cor@changebar}{black}
+\newcommand{\cor@hlrascunho}{yellow}
 % Suaviação nas cores para o hilight
 \newcommand{\cor@suavizacao}{40}
+
 
 %\setlength{\cftXnumwidth}{20}
 %\renewcommand{\@pnumwidth}{4em}
@@ -184,5 +188,20 @@
 
 \newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\hxcommentref{\cor@citar}{Citação: Por favor citar #1}}
 
+% Marcando ou esquendo dos rascunhos
+
+\if@markrascunho
+\setlength\changebarsep{5pt}%
+\newenvironment{rascunho}[1][Rascunho]{%
+\cbcolor{\cor@changebar}
+\cbstart
+\x@hl{\cor@hlrascunho}{\textbf{#1}}
+\newline%
+}%
+{\cbend}%
+\else
+\excludecomment{rascunho}
+%\newenvironment{rascunho}[1][Rascunho]{}{}
+\fi
 
 \newcommand{\namargem}{\ed@margin{Teste}}
