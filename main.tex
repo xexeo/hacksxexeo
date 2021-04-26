@@ -21,6 +21,7 @@ style=ext-authoryear-comp,natbib=true]{biblatex}
 
 
 
+
 \maketitle
 \thanks{Agradecimentos ao código original de Eduardo Mangeli, fartamente copiado, e estendido}
 
@@ -138,6 +139,19 @@ Sua sintaxe é:
 \xcomment[texto a colorir]{cor}{comentário}
 \end{verbatim}
 
+\subsection{Ajustando valores}
+
+Um valor que pode precisar ser ajustado é o espaço reservado aos números na frente das listas de comentários, assuntos ou necessidades de refência.
+
+Isso é feito alterando um valor gerado automaticamente, e deve ser feito no documento (isso é, após \verb!\begin{document}!.
+
+Os comandos possíveis são:
+\begin{verbatim}
+\setlength{\cftassuntonumwidth}{2.5em}
+\setlength{\cftcomentarionumwidth}{2.5em}
+\setlength{\cftcomentariorefnumwidth}{2.5em}
+\end{verbatim}
+
 \section{Pacotes exigidos}
 
 Os seguintes pacotes são exigidos:
@@ -170,7 +184,9 @@ Cores podem ser trocadas redefinindo o valor das variáveis.
 %
 \printbibliography
 
-
+\setlength{\cftassuntonumwidth}{2.5em}
+\setlength{\cftcomentarionumwidth}{2.5em}
+\setlength{\cftcomentariorefnumwidth}{2.5em}
 \newpage
 \listofassunto
 \newpage
