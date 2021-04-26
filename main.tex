@@ -111,11 +111,13 @@ Vários comandos foram criados, mas os que devem ser usados são:
 
 Os comentários podem ser listados com o comando \verb!\listofcomentario!.
 
-A seção abaixo tem alguns exemplos.
+A subseção a seguir  tem alguns exemplos.
 
-\section{Exemplos}
+\subsection{Exemplos}
 
-O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}. O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}.
+O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}. O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}. 
+
+A marcação é suavizada em relação a cor definida. Atualmente o valor é de \makeatletter$\cor@suavizacao\%$\makeatother.
 
 Um comentário do candidato é similar professor\cand{Primeira comentário do candidato é simples.}. A segunda citação tera \cand[uma parte colorida]{O quarto exemplo é com uma parte marcada}.
 
@@ -147,6 +149,21 @@ Os seguintes pacotes são exigidos:
     \item fit, cargo cult que chegou via Mangeli.
 \end{itemize}
 
+%Trocando cores
+Cores podem ser trocadas redefinindo o valor das variáveis.
+\begin{verbatim}
+\makeatlettee=r
+\renewcommand{\cor@prof}{red}
+\renewcommand{\cor@cand}{blue}
+\renewcommand{\cor@assunto}{green}
+\renewcommand{\cor@citar}{purple}
+% Suaviação nas cores para o hilight
+\renewcommand{\cor@suavizacao}{50}
+\makeatother
+\end{verbatim}
+
+
+
 %\section{Testes para o futuro}
 %
 %Um teste de colocar coisas na margem\namargem{Teste}\ednote[Xexéo]{Olá}\ednote[Xexéo 2]{Oi}.
@@ -158,5 +175,6 @@ Os seguintes pacotes são exigidos:
 \listofassunto
 \newpage
 \listofcomentario
-
+\newpage
+\listofcomentarioref
 \end{document}

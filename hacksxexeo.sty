@@ -30,9 +30,18 @@
 \RequirePackage{ed}
 \fi
 \RequirePackage{tocloft}
+\RequirePackage{xparse}
 \RequirePackage[fit]{truncate}
 
 % as opções comentario, assuntos e anonimizar
+
+% CORES
+\newcommand{\cor@prof}{red}
+\newcommand{\cor@cand}{blue}
+\newcommand{\cor@assunto}{green}
+\newcommand{\cor@citar}{purple}
+% Suaviação nas cores para o hilight
+\newcommand{\cor@suavizacao}{50}
 
 
 
@@ -72,7 +81,7 @@
 % Esse comando é para isolar o pacote ed
 % Que não atende todas as minhas expectativas
 \if@showassuntos
-\newcommand{\xassunto}[2][green]{
+\newcommand{\xassunto}[2][\cor@assunto]{
 \refstepcounter{assunto}
 \sethlcolor{#1}%
 \hl{#2}
@@ -88,6 +97,14 @@
 
 % Agora vamos arrumar os comentários
 
+%Isso é um truque para o \hl do soulutf8 funcionar
+\if@showcomentario
+\newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
+\newcommand{\x@hl}[2]{\colorlet{x@coraqui}{\corleve{#1}}\IfValueTF{#1}{\sethlcolor{x@coraqui}\hl{#2}}{}}
+\fi
+
+
+
 % Cria a lista
 \if@showcomentario
 % cria o título
@@ -102,42 +119,64 @@
 % Esse comando é para isolar o pacote ed
 % Que não atende todas as minhas expectativas
 \if@showcomentario
-\newcommand{\xcomment}[3][]{
-\refstepcounter{comentario}
-\sethlcolor{#2}%
-\hl{#1}%
-\ednote{\textcolor{#2}{#3}}
-\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
-}
-\else
+\newcommand{\xcomment}[3][]{\refstepcounter{comentario}\x@hl{#2}{#1}\ednote{\textcolor{#2}{#3}}\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
+}\else
 \newcommand{\xcomment}[3]{}
 \fi
 
 \if@showcomentario
-\newcommand{\xcommentLabeled}[4][]{
-\refstepcounter{comentario}
-\sethlcolor{#2}%
-\hl{#1}%
-\ednote[#4]{\textcolor{#2}{#3}}
+\newcommand{\xcommentLabeled}[4][]{%
+\refstepcounter{comentario}%
+\x@hl{#2}{#1}%
+\ednote[#4]{\textcolor{#2}{#3}}%
 \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{[#4] - #3}}%
-}
-\else
-\newcommand{\xcommentLabeled}[4]{}
+}%
+\else%
+\newcommand{\xcommentLabeled}[4]{}%
 \fi
+
+
 
 
 
 %\newcommand{\edx}[2]{\xcomment{\textcolor{#1}{#2}}}
 \newcommand{\prof}[2][]{\xcomment[#1]{red}{#2}}
-\newcommand{\cand}[2][]{\xcomment[#1]{blue}{#2}}
-\newcommand{\profr}[3][]{\xcommentLabeled[#1]{red}{#2}{#3}}
-\newcommand{\candr}[3][]{\xcommentLabeled[#1]{blue}{#2}{#3}}
+\newcommand{\cand}[2][]{\xcomment[#1]{\cor@cand}{#2}}
+\newcommand{\profr}[3][]{\xcommentLabeled[#1]{\cor@prof}{#2}{#3}}
+\newcommand{\candr}[3][]{\xcommentLabeled[#1]{\cor@cand}{#2}{#3}}
 
 
 
-\newcommand{\profsug}[1]{\textcolor{red}{#1}}
-\newcommand{\candsug}[1]{\textcolor{blue}{#1}}
+\newcommand{\profsug}[1]{\textcolor{\cor@prof}{#1}}
+\newcommand{\candsug}[1]{\textcolor{\cor@cand}{#1}}
 
-\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\prof{Por favor citar #1}}
+% reclamações sobre citações
+
+\if@showcomentario
+% cria o título
+\newcommand{\listcomentarioref}{Necessidades de Citação}
+% cria a lista
+\@ifundefined{chapter}{ \newlistof[section]{comentarioref}{ccr}{\listcomentarioref}}{\newlistof[chapter]{comentarioref}{ccr}{\listcomentarioref}}
+\else
+% se não é para mostrar, não faz nada
+\newcommand{\listofcomentarioref}{}
+\fi
+
+
+\if@showcomentario
+\newcommand{\xcommentref}[3][]{
+\refstepcounter{comentarioref}
+\IfValueTF{#1}{\sethlcolor{#2}\hl{#1}}{}
+\ednote{\textcolor{#2}{#3}}
+\addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#3}}%
+}
+\else
+\newcommand{\xcomment}[3]{}
+\fi
+
+
+
+\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\xcommentref{\cor@citar}{Citação: Por favor citar #1}}
+
 
 \newcommand{\namargem}{\ed@margin{Teste}}
