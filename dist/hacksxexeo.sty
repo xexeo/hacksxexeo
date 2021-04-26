@@ -1,0 +1,209 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{hacksxexeo}[2021/04/26 - Para trabalhar com o orientador Geraldo Xexéo]
+
+\newcommand{\hacksxexeoversion}{2.0}
+
+\newif\if@showcomentario\@showcomentariofalse
+\DeclareOption{comentarios}{
+    \@showcomentariotrue}
+
+\newif\if@beanonymous\@beanonymousfalse
+\DeclareOption{anonimizar}{\@beanonymoustrue}
+
+\newif\if@showassuntos\@showassuntosfalse
+\DeclareOption{assuntos}{\@showassuntostrue}
+
+\newif\if@markrascunho\@markrascunhofalse
+\DeclareOption{rascunho}{\@markrascunhotrue}
+
+\ProcessOptions\relax
+ 
+ 
+    
+% Genérico
+%\RequirePackage{color}
+\RequirePackage{xcolor}
+\RequirePackage{soulutf8 }
+%para os comentários e a lista
+\if@showcomentario
+\RequirePackage[show]{ed}
+\else
+\RequirePackage{ed}
+\fi
+\RequirePackage{comment}
+\RequirePackage{tocloft}
+\RequirePackage{xparse}
+\RequirePackage[xcolor,leftbars]{changebar}
+%\RequirePackage[fit]{truncate}
+
+% as opções comentario, assuntos e anonimizar
+
+% CORES
+\newcommand{\cor@prof}{red}
+\newcommand{\cor@cand}{blue}
+\newcommand{\cor@assunto}{green}
+\newcommand{\cor@citar}{purple}
+\newcommand{\cor@changebar}{black}
+\newcommand{\cor@hlrascunho}{yellow}
+% Suaviação nas cores para o hilight
+\newcommand{\cor@suavizacao}{40}
+
+
+%\setlength{\cftXnumwidth}{20}
+%\renewcommand{\@pnumwidth}{4em}
+
+
+% Anonimização
+%\def\xanonimizar{} %% set to true
+%% or:
+
+% Se anonimiza, escreve anonymous
+% se não escreve o texto
+\if@beanonymous
+\newcommand{\xanon}[1]{Anonymous}
+\newcommand{\xanoncitep}[1]{(Anonymous,Year)}
+\newcommand{\xanoncitet}[1]{Anonymous (Year)}
+\else
+\newcommand{\xanon}[1]{#1}
+\newcommand{\xanoncitep}[1]{\citep{#1}}
+\newcommand{\xanoncitet}[1]{\citet{#1}}
+\fi
+
+%
+% Assuntos colore o texto apenas, pode melhorar
+
+
+
+% Cria a lista
+\if@showassuntos
+% cria o título
+\newcommand{\listassunto}{Lista de Assuntos}
+% cria a lista
+\@ifundefined{chapter}{\newlistof[section]{assunto}{aaa}{\listassunto}}{\newlistof[chapter]{assunto}{aaa}{\listassunto}}
+\else
+% se não é para mostrar, não faz nada
+\newcommand{\listofassunto}{}
+\fi
+
+% Esse comando é para isolar o pacote ed
+% Que não atende todas as minhas expectativas
+\if@showassuntos
+\newcommand{\xassunto}[2][\cor@assunto]{
+\refstepcounter{assunto}
+\sethlcolor{#1}%
+\hl{#2}
+\par
+\addcontentsline{aaa}{assunto}{\protect\numberline{\theassunto}{#2}}%
+}
+\else
+\newcommand{\xassunto}[1]{}
+\fi
+
+
+
+
+% Agora vamos arrumar os comentários
+
+%Isso é um truque para o \hl do soulutf8 funcionar
+%https://tex.stackexchange.com/questions/410295/soul-color-transparency
+\if@showcomentario
+\newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
+\newcommand{\x@hl}[2]{\colorlet{x@coraqui}{\corleve{#1}}\IfValueTF{#1}{\sethlcolor{x@coraqui}\hl{#2}}{}}
+\fi
+
+
+
+% Cria a lista
+\if@showcomentario
+% cria o título
+\newcommand{\listcomentario}{Lista de Comentários}
+% cria a lista
+\@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}
+\else
+% se não é para mostrar, não faz nada
+\newcommand{\listofcomentario}{}
+\fi
+
+% Esse comando é para isolar o pacote ed
+% Que não atende todas as minhas expectativas
+% Ele tem algumas variações
+\if@showcomentario
+\newcommand{\hxcomment}[3][]{%
+\refstepcounter{comentario}% soma um ao contador
+\x@hl{#2}{#1}% ver subfunção de impressão com hl
+\ednote{\textcolor{#2}{#3}}% faz a nota de rodapé do ed 
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
+}%
+\else%
+\newcommand{\hxcomment}[3]{}%
+\fi
+
+\if@showcomentario
+\newcommand{\hxcommentLabeled}[4][]{%
+\refstepcounter{comentario}%
+\x@hl{#2}{#1}%
+\ednote[#4]{\textcolor{#2}{#3}}%
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{[#4] - #3}}%
+}%
+\else%
+\newcommand{\hxcommentLabeled}[4]{}%
+\fi
+
+
+
+
+
+%\newcommand{\edx}[2]{\hxcomment{\textcolor{#1}{#2}}}
+\newcommand{\prof}[2][]{\hxcomment[#1]{\cor@prof}{Prof: #2}}
+\newcommand{\cand}[2][]{\hxcomment[#1]{\cor@cand}{Cand: #2}}
+\newcommand{\profr}[3][]{\hxcommentLabeled[#1]{\cor@prof}{#2}{Prof: #3}}
+\newcommand{\candr}[3][]{\hxcommentLabeled[#1]{\cor@cand}{#2}{Cand: #3}}
+
+\newcommand{\profsug}[1]{\textcolor{\cor@prof}{#1}}
+\newcommand{\candsug}[1]{\textcolor{\cor@cand}{#1}}
+
+% reclamações sobre citações
+
+\if@showcomentario
+% cria o título
+\newcommand{\listcomentarioref}{Necessidades de Citação}
+% cria a lista
+\@ifundefined{chapter}{ \newlistof[section]{comentarioref}{ccr}{\listcomentarioref}}{\newlistof[chapter]{comentarioref}{ccr}{\listcomentarioref}}
+\else
+% se não é para mostrar, não faz nada
+\newcommand{\listofcomentarioref}{}
+\fi
+
+
+\if@showcomentario
+\newcommand{\hxcommentref}[3][]{
+\refstepcounter{comentarioref}
+\IfValueTF{#1}{\sethlcolor{#2}\hl{#1}}{}
+\ednote{\textcolor{#2}{#3}}
+\addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#3}}%
+}
+\else
+\newcommand{\hxcommentref}[3]{}
+\fi
+
+
+
+\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\hxcommentref{\cor@citar}{Citação: Por favor citar #1}}
+
+% Marcando ou esquendo dos rascunhos
+
+\if@markrascunho
+\setlength\changebarsep{5pt}%
+\newenvironment{rascunho}[1][Rascunho]{%
+\cbcolor{\cor@changebar}
+\cbstart
+\x@hl{\cor@hlrascunho}{\textbf{#1}}
+\newline%
+}%
+{\cbend}%
+\else
+\excludecomment{rascunho}
+%\newenvironment{rascunho}[1][Rascunho]{}{}
+\fi
+
+\newcommand{\namargem}{\ed@margin{Teste}}
