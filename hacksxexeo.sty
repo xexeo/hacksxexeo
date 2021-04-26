@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{hacksxexeo}[2021/04/20 - Para trabalhar com o orientador Geraldo Xexéo]
+\ProvidesPackage{hacksxexeo}[2021/04/26 - Para trabalhar com o orientador Geraldo Xexéo]
 
 \newif\if@showcomentario\@showcomentariofalse
 \DeclareOption{comentarios}{
@@ -122,36 +122,36 @@
 % Que não atende todas as minhas expectativas
 % Ele tem algumas variações
 \if@showcomentario
-\newcommand{\xcomment}[3][]{%
+\newcommand{\hxcomment}[3][]{%
 \refstepcounter{comentario}% soma um ao contador
 \x@hl{#2}{#1}% ver subfunção de impressão com hl
 \ednote{\textcolor{#2}{#3}}% faz a nota de rodapé do ed 
 \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
 }%
 \else%
-\newcommand{\xcomment}[3]{}%
+\newcommand{\hxcomment}[3]{}%
 \fi
 
 \if@showcomentario
-\newcommand{\xcommentLabeled}[4][]{%
+\newcommand{\hxcommentLabeled}[4][]{%
 \refstepcounter{comentario}%
 \x@hl{#2}{#1}%
 \ednote[#4]{\textcolor{#2}{#3}}%
 \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{[#4] - #3}}%
 }%
 \else%
-\newcommand{\xcommentLabeled}[4]{}%
+\newcommand{\hxcommentLabeled}[4]{}%
 \fi
 
 
 
 
 
-%\newcommand{\edx}[2]{\xcomment{\textcolor{#1}{#2}}}
-\newcommand{\prof}[2][]{\xcomment[#1]{red}{#2}}
-\newcommand{\cand}[2][]{\xcomment[#1]{\cor@cand}{#2}}
-\newcommand{\profr}[3][]{\xcommentLabeled[#1]{\cor@prof}{#2}{#3}}
-\newcommand{\candr}[3][]{\xcommentLabeled[#1]{\cor@cand}{#2}{#3}}
+%\newcommand{\edx}[2]{\hxcomment{\textcolor{#1}{#2}}}
+\newcommand{\prof}[2][]{\hxcomment[#1]{\cor@prof}{Prof: #2}}
+\newcommand{\cand}[2][]{\hxcomment[#1]{\cor@cand}{Cand: #2}}
+\newcommand{\profr}[3][]{\hxcommentLabeled[#1]{\cor@prof}{#2}{Prof: #3}}
+\newcommand{\candr}[3][]{\hxcommentLabeled[#1]{\cor@cand}{#2}{Cand: #3}}
 
 \newcommand{\profsug}[1]{\textcolor{\cor@prof}{#1}}
 \newcommand{\candsug}[1]{\textcolor{\cor@cand}{#1}}
@@ -170,19 +170,19 @@
 
 
 \if@showcomentario
-\newcommand{\xcommentref}[3][]{
+\newcommand{\hxcommentref}[3][]{
 \refstepcounter{comentarioref}
 \IfValueTF{#1}{\sethlcolor{#2}\hl{#1}}{}
 \ednote{\textcolor{#2}{#3}}
 \addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#3}}%
 }
 \else
-\newcommand{\xcomment}[3]{}
+\newcommand{\hxcommentref}[3]{}
 \fi
 
 
 
-\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\xcommentref{\cor@citar}{Citação: Por favor citar #1}}
+\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\hxcommentref{\cor@citar}{Citação: Por favor citar #1}}
 
 
 \newcommand{\namargem}{\ed@margin{Teste}}
