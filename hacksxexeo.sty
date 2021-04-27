@@ -142,7 +142,7 @@
 % faz o ednote e soma na lista
 % []rótulo], cor , footnote , indicador
 \newcommand{\hx@comentar}[4][]{%
-\IfNoValueTF{#4}{%
+\ifstrempty{#4}{%
     \ednote[#1]{\textcolor{#2}{#3}}% faz a nota de rodapé do ed 
     \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
 }%
