@@ -4,16 +4,14 @@
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 \usepackage{xcolor}
-\usepackage[rascunho,comentarios,anonimizar,assuntos]{hacksxexeo} 
+\usepackage[biblatex,rascunho,comentarios,anonimizar,assuntos]{hacksxexeo} 
 \usepackage{datetime}
 \usepackage{hyperref}
 
 
-\usepackage[citestyle=authoryear,articlein=false,
-style=ext-authoryear-comp,natbib=true]{biblatex}
 \addbibresource{biblio.bib}
 
-\hxautor{xexeo}{green}{Xexéo:}
+\hxautor{xexeo}{magenta}{Xexéo:}
 
 \title{O Estilo hacksxexeo v\ \hacksxexeoversion}
 \author{Geraldo Xexéo}
@@ -47,6 +45,22 @@ Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingi
 
 Essa versão não funciona com o Lua\LaTeX.
 
+\section{Usando o bib\LaTeX}
+
+Para as referências ficarem como adequado, é necessário:
+\begin{itemize}
+    \item Comentar a linha com um comando \verb|RequirePackage|que exige o pacote \verb|natbib| no arquivo \textbf{coppe.cls} (deve ser a 56).
+    \item Usar a opção \verb|biblatex| no \textbf{hacksxexeo}.
+    \item No preâmbulo, incluir seus arquivos \verb|.bib|, após chamar \textbf{hacksxexeo}.
+    \item Onde quiser a bibliografia, usar \verb|\printbibliography|.
+\end{itemize}
+    
+Para incluir arquivos \verb|.bib|:
+\begin{verbatim}
+\addbibresource{biblio.bib}  
+\end{verbatim}
+
+
 \section{Como usar}
 
 \begin{enumerate}
@@ -58,6 +72,7 @@ Essa versão não funciona com o Lua\LaTeX.
         \item \verb!comentarios!,
         \item \verb!anonimizar!.
         \item \verb!rascunho!.
+        \item \verb!biblatex!.
     \end{enumerate}
     \item Usar os comandos como explicado a seguir.
 \end{enumerate}
@@ -185,7 +200,17 @@ Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Ess
 \hxautor{xexeo}{green}{Xexéo:}   
 \end{verbatim}
 
-Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{Rótulo}{ rotulado com marcação} e candidato.
+Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{rotulado com marcação}{Rótulo} e candidato.
+
+\section{Sugestões}
+
+Um tipo especial de comentários são as sugestões.
+
+Elas funcionam com uma lógica diferente dos comentários nos parâmetros, onde o comentário é opcional.
+
+%Este parágrafo \profsug[Uma sugestão]{tem uma sugestão com comentário} e uma \profsug{uma sem comentário}, usando o comando \verb*|!\profsug|, que só tem uma inserção de texto.
+
+
 
 \section{Rascunho}
 

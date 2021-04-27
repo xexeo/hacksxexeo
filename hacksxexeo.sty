@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{hacksxexeo}[2021/04/26 - Para trabalhar com o orientador Geraldo Xexéo]
 
-\newcommand{\hacksxexeoversion}{2.0}
+\newcommand{\hacksxexeoversion}{3.0}
 
 \newif\if@showcomentario\@showcomentariofalse
 \DeclareOption{comentarios}{
@@ -15,6 +15,9 @@
 
 \newif\if@markrascunho\@markrascunhofalse
 \DeclareOption{rascunho}{\@markrascunhotrue}
+
+\newif\if@usebiblatex\@usebiblatexfalse
+\DeclareOption{biblatex}{\@usebiblatextrue}
 
 \ProcessOptions\relax
  
@@ -110,6 +113,19 @@
 \if@showcomentario
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
 \newcommand{\x@hl}[2]{\colorlet{x@coraqui}{\corleve{#1}}\IfValueTF{#1}{\sethlcolor{x@coraqui}\hl{#2}}{}}
+
+
+% rótulo, cor , footnote , indicador
+\newcommand{\hx@comentar}[4][]{%
+\IfNoValueTF{#4}{%
+    \ednote[#1]{\textcolor{#2}{#3}}% faz a nota de rodapé do ed 
+    \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
+}%
+{%
+\ednote[#1]{\textcolor{#2}{#4 #3}}%
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#4 #3}}%
+}%    
+}%
 \fi
 
 
@@ -129,43 +145,45 @@
 % Que não atende todas as minhas expectativas
 % Ele tem algumas variações
 \if@showcomentario
-\newcommand{\hxcomment}[3][]{%
+% texto a hl, cor, comentário, indicador de pessoa
+\newcommand{\hxcomment}[4][]{%
 \refstepcounter{comentario}% soma um ao contador
 \x@hl{#2}{#1}% ver subfunção de impressão com hl
-\ednote{\textcolor{#2}{#3}}% faz a nota de rodapé do ed 
-\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
+\hx@comentar{#2}{#3}{#4}%
 }%
 \else%
 \newcommand{\hxcomment}[3]{}%
-\fi
+\fi%
 
-\if@showcomentario
-\newcommand{\hxcommentLabeled}[4][]{%
+\if@showcomentario%
+% [texto a marcar], cor , comentário, rótulo, indicador
+\newcommand{\hxcommentLabeled}[5][]{%
 \refstepcounter{comentario}%
 \x@hl{#2}{#1}%
-\ednote[#4]{\textcolor{#2}{#3}}%
-\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{[#4] - #3}}%
+\hx@comentar[#4]{#2}{#3}{#5}%
 }%
 \else%
-\newcommand{\hxcommentLabeled}[4]{}%
+\newcommand{\hxcommentLabeled}[5][]{}%
 \fi
 
-%\newcommand{\edx}[2]{\hxcomment{\textcolor{#1}{#2}}}
-\newcommand{\prof}[2][]{\hxcomment[#1]{\cor@prof}{Prof: #2}}
-\newcommand{\cand}[2][]{\hxcomment[#1]{\cor@cand}{Cand: #2}}
-\newcommand{\profr}[3][]{\hxcommentLabeled[#1]{\cor@prof}{#2}{Prof: #3}}
-\newcommand{\candr}[3][]{\hxcommentLabeled[#1]{\cor@cand}{#2}{Cand: #3}}
+\newcommand{\prof}[2][]{\hxcomment[#1]{\cor@prof}{#2}{Prof:}}
+\newcommand{\cand}[2][]{\hxcomment[#1]{\cor@cand}{#2}{Cand:}}
+
+%\profr[com marcação]{Exemplo rotulado 2}{Rot2}
+\newcommand{\profr}[3][]{\hxcommentLabeled[#1]{\cor@prof}{#2}{#3}{Prof:}}
+\newcommand{\candr}[3][]{\hxcommentLabeled[#1]{\cor@cand}{#2}{#3}{Cand:}}
+
 
 % criando novos autores
 % nome do autor, cor, código
 \newcommand{\hxautor}[3]{%
+    % hxcomment - texto a hl, cor, comentário, indicador de pessoa
 \expandafter\newcommand\csname#1\endcsname[2][]{%
-{\hxcomment[##1]{#2}{#3: ##2}}%
+{\hxcomment[##1]{#2}{##2}{#3}}%
 }%
-\expandafter\newcommand\csname#1r\endcsname[4][]{%
-    {\hxcommentLabeled[##1]{#2}{##2}{#3: ##4}}%
-}%
-
+% [texto a marcar], cor , comentário, palavra, rótulo
+\expandafter\newcommand\csname#1r\endcsname[3][]%
+    {\hxcommentLabeled[##1]{#2}{##2}{##3}{#3}}%
 }%
 
 
@@ -175,9 +193,29 @@
 %
 %%
 
+% comentário, cor, pessoa, textovelho, cor velho, textonovo, cor novo
+\newcommand{\hx@gensug}[8][Sugestão]{%
+\refstepcounter{comentario}%
+\x@hl{#2}{#1}%
+\ednote{\textcolor{#2}{#1}}%
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{[#3] - #1}}%
+\textcolor{#5}{\sout{#4}}
+\textcolor{#7}{#6}
+}
 
-\newcommand{\profsug}[1]{\textcolor{\cor@prof}{#1}}
-\newcommand{\candsug}[1]{\textcolor{\cor@cand}{#1}}
+%\newcommand{\profsug}[2]{\textcolor{\cor@prof}{#2}}
+\newcommand{\candsug}[2]{\textcolor{\cor@cand}{#2}}
+
+
+
+\newcommand{\profsug}[2][]{
+\hx@gensug[#1]{\cor@prof}{Prof:}{}{\cor@prof}{#2}{\cor@prof}
+}
+
+\newcommand{\candsub}[2][]{
+    \hx@gensug[#1]{\cor@cand}{Cand:}{}{\cor@cand}{#2}{\cor@cand}
+}
+
 
 
 
@@ -239,3 +277,12 @@
 \fi
 
 \newcommand{\namargem}{\ed@margin{Teste}}
+
+
+%%% Chamando o BibLatex
+
+\if@usebiblatex
+\usepackage[ citestyle=authoryear,articlein=false,
+style=ext-authoryear-comp,backend=biber,
+,natbib=true]{biblatex}
+\fi
