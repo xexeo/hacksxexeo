@@ -33,7 +33,8 @@
 \RequirePackage{comment}
 \RequirePackage{tocloft}
 \RequirePackage{xparse}
-\RequirePackage[xcolor,leftbars]{changebar}
+\RequirePackage[pdftex,xcolor,leftbars]{changebar}
+\RequirePackage{hyperref}
 %\RequirePackage[fit]{truncate}
 
 % as opções comentario, assuntos e anonimizar
@@ -191,6 +192,9 @@
 \newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\hxcommentref{\cor@citar}{Citação: Por favor citar #1}}
 
 % Marcando ou esquendo dos rascunhos
+%changebar is old and does not work with LuaLaTeX
+%https://tex.stackexchange.com/questions/359840/lualatex-changebar-and-latexdiff-no-changebars-visible
+
 
 \if@markrascunho
 \setlength\changebarsep{5pt}%
