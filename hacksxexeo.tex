@@ -4,20 +4,19 @@
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 \usepackage{xcolor}
-\usepackage[rascunho,comentarios,anonimizar,assuntos]{hacksxexeo} 
+\usepackage[biblatex,rascunhos,anonimizar,assuntos,sugestoes,comentarios]{hacksxexeo} 
 \usepackage{datetime}
 \usepackage{hyperref}
 
 
-\usepackage[citestyle=authoryear,articlein=false,
-style=ext-authoryear-comp,natbib=true]{biblatex}
 \addbibresource{biblio.bib}
+
+\hxautor{xexeo}{magenta}{Xexéo:}
 
 \title{O Estilo hacksxexeo v\ \hacksxexeoversion}
 \author{Geraldo Xexéo}
 \date{\today\ - \ \currenttime}
 
-%\defineauthorc{xexeo}{red}
  
 
 
@@ -45,6 +44,22 @@ Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingi
 
 Essa versão não funciona com o Lua\LaTeX.
 
+\section{Usando o bib\LaTeX}
+
+Para as referências ficarem como adequado, é necessário:
+\begin{itemize}
+    \item Comentar a linha com um comando \verb|RequirePackage|que exige o pacote \verb|natbib| no arquivo \textbf{coppe.cls} (deve ser a 56).
+    \item Usar a opção \verb|biblatex| no \textbf{hacksxexeo}.
+    \item No preâmbulo, incluir seus arquivos \verb|.bib|, após chamar \textbf{hacksxexeo}.
+    \item Onde quiser a bibliografia, usar \verb|\printbibliography|.
+\end{itemize}
+    
+Para incluir arquivos \verb|.bib|:
+\begin{verbatim}
+\addbibresource{biblio.bib}  
+\end{verbatim}
+
+
 \section{Como usar}
 
 \begin{enumerate}
@@ -56,6 +71,7 @@ Essa versão não funciona com o Lua\LaTeX.
         \item \verb!comentarios!,
         \item \verb!anonimizar!.
         \item \verb!rascunho!.
+        \item \verb!biblatex!.
     \end{enumerate}
     \item Usar os comandos como explicado a seguir.
 \end{enumerate}
@@ -144,11 +160,7 @@ Uma referência pode ser pedida em um lugar sem\favorcitar, ou com\favorcitar[o 
 
 \subsection{O comando de comentários avançado}
 
-O comando \verb!hxcomment! é uma versão genérica do comando de comentário. Ele deve ser usado para criar comentários específicos para cada autor, na forma.
-
-\begin{verbatim}
-\newcommand{\xexeo}[2][]{\hxcomment[#1]{red}{Xexéo - #2}}
-\end{verbatim}
+O comando \verb!hxcomment! é uma versão genérica do comando de comentário.
 
 Sua sintaxe é:
 \begin{verbatim}
@@ -180,6 +192,30 @@ Cores podem ser trocadas redefinindo o valor das variáveis.
 \makeatother
 \end{verbatim}
 
+\subsection{Criando autores para comentários}
+%Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo. 
+
+\begin{verbatim}
+\hxautor{xexeo}{green}{Xexéo:}   
+\end{verbatim}
+
+%Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{rotulado com marcação}{Rótulo} e candidato.
+
+\section{Sugestões}
+
+Um tipo especial de comentários são as sugestões.
+
+Elas funcionam com uma lógica diferente dos comentários nos parâmetros, onde o comentário é opcional.
+
+Este parágrafo \profsug[Uma sugestão para inserir]{tem uma sugestão com comentário} e 
+uma \profsug{uma sem comentário}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \profrem[Aqui remove]{remover} ou \proftroca[trocando a palavra]{cambiar}{trocar.}
+
+Isso também pode ser feito com os nomes definidos. 
+
+%Teste de \xexeosug[Sugestão do Xexéo]{inserção do Xexéo}, cortar erros \xexeorem[cortando erro]{como esse}, e trocas como \xexeotroca[Não é o autor]{Eça de Queiroz}{essa.}
+
+
+
 \section{Rascunho}
 
 A opção rascunho imprimirá rascunhos escritos dentro de um ambiente rascunho. Se não estiver habilitada os rascunhos não aparecerão. Se não usar o parâmetro opcional aparecerá a palavra \textbf{Rascunho}. 
@@ -206,8 +242,6 @@ Os seguintes pacotes são exigidos:
     \item tocloft, para definir as listas 
     \item comment, para o rascunho
     \item changebar, para o rascunho
-%    \item fit, cargo cult que chegou via Mangeli.
-    \item xparse
 \end{itemize}
 
 
@@ -220,9 +254,8 @@ Os seguintes pacotes são exigidos:
 %
 \printbibliography
 
-\setlength{\cftassuntonumwidth}{2.5em}
-\setlength{\cftcomentarionumwidth}{2.5em}
-\setlength{\cftcomentariorefnumwidth}{2.5em}
+
+
 \newpage
 \listofassunto
 \newpage
