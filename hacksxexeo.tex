@@ -13,6 +13,8 @@
 style=ext-authoryear-comp,natbib=true]{biblatex}
 \addbibresource{biblio.bib}
 
+\hxautor{xexeo}{green}{Xexéo:}
+
 \title{O Estilo hacksxexeo v\ \hacksxexeoversion}
 \author{Geraldo Xexéo}
 \date{\today\ - \ \currenttime}
@@ -144,11 +146,7 @@ Uma referência pode ser pedida em um lugar sem\favorcitar, ou com\favorcitar[o 
 
 \subsection{O comando de comentários avançado}
 
-O comando \verb!hxcomment! é uma versão genérica do comando de comentário. Ele deve ser usado para criar comentários específicos para cada autor, na forma.
-
-\begin{verbatim}
-\newcommand{\xexeo}[2][]{\hxcomment[#1]{red}{Xexéo - #2}}
-\end{verbatim}
+O comando \verb!hxcomment! é uma versão genérica do comando de comentário.
 
 Sua sintaxe é:
 \begin{verbatim}
@@ -179,6 +177,15 @@ Cores podem ser trocadas redefinindo o valor das variáveis.
 \renewcommand{\cor@suavizacao}{50}
 \makeatother
 \end{verbatim}
+
+\subsection{Criando autores para comentários}
+Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo. 
+
+\begin{verbatim}
+\hxautor{xexeo}{green}{Xexéo:}   
+\end{verbatim}
+
+Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{Rótulo}{ rotulado com marcação} e candidato.
 
 \section{Rascunho}
 

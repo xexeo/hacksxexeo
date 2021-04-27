@@ -150,20 +150,42 @@
 \newcommand{\hxcommentLabeled}[4]{}%
 \fi
 
-
-
-
-
 %\newcommand{\edx}[2]{\hxcomment{\textcolor{#1}{#2}}}
 \newcommand{\prof}[2][]{\hxcomment[#1]{\cor@prof}{Prof: #2}}
 \newcommand{\cand}[2][]{\hxcomment[#1]{\cor@cand}{Cand: #2}}
 \newcommand{\profr}[3][]{\hxcommentLabeled[#1]{\cor@prof}{#2}{Prof: #3}}
 \newcommand{\candr}[3][]{\hxcommentLabeled[#1]{\cor@cand}{#2}{Cand: #3}}
 
+% criando novos autores
+% nome do autor, cor, código
+\newcommand{\hxautor}[3]{%
+\expandafter\newcommand\csname#1\endcsname[2][]{%
+{\hxcomment[##1]{#2}{#3: ##2}}%
+}%
+\expandafter\newcommand\csname#1r\endcsname[4][]{%
+    {\hxcommentLabeled[##1]{#2}{##2}{#3: ##4}}%
+}%
+
+}%
+
+
+%%
+%
+% Sugestões e trocas
+%
+%%
+
+
 \newcommand{\profsug}[1]{\textcolor{\cor@prof}{#1}}
 \newcommand{\candsug}[1]{\textcolor{\cor@cand}{#1}}
 
+
+
+%
+%
 % reclamações sobre citações
+%
+%
 
 \if@showcomentario
 % cria o título
@@ -176,6 +198,9 @@
 \fi
 
 
+
+
+
 \if@showcomentario
 \newcommand{\hxcommentref}[3][]{
 \refstepcounter{comentarioref}
@@ -186,6 +211,9 @@
 \else
 \newcommand{\hxcommentref}[3]{}
 \fi
+
+
+
 
 
 
