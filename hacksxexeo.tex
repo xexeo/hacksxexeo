@@ -4,7 +4,7 @@
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 \usepackage{xcolor}
-\usepackage[sugestoes,biblatex,comentarios,rascunhos,anonimizar,assuntos]{hacksxexeo} 
+\usepackage[biblatex,rascunhos,anonimizar,assuntos,sugestoes,comentarios]{hacksxexeo} 
 \usepackage{datetime}
 \usepackage{hyperref}
 
@@ -17,7 +17,6 @@
 \author{Geraldo Xexéo}
 \date{\today\ - \ \currenttime}
 
-%\defineauthorc{xexeo}{red}
  
 
 
@@ -194,13 +193,13 @@ Cores podem ser trocadas redefinindo o valor das variáveis.
 \end{verbatim}
 
 \subsection{Criando autores para comentários}
-Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo. 
+%Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo. 
 
 \begin{verbatim}
 \hxautor{xexeo}{green}{Xexéo:}   
 \end{verbatim}
 
-Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{rotulado com marcação}{Rótulo} e candidato.
+%Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{rotulado com marcação}{Rótulo} e candidato.
 
 \section{Sugestões}
 
@@ -213,7 +212,7 @@ uma \profsug{uma sem comentário}, usando o comando \verb*|\profsug|, que só te
 
 Isso também pode ser feito com os nomes definidos. 
 
-Teste de \xexeosug[Sugestão do Xexéo]{inserção do Xexéo}, cortar erros \xexeorem[cortando erro]{como esse}, e trocas como \xexeotroca[Não é o autor]{Eça de Queiroz}{essa.}
+%Teste de \xexeosug[Sugestão do Xexéo]{inserção do Xexéo}, cortar erros \xexeorem[cortando erro]{como esse}, e trocas como \xexeotroca[Não é o autor]{Eça de Queiroz}{essa.}
 
 
 
@@ -228,10 +227,10 @@ Deve aparecer uma borda do lado interno de impressão.
 \end{rascunho}
 \end{verbatim}
 
-%\begin{rascunho}[Um Título de Rascunho]
-%Esse é um exemplo de rascunho. 
-%Deve aparecer uma borda do lado interno de impressão.
-%\end{rascunho}
+\begin{rascunho}[Um Título de Rascunho]
+Esse é um exemplo de rascunho. 
+Deve aparecer uma borda do lado interno de impressão.
+\end{rascunho}
 
 \section{Pacotes exigidos}
 
@@ -243,8 +242,6 @@ Os seguintes pacotes são exigidos:
     \item tocloft, para definir as listas 
     \item comment, para o rascunho
     \item changebar, para o rascunho
-%    \item fit, cargo cult que chegou via Mangeli.
-    \item xparse
 \end{itemize}
 
 
@@ -257,9 +254,8 @@ Os seguintes pacotes são exigidos:
 %
 \printbibliography
 
-\setlength{\cftassuntonumwidth}{2.5em}
-\setlength{\cftcomentarionumwidth}{2.5em}
-\setlength{\cftcomentariorefnumwidth}{2.5em}
+
+
 \newpage
 \listofassunto
 \newpage

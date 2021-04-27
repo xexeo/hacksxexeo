@@ -48,8 +48,8 @@
 \RequirePackage{comment}
 \RequirePackage{tocloft}
 %\RequirePackage{xparse}
-\RequirePackage[pdftex,xcolor,leftbars]{changebar}
-\RequirePackage{hyperref}
+\RequirePackage[xcolor,leftbars]{changebar}
+\usepackage{etoolbox}
 %\RequirePackage[fit]{truncate}
 
 % as opções comentario, assuntos e anonimizar
@@ -66,10 +66,18 @@
 
 %Isso é um truque para o \hl do soulutf8 funcionar
 %https://tex.stackexchange.com/questions/410295/soul-color-transparency
-\newcommand{\x@hl}[2]% % Depedendo do soulutf8
+
+% comando para suavizar uma cor
+
+\newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
+
+
+\newcommand{\hx@hl}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
     \sethlcolor{x@coraqui}%
     \hl{#2}}%
+
+
 
 
 % Anonimização
@@ -109,7 +117,7 @@
     \par
     \addcontentsline{aaa}{assunto}{\protect\numberline{\theassunto}{#2}}%
 }
-
+\setlength{\cftassuntonumwidth}{2.5em}
 
 \else
 % se não é para mostrar, não faz nada
@@ -120,12 +128,18 @@
 \fi % @showassuntos
 
 
+
+
+
 \if@showcomentario
 
-\newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
+% Resolve a lista de comentários
+\newcommand{\listcomentario}{Lista de Comentários}
+% cria a lista
+\@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}
 
-
-
+% Comentador genérico - parte I
+% faz o ednote e soma na lista
 % []rótulo], cor , footnote , indicador
 \newcommand{\hx@comentar}[4][]{%
 \IfNoValueTF{#4}{%
@@ -137,60 +151,49 @@
 \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#4 #3}}%
 }%    
 }%
-\fi
 
-
-
-% Cria a lista
-\if@showcomentario
-% cria o título
-\newcommand{\listcomentario}{Lista de Comentários}
-% cria a lista
-\@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}
-\else
-% se não é para mostrar, não faz nada
-\newcommand{\listofcomentario}{}
-\fi
-
-% Esse comando é para isolar o pacote ed
-% Que não atende todas as minhas expectativas
-% Ele tem algumas variações
-\if@showcomentario
-% texto a hl, cor, comentário, indicador de pessoa
+% comentador genérico, parte II
+% faz o highlight , soma o step e comenta
 \newcommand{\hxcomment}[4][]{%
-\refstepcounter{comentario}% soma um ao contador
-\x@hl{#2}{#1}% ver subfunção de impressão com hl
-\hx@comentar{#2}{#3}{#4}%
+    \refstepcounter{comentario}% soma um ao contador
+    \hx@hl{#2}{#1}% ver subfunção de impressão com hl
+    \hx@comentar{#2}{#3}{#4}%
 }%
-\else%
-\newcommand{\hxcomment}[3]{}%
-\fi%
 
-\if@showcomentario%
-% [texto a marcar], cor , comentário, rótulo, indicador
+% comentador genérico com rótulo
 \newcommand{\hxcommentLabeled}[5][]{%
-\refstepcounter{comentario}%
-\x@hl{#2}{#1}%
-\hx@comentar[#4]{#2}{#3}{#5}%
+    \refstepcounter{comentario}%
+    \hx@hl{#2}{#1}%
+    \hx@comentar[#4]{#2}{#3}{#5}%
 }%
-\else%
-\newcommand{\hxcommentLabeled}[5][]{}%
+
+\setlength{\cftcomentarionumwidth}{2.5em}
+
+
+\else
+\newcommand{\hx@comentar}[4][]{}%
+\newcommand{\listofcomentario}{}%
+% não pode perder o texto comentado
+\newcommand{\hxcomment}[4][]{#1}%
+\newcommand{\hxcommentLabeled}[5][]{#1}%
+
 \fi
+
+
+% Agora os específicos
 
 \if@showcomentario
 \newcommand{\prof}[2][]{\hxcomment[#1]{\cor@prof}{#2}{Prof:}}
 \newcommand{\cand}[2][]{\hxcomment[#1]{\cor@cand}{#2}{Cand:}}
-%\profr[com marcação]{Exemplo rotulado 2}{Rot2}
 \newcommand{\profr}[3][]{\hxcommentLabeled[#1]{\cor@prof}{#2}{#3}{Prof:}}
 \newcommand{\candr}[3][]{\hxcommentLabeled[#1]{\cor@cand}{#2}{#3}{Cand:}}
 \else
-\newcommand{\prof}[2][]{}
-\newcommand{\cand}[2][]{}
+\newcommand{\prof}[2][]{#1}
+\newcommand{\cand}[2][]{#1}
 %\profr[com marcação]{Exemplo rotulado 2}{Rot2}
-\newcommand{\profr}[3][]{}
-\newcommand{\candr}[3][]{}
+\newcommand{\profr}[3][]{#1}
+\newcommand{\candr}[3][]{#1}
 \fi
-
 
 %%
 %
@@ -205,13 +208,14 @@
 \textcolor{#5}{\st{#4}}%
 \textcolor{#7}{#6}%
 \if@showcomentario
-\refstepcounter{comentario}%
-\hx@comentar{#2}{#1}{#3}%
-\fi
+\ifstrempty{#1}{}
+{\refstepcounter{comentario}%
+    \hx@comentar{#2}{#1}{#3}}%
+\fi%
 }%% [rótulo], cor , footnote , indicador
-\else
-\newcommand{\hx@gensug}[7][]{}
-\fi
+\else%
+\newcommand{\hx@gensug}[7][]{#4}
+\fi%
 
 \newcommand{\profsug}[2][]{
 \hx@gensug[#1]{\cor@prof}{Prof:}{}{\cor@prof}{#2}{\cor@prof}
@@ -234,25 +238,24 @@
     \hx@gensug[#1]{\cor@cand}{Cand:}{#2}{\cor@cand}{#3}{\cor@prof}
 }
 
+
+% Agora o criador
 % criando novos autores
 % nome do autor, cor, código
 \newcommand{\hxautor}[3]{%
-    % hxcomment - texto a hl, cor, comentário, indicador de pessoa
-    \expandafter\newcommand\csname#1\endcsname[2][]{%
-        {\hxcomment[##1]{#2}{##2}{#3}}%
-    }%
-    % [texto a marcar], cor , comentário, palavra, rótulo
-    \expandafter\newcommand\csname#1r\endcsname[3][]%
-    {\hxcommentLabeled[##1]{#2}{##2}{##3}{#3}}%
-
-    \expandafter\newcommand\csname#1sug\endcsname[2][]%
-    {\hx@gensug[##1]{#2}{#3}{}{#2}{##2}{#2}}%
+% hxcomment - texto a hl, cor, comentário, indicador de pessoa
+\expandafter\newcommand\csname#1\endcsname[2][]%
+{\hxcomment[##1]{#2}{##2}{#3}}%
+% [texto a marcar], cor , comentário, palavra, rótulo
+\expandafter\newcommand\csname#1r\endcsname[3][]%
+{\hxcommentLabeled[##1]{#2}{##2}{##3}{#3}}%
+\expandafter\newcommand\csname#1sug\endcsname[2][]%
+{\hx@gensug[##1]{#2}{#3}{}{#2}{##2}{#2}}%
 %
-    \expandafter\newcommand\csname#1rem\endcsname[2][]%
-    {\hx@gensug[##1]{#2}{#3}{##2}{#2}{}{#2}}
-%
-    \expandafter\newcommand\csname#1troca\endcsname[3][]%
-      {\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
+\expandafter\newcommand\csname#1rem\endcsname[2][]%
+{\hx@gensug[##1]{#2}{#3}{##2}{#2}{}{#2}}
+\expandafter\newcommand\csname#1troca\endcsname[3][]%
+{\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
 }%
 
 
@@ -274,17 +277,14 @@
 \newcommand{\listofcomentarioref}{}
 \fi
 
-
-
-
-
 \if@showcomentario
 \newcommand{\hxcommentref}[3][]{
 \refstepcounter{comentarioref}
-\sethlcolor{#2}\hl{#1}
+\hx@hl{#2}{#1}
 \ednote{\textcolor{#2}{#3}}
 \addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#3}}%
 }
+\setlength{\cftcomentariorefnumwidth}{2.5em}
 \else
 \newcommand{\hxcommentref}[3]{}
 \fi
@@ -307,7 +307,7 @@
 \newenvironment{rascunho}[1][Rascunho]{%
 \cbcolor{\cor@changebar}
 \cbstart
-\x@hl{\cor@hlrascunho}{\textbf{#1}}
+\hx@hl{\cor@hlrascunho}{\textbf{#1}}
 \newline%
 }%
 {\cbend}%
