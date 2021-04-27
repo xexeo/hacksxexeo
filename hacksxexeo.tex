@@ -4,7 +4,7 @@
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 \usepackage{xcolor}
-\usepackage[biblatex,rascunho,comentarios,anonimizar,assuntos]{hacksxexeo} 
+\usepackage[sugestoes,biblatex,comentarios,rascunhos,anonimizar,assuntos]{hacksxexeo} 
 \usepackage{datetime}
 \usepackage{hyperref}
 
@@ -208,7 +208,12 @@ Um tipo especial de comentários são as sugestões.
 
 Elas funcionam com uma lógica diferente dos comentários nos parâmetros, onde o comentário é opcional.
 
-%Este parágrafo \profsug[Uma sugestão]{tem uma sugestão com comentário} e uma \profsug{uma sem comentário}, usando o comando \verb*|!\profsug|, que só tem uma inserção de texto.
+Este parágrafo \profsug[Uma sugestão para inserir]{tem uma sugestão com comentário} e 
+uma \profsug{uma sem comentário}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \profrem[Aqui remove]{remover} ou \proftroca[trocando a palavra]{cambiar}{trocar.}
+
+Isso também pode ser feito com os nomes definidos. 
+
+Teste de \xexeosug[Sugestão do Xexéo]{inserção do Xexéo}, cortar erros \xexeorem[cortando erro]{como esse}, e trocas como \xexeotroca[Não é o autor]{Eça de Queiroz}{essa.}
 
 
 
@@ -223,10 +228,10 @@ Deve aparecer uma borda do lado interno de impressão.
 \end{rascunho}
 \end{verbatim}
 
-\begin{rascunho}[Um Título de Rascunho]
-Esse é um exemplo de rascunho. 
-Deve aparecer uma borda do lado interno de impressão.
-\end{rascunho}
+%\begin{rascunho}[Um Título de Rascunho]
+%Esse é um exemplo de rascunho. 
+%Deve aparecer uma borda do lado interno de impressão.
+%\end{rascunho}
 
 \section{Pacotes exigidos}
 
