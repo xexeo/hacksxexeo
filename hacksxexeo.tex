@@ -197,6 +197,8 @@ Cores podem ser trocadas redefinindo o valor das variáveis.
 \subsection{Criando autores para comentários}
 Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo. 
 
+O autor pode usar o comando \xexeor[rotulado]{para comentar}{Isso é um rótulo}, ou sem marcação\xexeor{outro comentário}{outro rótulo} também.
+
 \begin{verbatim}
 \hxautor{xexeo}{green}{Xexéo}   
 \end{verbatim}
@@ -213,6 +215,8 @@ Este parágrafo \profsug[Uma sugestão para inserir]{tem uma sugestão com comen
 uma \profsug{sem comentário, ficando só a marca no texto, e não indo para a lista de comentários\label{sug:com}}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \profrem[Aqui remove]{remover} ou \proftroca[trocando a palavra]{cambiar}{trocar.}
 
 Isso também pode ser feito com os nomes definidos. 
+Este parágrafo \xexeosug[Uma sugestão para inserir]{tem uma sugestão com comentário} e 
+uma \xexeosug{sem comentário, ficando só a marca no texto, e não indo para a lista de comentários\label{sug:com1}}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \xexeorem[Aqui remove]{remover} ou \xexeotroca[trocando a palavra]{cambiar}{trocar.}
 
 %Teste de \xexeosug[Sugestão do Xexéo]{inserção do Xexéo}, cortar erros \xexeorem[cortando erro]{como esse}, e trocas como \xexeotroca[Não é o autor]{Eça de Queiroz}{essa.}
 
