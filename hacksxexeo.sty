@@ -6,6 +6,20 @@
 
 \newcommand{\hacksxexeoversion}{3.4}
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
+% essa versão 3.5 vai eliminar o uso do ed
+
+\newif\ifshowednotes\showednotestrue
+\newif\ifmargins\marginstrue
+\newif\ifmarginnote\marginnotefalse
+\newif\ifednotebookmarks\ednotebookmarksfalse
+\DeclareOption{show}{\showednotestrue\message{ed.sty: showing ednotes}}
+\DeclareOption{hide}{\showednotesfalse\message{ed.sty: hiding ednotes}}
+\DeclareOption{draft}{\showednotestrue\message{ed.sty: showing ednotes}}
+\DeclareOption{final}{\showednotesfalse\message{ed.sty: hiding ednotes}}
+\DeclareOption{nomargins}{\marginsfalse}
+\DeclareOption{marginnote}{\marginnotetrue}
+\DeclareOption{pdfbookmarks}{\ednotebookmarkstrue}
+
 
 \newif\if@showcomentario\@showcomentariofalse
 \DeclareOption{comentarios}{
@@ -41,18 +55,54 @@
 \RequirePackage{xcolor}
 \RequirePackage{soulutf8 }
 %para os comentários e a lista
-\if@showcomentario
-\RequirePackage[show]{ed}
-\else
-\RequirePackage{ed}
-\fi
+%\if@showcomentario
+%\RequirePackage[show]{ed}
+%\else
+%\RequirePackage{ed}
+%\fi
 \RequirePackage{comment}
 \RequirePackage{tocloft}
 %\RequirePackage{xparse}
 \RequirePackage[xcolor,leftbars]{changebar}
-\RequirePackage{mparhack} %trying to fix
 \RequirePackage{etoolbox}
 %\RequirePackage[fit]{truncate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\ifshowednotes
+\RequirePackage{paralist}
+\RequirePackage{xcolor}
+\ifmarginnote\RequirePackage{marginnote}\fi
+\else
+\RequirePackage{verbatim}
+\fi
+%\ifhideOP\RequirePackage{comment}\fi
+%\ifhideNP\RequirePackage{comment}\fi
+\ifednotebookmarks\RequirePackage{hyperref}\fi
+
+\newcommand\ednoteshape{\sffamily}
+\newcounter{ednote}
+\newcommand\ed@foot[3]% text, type, label
+{\def\@test{#3}\footnotetext[\arabic{ednote}]%
+    {{\scshape{#2}\if\@test\@empty\else\label{ed:#3}[{#3}]\fi:} \ednoteshape #1}}
+\def\ed@mark@style#1{#1}
+\newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}
+\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}
+
+
+\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{#1}\else\marginpar{#1}\fi\fi}
+\newcommand\Ed@note[3]% text, type, label
+{\addtocounter{ednote}{1}\message{#2!}%
+    \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\theednote}\fi\fi}
+\newcommand\ed@note[4]% text, type, label, margin
+{\Ed@note{#1}{#2}{#3}\ifshowednotes\ed@margin{#4:\arabic{ednote}}\fi}
+\newcommand\ednote@label{EdNote}
+\newcommand\ednote@margin{EdN}
+\newcommand\ednotelabel[1]{\def\ednote@label{#1}}
+\newcommand\ednotemargin[1]{\def\ednote@margin{#1}}
+\newcommand{\Ednote}[2][]{\Ed@note{#2}\ednote@label{#1}}
+\newcommand{\ednote}[2][]{\ed@note{#2}\ednote@label{#1}\ednote@margin}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 % as opções comentario, assuntos e anonimizar
 
