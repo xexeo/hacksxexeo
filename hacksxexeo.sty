@@ -86,10 +86,16 @@
     {{\scshape{#2}\if\@test\@empty\else\label{ed:#3}[{#3}]\fi:} \ednoteshape #1}}
 \def\ed@mark@style#1{#1}
 \newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}
-\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}
 
 
-\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{#1}\else\marginpar{#1}\fi\fi}
+% a mágica é aqui
+% footnote indicador e rótulo
+\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{\textit{#1}}{\textbf{#2}}{#3}}
+
+% a outra mágica é aqui
+\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textbf{#1}}\else\marginpar{\textit{#1}}\fi\fi}
+
+
 \newcommand\Ed@note[3]% text, type, label
 {\addtocounter{ednote}{1}\message{#2!}%
     \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\theednote}\fi\fi}
