@@ -1,10 +1,10 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{hacksxexeo}[2021/04/27 - Para trabalhar com o orientador Geraldo Xexéo]
+\ProvidesPackage{hacksxexeo}[2021/04/29 - Para trabalhar com o orientador Geraldo Xexéo]
 
 
 % Esse pacote oferece 6 opções
 
-\newcommand{\hacksxexeoversion}{3.1}
+\newcommand{\hacksxexeoversion}{3.2}
 
 \newif\if@showcomentario\@showcomentariofalse
 \DeclareOption{comentarios}{
@@ -74,9 +74,26 @@
 
 \newcommand{\hx@hl}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
-    \sethlcolor{x@coraqui}%
-    \hl{#2}}%
+\sethlcolor{x@coraqui}%
+\hl{#2}}%
 
+% criando um comando novo ednote margin
+%\newcommand{\hx@ednote@margin}[1][]{
+%\ifstrempty{#1}
+%{\ednote@margin}
+%{}
+%}
+
+% rótulo, footnote , rótulo da margem
+%\newcommand{\hx@ednote}[3][]{%
+%{\Ed@note{#1}{#2}{#3}\ifshowednotes\ed@margin{#3:\arabic{ednote}}\fi}\ed@note{#2}%
+%}
+% isolando o ednote
+\newcommand{\hx@ednote}[3][]{%
+\def\ednote@label{#3}%    
+\def\ednote@margin{#3}%
+\ednote[#1]{#2}%
+}%
 
 
 
@@ -143,11 +160,11 @@
 % []rótulo], cor , footnote , indicador
 \newcommand{\hx@comentar}[4][]{%
 \ifstrempty{#4}{%
-    \ednote[#1]{\textcolor{#2}{#3}}% faz a nota de rodapé do ed 
+    \hx@ednote[#1]{\textcolor{#2}{#3}}{#4}% faz a nota de rodapé do ed 
     \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#3}}%
 }%
 {%
-\ednote[#1]{\textcolor{#2}{#4 #3}}%
+\hx@ednote[#1]{\textcolor{#2}{#3}}{#4}%
 \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#4 #3}}%
 }%    
 }%
@@ -267,35 +284,35 @@
 %
 %
 
-\if@showcomentario
+\if@showcomentario%
 % cria o título
-\newcommand{\listcomentarioref}{Necessidades de Citação}
+\newcommand{\listcomentarioref}{Necessidades de Citação}%
 % cria a lista
-\@ifundefined{chapter}{ \newlistof[section]{comentarioref}{ccr}{\listcomentarioref}}{\newlistof[chapter]{comentarioref}{ccr}{\listcomentarioref}}
-\else
+\@ifundefined{chapter}{ \newlistof[section]{comentarioref}{ccr}{\listcomentarioref}}{\newlistof[chapter]{comentarioref}{ccr}{\listcomentarioref}}%
+\else%
 % se não é para mostrar, não faz nada
-\newcommand{\listofcomentarioref}{}
-\fi
+\newcommand{\listofcomentarioref}{}%
+\fi%
 
-\if@showcomentario
-\newcommand{\hxcommentref}[3][]{
-\refstepcounter{comentarioref}
-\hx@hl{#2}{#1}
-\ednote{\textcolor{#2}{#3}}
+\if@showcomentario%
+\newcommand{\hxcommentref}[3][]{%
+\refstepcounter{comentarioref}%
+\hx@hl{#2}{#1}%
+\hx@ednote{\textcolor{#2}{#3}}{Citar}%
 \addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#3}}%
-}
-\setlength{\cftcomentariorefnumwidth}{2.5em}
-\else
-\newcommand{\hxcommentref}[3]{}
-\fi
+}%
+\setlength{\cftcomentariorefnumwidth}{2.5em}%
+\else%
+\newcommand{\hxcommentref}[3]{}%
+\fi%
 
 
 
 \if@showcomentario
-\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\hxcommentref{\cor@citar}{Citação: Por favor citar #1}}
-\else
-\newcommand{\favorcitar}[1][]{}
-\fi
+\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{\hxcommentref{\cor@citar}{Por favor citar #1}}%
+\else%
+\newcommand{\favorcitar}[1][]{}%
+\fi%
 
 % Marcando ou esquendo dos rascunhos
 %changebar is old and does not work with LuaLaTeX
