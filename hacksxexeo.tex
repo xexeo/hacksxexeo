@@ -11,7 +11,7 @@
 
 \addbibresource{biblio.bib}
 
-\hxautor{xexeo}{magenta}{Xexéo:}
+\hxautor{xexeo}{magenta}{Xexéo}
 
 \title{O Estilo hacksxexeo v\ \hacksxexeoversion}
 \author{Geraldo Xexéo}
@@ -149,7 +149,8 @@ A subseção a seguir  tem alguns exemplos.
 
 \subsection{Exemplos}
 
-O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}. O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}. 
+O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}. 
+O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}. 
 
 A marcação é suavizada em relação a cor definida. Atualmente o valor é de \makeatletter$\cor@suavizacao\%$\makeatother.
 
@@ -197,7 +198,7 @@ Cores podem ser trocadas redefinindo o valor das variáveis.
 Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo. 
 
 \begin{verbatim}
-\hxautor{xexeo}{green}{Xexéo:}   
+\hxautor{xexeo}{green}{Xexéo}   
 \end{verbatim}
 
 %Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{rotulado com marcação}{Rótulo} e candidato.
@@ -209,7 +210,7 @@ Um tipo especial de comentários são as sugestões.
 Elas funcionam com uma lógica diferente dos comentários nos parâmetros, onde o comentário é opcional.
 
 Este parágrafo \profsug[Uma sugestão para inserir]{tem uma sugestão com comentário} e 
-uma \profsug{uma sem comentário}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \profrem[Aqui remove]{remover} ou \proftroca[trocando a palavra]{cambiar}{trocar.}
+uma \profsug{sem comentário, ficando só a marca no texto, e não indo para a lista de comentários\label{sug:com}}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \profrem[Aqui remove]{remover} ou \proftroca[trocando a palavra]{cambiar}{trocar.}
 
 Isso também pode ser feito com os nomes definidos. 
 
@@ -245,7 +246,12 @@ Os seguintes pacotes são exigidos:
     \item changebar, para o rascunho
 \end{itemize}
 
+\section{Bugs conhecidos e melhorias desejadas}
 
+\begin{itemize}
+    \item Se um texto sugerido quebrar a linha, o comentário fica da mesma cor  do texto. Ver o comentário na seção \ref{sug:com}.
+    \item Queremos mudar as cores também das anotações de margem e dos rótulos, mas isso vai implicar em substituir o pacote \textbf{ed}.
+\end{itemize}
 
 
 
@@ -263,4 +269,5 @@ Os seguintes pacotes são exigidos:
 \listofcomentario
 \newpage
 \listofcomentarioref
+\printhacksxexeoversion
 \end{document}
