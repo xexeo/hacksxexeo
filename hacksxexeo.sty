@@ -4,9 +4,10 @@
 
 % Esse pacote oferece 6 opções
 
-\newcommand{\hacksxexeoversion}{3.4}
+\newcommand{\hacksxexeoversion}{3.6}
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
-% essa versão 3.5 vai eliminar o uso do ed
+% essa versão 3.5 (não foi marcada)vai eliminar o uso do ed
+% 3.6 usa cores
 
 \newif\ifshowednotes\showednotestrue
 \newif\ifmargins\marginstrue
@@ -81,19 +82,24 @@
 
 \newcommand\ednoteshape{\sffamily}
 \newcounter{ednote}
+\def\hx@currentcolor{black}
+
+% a mágica é aqui
+% footnote indicador e rótulo
 \newcommand\ed@foot[3]% text, type, label
 {\def\@test{#3}\footnotetext[\arabic{ednote}]%
-    {{\scshape{#2}\if\@test\@empty\else\label{ed:#3}[{#3}]\fi:} \ednoteshape #1}}
+    {{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}[\textcolor{\hx@currentcolor}{#3}]\fi:} \ednoteshape \textcolor{\hx@currentcolor}{#1}}}
 \def\ed@mark@style#1{#1}
 \newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}
 
 
-% a mágica é aqui
-% footnote indicador e rótulo
-\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{\textit{#1}}{\textbf{#2}}{#3}}
+
+
+
+\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}
 
 % a outra mágica é aqui
-\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textbf{#1}}\else\marginpar{\textit{#1}}\fi\fi}
+\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textcolor{\hx@currentcolor}{#1}}\else\marginpar{\textcolor{\hx@currentcolor}{#1}}\fi\fi}
 
 
 \newcommand\Ed@note[3]% text, type, label
@@ -105,8 +111,10 @@
 \newcommand\ednote@margin{EdN}
 \newcommand\ednotelabel[1]{\def\ednote@label{#1}}
 \newcommand\ednotemargin[1]{\def\ednote@margin{#1}}
+
 \newcommand{\Ednote}[2][]{\Ed@note{#2}\ednote@label{#1}}
-\newcommand{\ednote}[2][]{\ed@note{#2}\ednote@label{#1}\ednote@margin}
+\newcommand{\ednote}[3][]{\def\hx@currentcolor{#3}%
+\ed@note{#2}\ednote@label{#1}\ednote@margin}
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -121,6 +129,8 @@
 \newcommand{\cor@hlrascunho}{yellow}
 % Suaviação nas cores para o hilight
 \newcommand{\cor@suavizacao}{40}
+
+
 
 %Isso é um truque para o \hl do soulutf8 funcionar
 %https://tex.stackexchange.com/questions/410295/soul-color-transparency
@@ -145,7 +155,7 @@
 \newcommand{\hx@ednote}[4][]{%
 \ednotelabel{#4}%   
 \ednotemargin{#4}%
-\ednote[#1]{\textcolor{#3}{#2}}%
+\ednote[#1]{#2}{#3}%
 %\hx@ednotepre{#1}{\textcolor{#3}{#2}}{#4}{#4}{#3}
 }%
 
@@ -311,7 +321,7 @@
 
 % Agora o criador
 % criando novos autores
-% nome do autor, cor, código
+% nome do autor, cor, identificador
 \newcommand{\hxautor}[3]{%
     % hxcomment - texto a hl, cor, comentário, indicador de pessoa
     \expandafter\newcommand\csname#1\endcsname[2][]%
@@ -320,7 +330,7 @@
         \hx@comment[##1]{##2}{#2}{#3}}%
     % [texto a marcar], cor , comentário, palavra, rótulo
     \expandafter\newcommand\csname#1r\endcsname[3][]%
-    {\hx@commentLabeled[##1]{##2}{#2}{##3}{#3}}%
+    {\hx@commentLabeled[##1]{##2}{#2}{#3}{##3}}%
     %sugestões
     \expandafter\newcommand\csname#1sug\endcsname[2][]%
     {\hx@gensug[##1]{#2}{#3}{}{#2}{##2}{#2}}%
