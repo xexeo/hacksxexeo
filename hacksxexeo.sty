@@ -21,12 +21,12 @@
 %% 2005/12/01 or later.
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{hacksxexeo}[2021/04/30 v5.0 1st dtx version of hacksxexeo]
+\ProvidesPackage{hacksxexeo}[2021/04/30 v4.0 1st dtx version of hacksxexeo]
 %%\fi
 %%
 %%
 %% Esse pacote oferece 6 opções
-\newcommand{\hacksxexeoversion}{3.6}
+\newcommand{\hacksxexeoversion}{4.0}
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
 %% essa versão 3.5 (não foi marcada)vai eliminar o uso do ed
 %% 3.6 usa cores
@@ -50,6 +50,8 @@
 \DeclareOption{comentarios}{\@showcomentariotrue}
 \newif\if@beanonymous\@beanonymousfalse
 \DeclareOption{anonimizar}{\@beanonymoustrue}
+\newif\if@naoanonimizar\@naoanonimizarfalse
+\DeclareOption{naoanonimizar}{\@naoanonimizartrue}
 %% As 3 opções a seguir tem comportamento
 %% dependente de comentarios (colocam ou não)
 \newif\if@showsugestao\@showsugestaofalse
@@ -80,6 +82,9 @@
 \@showcomentariofalse
 \@showsugestaofalse
 \@beanonymoustrue
+\fi
+\if@naoanonimizar
+\@beanonymousfalse
 \fi
 \if@modopublicar
 \@showassuntosfalse

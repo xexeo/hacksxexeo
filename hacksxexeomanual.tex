@@ -10,13 +10,13 @@
 style=ext-authoryear-comp
 ,natbib=true]{biblatex}
 \addbibresource{hx.bib}
-\usepackage[submeter]{hacksxexeo}
+\usepackage[edicao]{hacksxexeo}
 \usepackage{hyperref}
 
 % para testar os comandos de troca
-\hxdefanoncitetext{[A]}
-\hxdefanonciteptext{[B]}
-\hxdefanoncitettext{[C]}
+%\hxdefanoncitetext{[A]}
+%\hxdefanonciteptext{[B]}
+%\hxdefanoncitettext{[C]}
 
 
 
@@ -32,6 +32,10 @@ style=ext-authoryear-comp
     
     \maketitle
     
+    \tableofcontents
+    
+    \section{Introdução}
+    
     Este é o  pacote em evolução para fazer a edição de artigos dissertações e teses orientadas por Geraldo Xexéo. Apesar de ser uma expansão de parte da funcionalidade do pacote |ed|, ele é mais similar em funcionalidade ao pacote |color-edits|, mas só descobri isso muito tarde. Porém, ainda permite que algumas peculiaridades de minha parte sejam desenvolvidas.
     
     O objetivo inicial era ser um front-end para vários comandos disponibilizados por outros pacotes, de forma que eu possa mudar os pacotes que uso e manter como os comentários são feitos, e usar os nomes que quisesse, porém com o uso demandas específicas foram aparecendo e sendo implementadas.
@@ -46,7 +50,7 @@ style=ext-authoryear-comp
     
     Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
     
-    Essa versão não funciona com o Lua\LaTeX.
+    Esse manual foi compilado com a opção |edicao|. Isso significa que toda as marcas editoriais vão aparecer, e será usado o modo anônimo. Alterando o arquivo |hacksxexeomanual.tex| é possível testar todas as opções com facilidade.
     
     \section{Como usar}
     
@@ -60,9 +64,10 @@ style=ext-authoryear-comp
             \item \verb!comentarios!, que permite comentários editoriais com os comandos |\cand{}|, |\candr|, e outros.
             \item \verb!rascunhos!, que cria um ambiente marcado como rascunho.
             \item \verb!sugestoes!, que permite usar comandos que inserem |\candsug|, removem |\candrem| e trocam texto marcado |\candtroca|.
-            \item \verb!anonimizar!, que ativa comandos de anonimazação de nomes e citações para usar em artigos a serem submetidos.
+            \item \verb!anonimizar!, que ativa comandos de anonimização de nomes e citações para usar em artigos a serem submetidos.
             \item |edicao|, não importa que opções foram ativadas ou não, a opção draft ativará as opções |assuntos|, |comentarios|, |rascunhos| e |sugestoes|.
             \item |submeter|, não importa que opções foram ativadas ou não, a opção draft desativará as opções |assuntos|, |comentarios|, |rascunhos|, e |sugestoes| e ativará a opção |anonimizar|. Tem prioridade sobre |edicao|.
+            \item |naoanonimizar|, que desativa a anonimização, e tem prioridade sobre |submeter| e |edicao|, permitindo trabalhar nesses modos sem anonimizar. 
             \item |publicar|, desativa todas as opções.  Tem prioridade sobre |submeter|
         \end{enumerate}
         \item Usar os comandos como explicado a seguir.
@@ -126,7 +131,7 @@ style=ext-authoryear-comp
         \item |\hxanoncitet{entradabibtex}|
     \end{enumerate}
     
-    Ela substitui o texto, ou a citação, pela palavra \textit{Anonymous}, ou uma citação como \textit{(Anonymous, Year)} ou \textit{Anonymous (Year)}.
+    Ela substitui o texto, ou a citação, no modo default, pela palavra \textit{Anonymous}, ou uma citação como \textit{(Anonymous, Year)} ou \textit{Anonymous (Year)}.
     
     Por exemplo, o ideal é que \hxanon{Geraldo Xexéo} não seja citado. Nem quando falamos que \hxanoncitet{costa2021} é um texto nosso, nem citando ele com parenteses\hxanoncitep{costa2021}. Uma citação normal, como do \citet{Juran2010} continua aparecendo, as anonimizadas são suprimidas das referências.
     
@@ -229,8 +234,7 @@ style=ext-authoryear-comp
     \section{Bugs conhecidos e melhorias desejadas}
     
     \begin{itemize}
-        \item Se um texto sugerido quebrar a linha, o comentário fica da mesma cor  do texto. 
-        \item Queremos mudar as cores também das anotações de margem e dos rótulos, mas isso vai implicar em substituir o pacote |ed|.
+        \item Se um texto sugerido quebrar a linha, o comentário pode ficar  da mesma cor  do texto. 
     \end{itemize}
     
     \printbibliography
