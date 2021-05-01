@@ -1,0 +1,248 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage[brazilian]{babel}
+\usepackage{xcolor}
+\usepackage{datetime}
+\usepackage{shortvrb}
+%\usepackage[natbib=true]{biblatex}%
+\usepackage[ citestyle=authoryear,articlein=false,
+style=ext-authoryear-comp
+,natbib=true]{biblatex}
+\addbibresource{hx.bib}
+\usepackage[submeter]{hacksxexeo}
+\usepackage{hyperref}
+
+% para testar os comandos de troca
+\hxdefanoncitetext{[A]}
+\hxdefanonciteptext{[B]}
+\hxdefanoncitettext{[C]}
+
+
+
+\hxautor{xexeo}{purple}{Xexéo}
+
+\title{O Estilo hacksxexeo v\ \hacksxexeoversion}
+\author{Geraldo Xexéo}
+\date{\today\ - \ \currenttime}
+
+\makeindex
+\MakeShortVerb{\|}
+\begin{document}
+    
+    \maketitle
+    
+    Este é o  pacote em evolução para fazer a edição de artigos dissertações e teses orientadas por Geraldo Xexéo. Apesar de ser uma expansão de parte da funcionalidade do pacote |ed|, ele é mais similar em funcionalidade ao pacote |color-edits|, mas só descobri isso muito tarde. Porém, ainda permite que algumas peculiaridades de minha parte sejam desenvolvidas.
+    
+    O objetivo inicial era ser um front-end para vários comandos disponibilizados por outros pacotes, de forma que eu possa mudar os pacotes que uso e manter como os comentários são feitos, e usar os nomes que quisesse, porém com o uso demandas específicas foram aparecendo e sendo implementadas.
+    
+    O pacote foi iniciado com código de Eduardo Mangeli. A funcionalidade do pacote \verb|ed| deu as inspirações. Algum código desse pacote foi copiado aqui e está marcado. Posteriormente descobri o pacote \verb|color-edits|, que forneceria, sem algumas idiossincrasias minhas, quase tudo que necessitava, mas nada do código dele foi usado.
+    
+    A retro-compatibilidade do pacote com si mesmo é essencial.
+    
+    \section{Atenção}
+    
+    Este pacote usa outro pacote que transforma o comportamento padrão do sumário e das listas no \LaTeX, que deixam de pular a página automaticamente. Não há por enquanto solução para esse problema, a não ser o óbvio: usar o comando \verb!\newpage! antes dos comandos \verb!\tableofcontents!, etc.
+    
+    Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
+    
+    Essa versão não funciona com o Lua\LaTeX.
+    
+    \section{Como usar}
+    
+    \begin{enumerate}
+        \item Importar o arquivo |hacksxexeo.sty|\footnote{\url{https://github.com/xexeo/hacksxexeo}} para o seu  projeto. 
+        Um diretório \textbf{dist} contém a última distribuição.
+        \item Ler o arquivo |hacksxexeo.pdf|
+        \item Ativar as opções desejadas entre\footnote{A funcionalidade |biblatex| foi removida por não ser necessária como foi planejada, apoiar o uso do pacote |CoppeTeX|}:
+        \begin{enumerate}
+            \item \verb!assuntos!, que cria cabeçalhos para parágrafos para indicar do que falam.
+            \item \verb!comentarios!, que permite comentários editoriais com os comandos |\cand{}|, |\candr|, e outros.
+            \item \verb!rascunhos!, que cria um ambiente marcado como rascunho.
+            \item \verb!sugestoes!, que permite usar comandos que inserem |\candsug|, removem |\candrem| e trocam texto marcado |\candtroca|.
+            \item \verb!anonimizar!, que ativa comandos de anonimazação de nomes e citações para usar em artigos a serem submetidos.
+            \item |edicao|, não importa que opções foram ativadas ou não, a opção draft ativará as opções |assuntos|, |comentarios|, |rascunhos| e |sugestoes|.
+            \item |submeter|, não importa que opções foram ativadas ou não, a opção draft desativará as opções |assuntos|, |comentarios|, |rascunhos|, e |sugestoes| e ativará a opção |anonimizar|. Tem prioridade sobre |edicao|.
+            \item |publicar|, desativa todas as opções.  Tem prioridade sobre |submeter|
+        \end{enumerate}
+        \item Usar os comandos como explicado a seguir.
+    \end{enumerate}
+    
+    \message{****************Assuntar agora}
+    \section{Assuntos}
+    
+    Os assuntos são habilitados com a opção de pacote \verb!assuntos!. Caso ela não seja ativada, eles não aparecerão na impressão.
+    
+    O objetivo dos assuntos é identificar no topo de cada parágrafo sobre que assunto ele trata. Cada parágrafo só deve tratar de um assunto.
+    
+    Esse comando deve ser melhorado no futuro para o visual ser mais interessante, ele surgiu da necessidade de entender um artigo sendo escrito em conjunto com o Luis.
+    
+    O comando é simples:
+    
+    \begin{verbatim}
+        \hxassunto[cor]{texto do assunto}
+    \end{verbatim}
+    
+    A versão atual é bem feia e estou pensando em algo melhor. Ela coloca um texto com highlight, cujo default é verde, na posição.
+    
+    Por exemplo, o comando:
+    \begin{verbatim}
+        \hxassunto{Este é um assunto default}
+        Esse é um parágrafo de teste do assunto.
+    \end{verbatim}
+    
+    Gera:
+    
+    \hxassunto{Este é um assunto default}
+    Esse é um parágrafo de teste do assunto.
+    
+    
+    Já o comando:
+    \begin{verbatim}
+        \hxassunto[pink]{Este é um assunto rosa}
+        Esse é um parágrafo de teste do assunto com o título com outra cor.
+    \end{verbatim}
+    
+    
+    Gera:
+    
+    \hxassunto[pink]{Este é um assunto rosa}
+    Esse é um parágrafo de teste do assunto com o título com outra cor.
+    
+    
+    Uma lista de assuntos pode ser gerada com o comando
+    \verb!\listofassunto!. Um exemplo é dado no final desse texto.
+    
+    \message{****************Anonimizar agora}
+    \section{Anonimizador}
+    
+    Este comando é para artigos, não será usado em dissertações e tese. Ele permite anonimizar mais facilmente um artigo e as citações feitas dentro dele. Alguns pacotes de revistas já tem o próprio anonimizador.
+    
+    A opção anonimizar tem 3 comandos:
+    \begin{enumerate}
+        \item |\hxanon{Texto}|
+        \item |\hxanoncite{entradabibtex}|
+        \item |\hxanoncitep{entradabibtex}|
+        \item |\hxanoncitet{entradabibtex}|
+    \end{enumerate}
+    
+    Ela substitui o texto, ou a citação, pela palavra \textit{Anonymous}, ou uma citação como \textit{(Anonymous, Year)} ou \textit{Anonymous (Year)}.
+    
+    Por exemplo, o ideal é que \hxanon{Geraldo Xexéo} não seja citado. Nem quando falamos que \hxanoncitet{costa2021} é um texto nosso, nem citando ele com parenteses\hxanoncitep{costa2021}. Uma citação normal, como do \citet{Juran2010} continua aparecendo, as anonimizadas são suprimidas das referências.
+    
+    É possível trocar o que aparece na anonimização com os comandos exemplificados a seguir:
+    \begin{verbatim}
+\hxdefanoncitetext{[A]}
+\hxdefanonciteptext{[B]}
+\hxdefanoncitettext{[C]}
+    \end{verbatim}
+    
+    \message{********************Comentar agora}
+    \section{Comentários}
+    
+    O maior esforço está sendo feito para criar uma comunicação via comentários entre orientador e aluno.
+    
+    Vários comandos foram criados, mas os que devem ser usados são:
+    \begin{enumerate}
+        \item \verb!\prof[texto a colorir]{comentário}!, pelo professor, ou
+        \item \verb!\profr[texto a colorir]{comentário}{rótulo}!, pelo professor, que permite dar um rótulo ao comentário, que deve ser único,
+        \item \verb!\cand[texto a colorir]{comentário}!, pelo candidato.
+        \item \verb!\candr[texto a colorir]{comentário}{rótulo}!, pelo candidato, que permite dar um rótulo ao comentário, que deve ser único,
+        \item \verb!\favorcitar[instrução adicional]!, que pede uma citação, possivelmente com instruções adicionais.
+    \end{enumerate}
+    
+    Os comentários podem ser listados com o comando \verb!\listofcomentario!.
+    
+    A subseção a seguir  tem alguns exemplos.
+    
+    \message{****************Examplar comentarios agora}
+    \subsection{Exemplos}
+    
+    O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}.
+    O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}.
+    
+    A marcação é suavizada em relação a cor definida. Atualmente o valor é de \makeatletter$\cor@suavizacao\%$\makeatother.
+    
+    Um comentário do candidato é similar professor\cand{Primeira comentário do candidato é simples.}. A segunda citação tera \cand[uma parte colorida]{O quarto exemplo é com uma parte marcada}.
+    
+    Finalmente, os rotulados, tanto para professor\profr{Exemplo rotulado}{Rot1}, como para candidato\candr{Olha a resposta}{Resposta para Rot1}. Que permitem também as versões \profr[com marcação]{Exemplo rotulado 2}{Rot2}, para \candr[ambos]{Olha a resposta 2}{Resposta para Rot2}.
+    
+    Uma referência pode ser pedida em um lugar sem\favorcitar, ou com\favorcitar[o experimento] comentário.
+    
+    \message{****************Cores agora}
+    \subsection{Trocando cores}
+    Cores podem ser trocadas redefinindo o valor das variáveis.
+    \begin{verbatim}
+        \makeatlettee=r
+        \renewcommand{\cor@prof}{red}
+        \renewcommand{\cor@cand}{blue}
+        \renewcommand{\cor@assunto}{green}
+        \renewcommand{\cor@citar}{purple}
+        \renewcommand{\cor@suavizacao}{50}
+        \makeatother
+    \end{verbatim}
+    
+    \message{****************Autores agora}
+    \subsection{Criando autores para comentários}
+    Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo.
+    
+    O autor pode usar o comando \xexeor[rotulado]{para comentar}{Isso é um rótulo}, ou sem marcação\xexeor{outro comentário}{outro rótulo} também.
+    
+    \begin{verbatim}
+        \hxautor{xexeo}{green}{Xexéo}
+    \end{verbatim}
+    
+    Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{rotulado com marcação}{Rótulo} e candidato.
+    
+    \message{****************Rascunho agora}
+    \section{Rascunho}
+    
+    A opção rascunho imprimirá rascunhos escritos dentro de um ambiente rascunho, no momento dentro de uma caixa. Se não estiver habilitada os rascunhos não aparecerão. Se não usar o parâmetro opcional aparecerá a palavra \textbf{Rascunho}.
+    
+    \begin{verbatim}
+        \begin{rascunho}[Um Título de Rascunho]
+            Esse é um exemplo de rascunho.
+            Deve aparecer uma caixa em volta dele.
+        \end{rascunho}
+    \end{verbatim}
+    
+    \begin{rascunho}[Um Título de Rascunho]
+        Esse é um exemplo de rascunho.
+        Deve aparecer uma borda do lado interno de impressão.
+    \end{rascunho}
+    
+    \section{Pacotes exigidos}
+    
+    Os seguintes pacotes são exigidos:
+    \begin{itemize}
+        \item |xcolor|, para usar as cores avançadas;
+        \item |soulutf8|, para os \textit{highlights} e suportando utf-8;
+        \item |tocloft|, para definir as listas
+        \item |etoolbox|, para algumas mágicas.
+        \item |marginnotes|, para as anotações nas margens.
+        \item |environ|, para os rascunhos.
+        \item |mdframed|, para os rascunhos.
+        \item |paralist|, para os comandos originais do |ed|.
+    \end{itemize}
+    
+    
+    \section{Bugs conhecidos e melhorias desejadas}
+    
+    \begin{itemize}
+        \item Se um texto sugerido quebrar a linha, o comentário fica da mesma cor  do texto. 
+        \item Queremos mudar as cores também das anotações de margem e dos rótulos, mas isso vai implicar em substituir o pacote |ed|.
+    \end{itemize}
+    
+    \printbibliography
+    
+    \newpage
+    \section*{Adicionais do hackxexeo}
+    \printhacksxexeoversion
+    \newpage
+    \listofassunto
+    \newpage
+    \listofcomentario
+    \newpage
+    \listofcomentarioref   
+    
+\end{document}

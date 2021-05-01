@@ -24,57 +24,16 @@
 \ProvidesPackage{hacksxexeo}[2021/04/30 v5.0 1st dtx version of hacksxexeo]
 %%\fi
 %%
-    %    \item Comentar a linha com um comando |RequirePackage|que exige o pacote |natbib| no arquivo |coppe.cls| (deve ser a 56).
-    %    \item Usar a opção |biblatex| no |hacksxexeo|.
-    %    \item No preâmbulo, incluir seus arquivos |.bib|, após chamar |hacksxexeo|.
-    %    \item Onde quiser a bibliografia, usar |\printbibliography|.
-    %\end{itemize}
-    %    \item Importar o arquivos hacksxexeo.sty\footnote{\url{https://github.com/xexeo/hacksxexeo}} para o seu  projeto. Um diretório \textbf{dist} contém a última distribuição.
-    %    \item Ler o arquivo hacksxexeo.pdf
-    %    \item Ativar as opções desejadas entre:
-    %    \begin{enumerate}
-        %        \item \verb!assuntos!,
-        %        \item \verb!comentarios!,
-        %        \item \verb!anonimizar!.
-        %        \item \verb!rascunhos!.
-        %        \item \verb!sugestoes!.
-        %        \item \verb!biblatex!.
-        %    \end{enumerate}
-    %    \item Usar os comandos como explicado a seguir.
-    %\end{enumerate}
-    %    \item \verb!\xanon{Texto}!
-    %    \item \verb!\xanoncitep{entradabibtex}!
-    %    \item \verb!\xanoncitet{entradabibtex}!
-    %\end{enumerate}
-    %\item \verb!\prof[texto a colorir]{comentário}!, pelo professor, ou
-    %\item \verb!\profr[texto a colorir]{comentário}{rótulo}!, pelo professor, que permite dar um rótulo ao comentário, que deve ser único,
-    %\item \verb!\cand[texto a colorir]{comentário}!, pelo candidato.
-    %\item \verb!\candr[texto a colorir]{comentário}{rótulo}!, pelo candidato, que permite dar um rótulo ao comentário, que deve ser único,
-    %\item \verb!\favorcitar[instrução adicional]!, que pede uma citação, possivelmente com instruções adicionais.
-    %\end{enumerate}
-%%Esse comando criará os comandos \verb!\xexeo! e \verb!\xexeor!, que funcionam como os comandos de edição \xexeo[normal]{comando normal com marcação} e com \xexeor[professor]{rotulado com marcação}{Rótulo} e candidato.
-%%Teste de \xexeosug[Sugestão do Xexéo]{inserção do Xexéo}, cortar erros \xexeorem[cortando erro]{como esse}, e trocas como \xexeotroca[Não é o autor]{Eça de Queiroz}{essa.}
-    %Esse é um exemplo de rascunho.
-    %Deve aparecer uma borda do lado interno de impressão.
-    %\end{rascunho}
-    %    \item xcolor, para usar as cores avançadas;
-    %    \item soulutf8, para os \textit{highlights} e suportando utf-8;
-    %    \item ed, para suportar os comentários
-    %    \item tocloft, para definir as listas
-    %    \item comment, para o rascunho
-    %    \item changebar, para o rascunho
-    %\end{itemize}
-    %    \item Se um texto sugerido quebrar a linha, o comentário fica da mesma cor  do texto. Ver o comentário na seção \ref{sug:com}.
-    %    \item Queremos mudar as cores também das anotações de margem e dos rótulos, mas isso vai implicar em substituir o pacote |ed|.
-    %\end{itemize}
-%%
-%%
 %%
 %% Esse pacote oferece 6 opções
 \newcommand{\hacksxexeoversion}{3.6}
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
 %% essa versão 3.5 (não foi marcada)vai eliminar o uso do ed
 %% 3.6 usa cores
+%%
+%% Options
+%%
+%%
 \newif\ifshowednotes\showednotestrue
 \newif\ifmargins\marginstrue
 \newif\ifmarginnote\marginnotefalse
@@ -89,8 +48,6 @@
 %%%
 \newif\if@showcomentario\@showcomentariofalse
 \DeclareOption{comentarios}{\@showcomentariotrue}
-\newif\if@usebiblatex\@usebiblatexfalse
-\DeclareOption{biblatex}{\@usebiblatextrue}
 \newif\if@beanonymous\@beanonymousfalse
 \DeclareOption{anonimizar}{\@beanonymoustrue}
 %% As 3 opções a seguir tem comportamento
@@ -102,18 +59,46 @@
 \DeclareOption{assuntos}{\@showassuntostrue}
 \newif\if@showrascunho\@showrascunhofalse
 \DeclareOption{rascunhos}{\@showrascunhotrue}
+\newif\if@modoedicao\@modoedicaofalse
+\newif\if@modosubmeter\@modosubmeterfalse
+\newif\if@modopublicar\@modopublicarfalse
+\DeclareOption{edicao}{\@modoedicaotrue}
+\DeclareOption{submeter}{\@modosubmetertrue}
+\DeclareOption{publicar}{\@modopublicartrue}
 \ProcessOptions\relax
+
+\if@modoedicao
+\@showassuntostrue
+\@showrascunhotrue
+\@showcomentariotrue
+\@showsugestaotrue
+\@beanonymoustrue
+\fi
+\if@modosubmeter
+\@showassuntosfalse
+\@showrascunhofalse
+\@showcomentariofalse
+\@showsugestaofalse
+\@beanonymoustrue
+\fi
+\if@modopublicar
+\@showassuntosfalse
+\@showsugestaofalse
+\@showrascunhofalse
+\@showcomentariofalse
+\@beanonymousfalse
+\fi
 %% Genérico
 \RequirePackage{xcolor}
 \RequirePackage{soulutf8 }
-\RequirePackage{comment}
 \RequirePackage{tocloft}
-\RequirePackage{changebar}
 \RequirePackage{etoolbox}
+\RequirePackage{environ}
+\RequirePackage{mdframed}
+%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \ifshowednotes
 \RequirePackage{paralist}
-\RequirePackage{xcolor}
 \ifmarginnote\RequirePackage{marginnote}\fi
 \else
 \RequirePackage{verbatim}
@@ -132,6 +117,7 @@
 \newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}
 %% a outra mágica é aqui
 \newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textcolor{\hx@currentcolor}{#1}}\else\marginpar{\textcolor{\hx@currentcolor}{#1}}\fi\fi}
+%%
 \newcommand\Ed@note[3]% text, type, label
 {\addtocounter{ednote}{1}\message{#2!}%
     \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\theednote}\fi\fi}
@@ -145,13 +131,14 @@
 \newcommand{\ednote}[3][]{\def\hx@currentcolor{#3}%
     \ed@note{#2}\ednote@label{#1}\ednote@margin}
 %%%%%%%%%%%%%%%%%%%%%%%%
+%%%https://tex.stackexchange.com/questions/30483/how-can-i-check-in-latex-or-plain-tex-whether-a-command-exists-by-name
+%%%%%%%%%
 %% as opções comentario, assuntos e anonimizar
 %% CORES
 \newcommand{\cor@prof}{red}
 \newcommand{\cor@cand}{blue}
 \newcommand{\cor@assunto}{green}
 \newcommand{\cor@citar}{purple}
-\newcommand{\cor@changebar}{black}
 \newcommand{\cor@hlrascunho}{yellow}
 %% Suaviação nas cores para o hilight
 \newcommand{\cor@suavizacao}{40}
@@ -172,19 +159,30 @@
     %\hx@ednotepre{#1}{\textcolor{#3}{#2}}{#4}{#4}{#3}
 }%
 %% Anonimização
-%%\def\xanonimizar{} %% set to true
-%% or:
 %% Se anonimiza, escreve anonymous
 %% se não escreve o texto
+\newcommand{\hx@anoncitetext}{(Anonymous, Year)}
+\newcommand{\hx@anonciteptext}{(Anonymous, Year)}
+\newcommand{\hx@anoncitettext}{Anonymous (Year)}
+\newcommand{\hxdefanoncitetext}[1]{\renewcommand{\hx@anoncitetext}{#1}}
+\newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}
+\newcommand{\hxdefanoncitettext}[1]{\renewcommand{\hx@anoncitettext}{#1}}
+
 \if@beanonymous
-\newcommand{\xanon}[1]{Anonymous}
-\newcommand{\xanoncitep}[1]{(Anonymous,Year)}
-\newcommand{\xanoncitet}[1]{Anonymous (Year)}
+\newcommand{\hxanon}[1]{Anonymous}
+\newcommand{\hxanoncite}[2][]{\hx@anoncitetext}
+\newcommand{\hxanoncitep}[2][]{\hx@anonciteptext}
+\newcommand{\hxanoncitet}[2][]{\hx@anoncitettext}
 \else
-\newcommand{\xanon}[1]{#1}
-\newcommand{\xanoncitep}[1]{\citep{#1}}
-\newcommand{\xanoncitet}[1]{\citet{#1}}
+\newcommand{\hxanon}[1]{#1}
+\newcommand{\hxanoncite}[2][]{\cite[#1]{#2}}
+\ifdef{\citep}{\newcommand{\hxanoncitep}[2][]{\citep[#1]{#2}}}{\newcommand{\hxanoncitep}[2][]{\cite[#1]{#2}}}
+\ifdef{\citet}{\newcommand{\hxanoncitet}[2][]{\citet[#1]{#2}}}{\newcommand{\hxanoncitet}[2][]{\cite[#1]{#2}}}
 \fi
+%% retrocompatibilidade
+\newcommand{\xanon}[2][]{\hxanon[#1]{#2}}
+\newcommand{\xanoncitep}[2][]{\hxanoncitep[#1]{#2}}
+\newcommand{\xanoncitet}[2][]{\hxanoncitet[#1]{#2}}
 %%
 %% Assuntos colore o texto apenas, pode melhorar
 %%
@@ -193,8 +191,9 @@
 %% cria o título
 \newcommand{\listassunto}{Lista de Assuntos}%
 %% cria a lista, depende do pacoto tcloft
-\@ifundefined{chapter}{\newlistof[section]{assunto}{aaa}{\listassunto}}{\newlistof[chapter]{assunto}{aaa}{\listassunto}}%
-\newcommand{\xassunto}[2][\cor@assunto]{%
+ \@ifundefined{chapter}{\newlistof[section]{assunto}{aaa}{\listassunto}}{\newlistof[chapter]{assunto}{aaa}{\listassunto}}%
+%%
+\newcommand{\hxassunto}[2][\cor@assunto]{%
     \refstepcounter{assunto}%
     \sethlcolor{#1}%
     \hl{#2}%
@@ -205,14 +204,18 @@
 \else%
 %% se não é para mostrar, não faz nada
 \newcommand{\listofassunto}{}%
-\newcommand{\xassunto}[2]{}%
+\newcommand{\hxassunto}[2][]{}%
 \fi % @showassuntos
+\newcommand{\xassunto}[2][\cor@assunto]{\hxassunto[#1]{#2}}
+%%
+%%
+%%
 \if@showcomentario
 %% Resolve a lista de comentários
 \newcommand{\listcomentario}{Lista de Comentários}%
 %% cria a lista
 \@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}%%
-
+%%
 %% Comentador genérico - parte I
 %% faz o ednote e soma na lista
 %% []rótulo], texto , cor, indicador
@@ -251,17 +254,17 @@
 \newcommand{\hx@commentLabeled}[5][]{#1}%
 \fi
 %% Agora os específicos
-\if@showcomentario
-\newcommand{\prof}[2][]{\hx@comment[#1]{#2}{\cor@prof}{Prof}}
-\newcommand{\cand}[2][]{\hx@comment[#1]{#2}{\cor@cand}{Cand}}
-\newcommand{\profr}[3][]{\hx@commentLabeled[#1]{#2}{\cor@prof}{Prof}{#3}}
-\newcommand{\candr}[3][]{\hx@commentLabeled[#1]{#2}{\cor@cand}{Cand}{#3}}
-\else
-\newcommand{\prof}[2][]{#1}
-\newcommand{\cand}[2][]{#1}
-\newcommand{\profr}[3][]{#1}
-\newcommand{\candr}[3][]{#1}
-\fi
+%%\if@showcomentario
+%%\newcommand{\prof}[2][]{\hx@comment[#1]{#2}{\cor@prof}{Prof}}
+%%\newcommand{\cand}[2][]{\hx@comment[#1]{#2}{\cor@cand}{Cand}}
+%%\newcommand{\profr}[3][]{\hx@commentLabeled[#1]{#2}{\cor@prof}{Prof}{#3}}
+%%\newcommand{\candr}[3][]{\hx@commentLabeled[#1]{#2}{\cor@cand}{Cand}{#3}}
+%%\else
+%%\newcommand{\prof}[2][]{#1}
+%%\newcommand{\cand}[2][]{#1}
+%%\newcommand{\profr}[3][]{#1}
+%%\newcommand{\candr}[3][]{#1}
+%%\fi
 %%%
 %%
 %% Sugestões e trocas
@@ -283,25 +286,26 @@
 \newcommand{\hx@gensug}[7][]{#4}%
 \fi%
 
-\newcommand{\profsug}[2][]{%
-    \hx@gensug[#1]{\cor@prof}{Prof}{}{\cor@prof}{#2}{\cor@prof}%
-}%
-\newcommand{\profrem}[2][]{%
-    \hx@gensug[#1]{\cor@prof}{Prof}{#2}{\cor@prof}{}{\cor@prof}%
-}%
-\newcommand{\proftroca}[3][]{%
-    \hx@gensug[#1]{\cor@prof}{Prof}{#2}{\cor@prof}{#3}{\cor@prof}%
-}%
-
-\newcommand{\candsug}[2][]{%
-    \hx@gensug[#1]{\cor@cand}{Cand}{}{\cor@cand}{#2}{\cor@cand}%
-}%
-\newcommand{\candrem}[2][]{%
-    \hx@gensug[#1]{\cor@cand}{Cand}{#2}{\cor@cand}{}{\cor@cand}%
-}
-\newcommand{\candtroca}[3][]{%
-    \hx@gensug[#1]{\cor@cand}{Cand}{#2}{\cor@cand}{#3}{\cor@cand}%
-}%
+%%\newcommand{\profsug}[2][]{%
+%%    \hx@gensug[#1]{\cor@prof}{Prof}{}{\cor@prof}{#2}{\cor@prof}%
+%%}%
+%%\newcommand{\profrem}[2][]{%
+%%    \hx@gensug[#1]{\cor@prof}{Prof}{#2}{\cor@prof}{}{\cor@prof}%
+%%}%
+%%\newcommand{\proftroca}[3][]{%
+%%    \hx@gensug[#1]{\cor@prof}{Prof}{#2}{\cor@prof}{#3}{\cor@prof}%
+%%}%
+%%
+%%
+%%\newcommand{\candsug}[2][]{%
+%%    \hx@gensug[#1]{\cor@cand}{Cand}{}{\cor@cand}{#2}{\cor@cand}%
+%%}%
+%%\newcommand{\candrem}[2][]{%
+%%    \hx@gensug[#1]{\cor@cand}{Cand}{#2}{\cor@cand}{}{\cor@cand}%
+%%}
+%%\newcommand{\candtroca}[3][]{%
+%%    \hx@gensug[#1]{\cor@cand}{Cand}{#2}{\cor@cand}{#3}{\cor@cand}%
+%%}%
 %% Agora o criador
 %% criando novos autores
 %% nome do autor, cor, identificador
@@ -323,9 +327,8 @@
     \expandafter\newcommand\csname#1troca\endcsname[3][]%
     {\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
 }%
-%%\hxautor{prof}{red}{Prof}
-%%\hxautor{cand}{blue}{Cand}
-
+\hxautor{prof}{red}{Prof}
+\hxautor{cand}{blue}{Cand}
 %%
 %%
 %% reclamações sobre citações
@@ -357,27 +360,22 @@
 \else%
 \newcommand{\favorcitar}[1][]{}%
 \fi%
+%%
+%%
+%%
 %% Marcando ou esquendo dos rascunhos
-%%changebar is old and does not work with LuaLaTeX
-%%https://tex.stackexchange.com/questions/359840/lualatex-changebar-and-latexdiff-no-changebars-visible
+%% Changebar foi removido porque é ruim
+%%
 \if@showrascunho
-\setlength\changebarsep{5pt}%
-\newenvironment{rascunho}[1][Rascunho]{%
-    \cbcolor{\cor@changebar}
-    \cbstart
+\NewEnviron{rascunho}[1][Rascunho]{%
     \hx@hll{\cor@hlrascunho}{\textbf{#1}}
     \newline%
+    \BODY
 }%
-{\cbend}%
+{}%
+\surroundwithmdframed{rascunho}
 \else
-\excludecomment{rascunho}
-\fi
-%% Chamando o BibLatex
-%%
-\if@usebiblatex
-\usepackage[ citestyle=authoryear,articlein=false,
-style=ext-authoryear-comp,backend=biber,
-,natbib=true]{biblatex}
+\NewEnviron{rascunho}[1][]{}{}
 \fi
 %% Futuro \\
 %%
