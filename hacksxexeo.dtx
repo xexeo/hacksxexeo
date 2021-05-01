@@ -1,36 +1,89 @@
-%%
-%% This is file `hacksxexeo.sty',
-%% generated with the docstrip utility.
-%%
-%% The original source files were:
-%%
-%% hacksxexeo.dtx  (with options: `package')
-%% 
-%% This is a generated file.
-%% 
-%% Copyright (C) 2021 by Geraldo Xexéo (xexeo@cos.ufrj.br)
-%% 
-%% This file may be distributed and/or modified under the conditions of
-%% the LaTeX Project Public License, either version 1.3 of this license
-%% or (at your option) any later version.  The latest version of this
-%% license is in:
-%% 
-%% http://www.latex-project.org/lppl.txt
-%% 
-%% and version 1.3 or later is part of all distributions of LaTeX version
-%% 2005/12/01 or later.
-%% 
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{hacksxexeo}[2021/04/30 v4.0 1st dtx version of hacksxexeo]
+%\iffalse meta-comment
+% Comandos para escrita conjunta e revisão de teses e artigos.
+% Copyleft (cl) 2021 Geraldo Xexéo
+%
+% Este arquivo é distribuído segunda a licença Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+%
+% Partes desse documento foi distribuída sob alicença LaTeX
+% Project Public License dos arquivos CTAN e está
+% propriamente identificada.
+%
+% Esse material pode ser encontrado em:
+%\fi
+%
+%
+%\iffalse
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{hacksxexeo}[2021/04/30 v4.0 1st dtx version of hacksxexeo]
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[rascunhos,assuntos,sugestoes,comentarios]{hacksxexeo}
+\usepackage{csquotes}
+\usepackage[brazilian]{babel}
+%%\usepackage{textcomp,url,a4wide,array}
+%%\usepackage[eso-foot,today,draft]{svninfo}
+\usepackage{xcolor}
+\usepackage{datetime}
+\usepackage{hyperref}
+\hxautor{xexeo}{green}{Xexéo}
+%
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+%
+\DoNotIndex{\def,\long,\edef,\xdef,\gdef,\let,\global}
+\DoNotIndex{\begin,\AtEndDocument,\newcommand,\newcounter,\stepcounter}
+\DoNotIndex{\immediate,\openout,\closeout,\message,\typeout}
+\DoNotIndex{\section,\scshape,\arabic}
+%
+%\OnlyDescription
+%
+\title{O Estilo hacksxexeo v\ \hacksxexeoversion}
+\author{Geraldo Xexéo}
+\date{\today\ - \ \currenttime}
+\GetFileInfo{hacksxexeo.sty}
+%
+\makeindex
+\MakeShortVerb{\|}
+\begin{document}
+    \DocInput{hacksxexeo.dtx}
+\end{document}
+%
+%</driver>
 %%\fi
 %%
+%
+%\maketitle
+%
+%\section{Introdução}
+%
+%Este é o  pacote em evolução para fazer a edição de artigos dissertações e teses orientadas por Geraldo Xexéo. Apesar de ser uma expansão de parte da funcionalidade do pacote |ed|, ele é mais similar em funcionalidade ao pacote |color-edits|, mas só descobri isso muito tarde. Porém, ainda permite que algumas peculiaridades de minha parte sejam desenvolvidas.
+%
+% O objetivo inicial era ser um front-end para vários comandos disponibilizados por outros pacotes, de forma que eu possa mudar os pacotes que uso e manter como os comentários são feitos, e usar os nomes que quisesse, porém com o uso demandas específicas foram aparecendo e sendo implementadas.
+%
+% O pacote foi iniciado com código de Eduardo Mangeli. A funcionalidade do pacote \verb|ed| deu as inspirações. Algum código desse pacote foi copiado aqui e está marcado. Posteriormente descobri o pacote \verb|color-edits|, que forneceria, sem algumas idiossincrazias minhas, quase tudo que necessitava, mas nada do código dele foi usado.
+%
+% A retro-compatibilidade do pacote com si mesmo é essencial.
+%
+%\section{Atenção}
+%
+%Este pacote usa outro pacote que transforma o comportamento padrão do sumário e das listas no \LaTeX, que deixam de pular a página automaticamente. Não há por enquanto solução para esse problema, a não ser o óbvio: usar o comando \verb!\newpage! antes dos comandos \verb!\tableofcontents!, etc.
+%
+%Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
+%
+%
+% \StopEventually{\newpage\PrintChanges}\newpage
 %%
+%    \begin{macrocode}
+%<*package>
 %% Esse pacote oferece 6 opções
 \newcommand{\hacksxexeoversion}{4.0}
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
 %% essa versão 3.5 (não foi marcada)vai eliminar o uso do ed
 %% 3.6 usa cores
-%%
+%% 
 %% Options
 %%
 %%
@@ -96,6 +149,7 @@
 %% Genérico
 \RequirePackage{xcolor}
 \RequirePackage{soulutf8 }
+%para os comentários e a lista
 \RequirePackage{tocloft}
 \RequirePackage{etoolbox}
 \RequirePackage{environ}
@@ -109,6 +163,7 @@
 \RequirePackage{verbatim}
 \fi
 \ifednotebookmarks\RequirePackage{hyperref}\fi
+%
 \newcommand\ednoteshape{\sffamily}
 \newcounter{ednote}
 \def\hx@currentcolor{black}
@@ -190,7 +245,7 @@
 \newcommand{\xanoncitet}[2][]{\hxanoncitet[#1]{#2}}
 %%
 %% Assuntos colore o texto apenas, pode melhorar
-%%
+%% 
 \if@showassuntos
 %% Cria a lista
 %% cria o título
@@ -267,6 +322,7 @@
 %%\else
 %%\newcommand{\prof}[2][]{#1}
 %%\newcommand{\cand}[2][]{#1}
+%\profr[com marcação]{Exemplo rotulado 2}{Rot2}
 %%\newcommand{\profr}[3][]{#1}
 %%\newcommand{\candr}[3][]{#1}
 %%\fi
@@ -370,7 +426,7 @@
 %%
 %% Marcando ou esquendo dos rascunhos
 %% Changebar foi removido porque é ruim
-%%
+%% 
 \if@showrascunho
 \NewEnviron{rascunho}[1][Rascunho]{%
     \hx@hll{\cor@hlrascunho}{\textbf{#1}}
@@ -388,6 +444,13 @@
 %%
 %%
 %%
-\endinput
-%%
-%% End of file `hacksxexeo.sty'.
+%
+%</package>
+%    \end{macrocode}
+% \Finale
+%
+% \endinput
+% Local Variables:
+% mode: doctex
+% TeX-master: t
+% End:
