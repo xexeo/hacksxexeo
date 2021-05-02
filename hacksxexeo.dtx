@@ -14,7 +14,8 @@
 %
 %\iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\ProvidesPackage{hacksxexeo}[2021/04/30 v4.0a 1st dtx version of hacksxexeo]
+%<package>\def\hx@version{v4.0.3}
+%<package>\ProvidesPackage{hacksxexeo}[2021/04/30 \hx@version dtx version of hacksxexeo]
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage[T1]{fontenc}
@@ -40,7 +41,7 @@
 %
 %\OnlyDescription
 %
-\title{O Estilo hacksxexeo v\ \hacksxexeoversion}
+\title{Código do Estilo hacksxexeo \hacksxexeoversion}
 \author{Geraldo Xexéo}
 \date{\today\ - \ \currenttime}
 \GetFileInfo{hacksxexeo.sty}
@@ -74,14 +75,16 @@
 %Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
 %
 %
+% \changes{v4.0}{2021/04/01}{Primeira versão com dtx}
+% \changes{v1.0.3}{2021/04/05}{Consertando o strike through}
+%
 % \StopEventually{\newpage\PrintChanges}\newpage
 %%
 %    \begin{macrocode}
 %<*package>
 %% Esse pacote oferece 6 opções
-\newcommand{\hacksxexeoversion}{4.0a}
-\newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
-%% 
+\newcommand{\hacksxexeoversion}{\hx@version}
+\newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%% 
 %% Options
 %%
 %%
@@ -146,7 +149,8 @@
 \fi
 %% Genérico
 \RequirePackage{xcolor}
-\RequirePackage{soulutf8 }
+\RequirePackage{soulutf8}
+\RequirePackage[normalem]{ulem}
 %para os comentários e a lista
 \RequirePackage{tocloft}
 \RequirePackage{etoolbox}
@@ -332,7 +336,7 @@
 %% comentário, cor, indicador, textovelho, cor velho, textonovo, cor novo
 \if@showsugestao
 \newcommand{\hx@gensug}[7][Uma proposta]{%
-    \textcolor{#5}{\st{#4}}%
+    \textcolor{#5}{\sout{#4}}% CORRIGINDO AQUI
     \textcolor{#7}{#6}%
     \if@showcomentario%
     \ifstrempty{#1}{}%

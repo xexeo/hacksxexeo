@@ -1,8 +1,15 @@
 \documentclass{article}
-\usepackage{biblatex}
-\addbibresource{../hx.bib}
+\usepackage[natbib]{biblatex}
 \usepackage{soulutf8}
+\usepackage{ulem}
+\addbibresource{../hx.bib}
+\newlength{\wdth}
+%\makeatother
 \begin{document}  
-\st{Testando o st \cite{b1}}
+%\st{Testando o st \cite{b1}}
+%\st{Testando o st \mbox{\cite{b1}}}.
+\st{Testando o st protegido \protect\cite{b1}}
+
 \printbibliography
+
 \end{document}

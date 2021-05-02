@@ -58,26 +58,30 @@ Nesse teste queremos uma citação dentro de uma remoção de texto.
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. \xexeorem[com comentário]{Lorem Ipsum has been the industry's standard dummy text ever since} the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic \xexeorem{typesetting, remaining essentially unchanged. It was popularised in the 1960s with the} release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
+ Erro do rem
+Lorem Ipsum \xexeorem[com comentário]{Lorem Ipsum dummy \mbox{\citep{b1}} text ever since} 
+
+%the 1500s \mbox{{\citep{b1}}}, when an unknown printer took a galley of type and 
+%scrambled it to make a type specimen book. It has survived not only five 
+%centuries, but also the leap into electronic 
+%\xexeorem{typesetting, remaining essentially {\citet{b1}} unchanged. 
+%    It was popularised in the 1960s with the} 
+%release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
 % Erro do rem
 %Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-%\xexeorem[com comentário]{Lorem Ipsum has been the industry's standard dummy \citep{b1} text ever since} 
+%\xexeosug[com comentário]{Lorem Ipsum has been the industry's standard dummy \citep{b1} text ever since} 
 %the 1500s \citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic 
-%\xexeorem{typesetting, remaining essentially \citet{b1} unchanged. It was popularised in the 1960s with the} release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+%\xexeosug{typesetting, remaining essentially \citet{b1} unchanged. It was popularised in the 1960s with the} release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+%
 
- Erro do rem
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-\xexeosug[com comentário]{Lorem Ipsum has been the industry's standard dummy \citep{b1} text ever since} 
-the 1500s \citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic 
-\xexeosug{typesetting, remaining essentially \citet{b1} unchanged. It was popularised in the 1960s with the} release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-\xexeorem[com comentário]{Lorem Ipsum has been the industry's standard dummy  text ever since} 
-the 1500s \citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic 
-\xexeorem{typesetting, remaining essentially unchanged. It was popularised in the 1960s with the} release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+%Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+%\xexeorem[com comentário]{Lorem Ipsum has been the industry's standard dummy  text ever since} 
+%the 1500s \citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic 
+%\xexeorem{typesetting, remaining essentially unchanged. It was popularised in the 1960s with the} release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 %%%%%% O erro é o \st
-\textcolor{blue}{Testando o Azul: \citep{b1}}
+\textcolor{blue}{Testando o Azul: {\citep{b1}}}
 
 
 %%% O erro é justamente no \st

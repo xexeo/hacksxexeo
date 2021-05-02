@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage[natbib]{biblatex}
+\usepackage{soulutf8}
+\usepackage{ulem}
+\addbibresource{../hx.bib}
+\newlength{\wdth}
+%\makeatother
+\begin{document}  
+%\st{Testando o st \cite{b1}}
+%\st{Testando o st \mbox{\cite{b1}}}.
+
+Citação normal \cite{b1}.
+
+\section{ulem}
+
+\subsection{Strike Longo}
+
+\sout{\textbf{Strike Longo} the 1500s , when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five    centuries, but also the leap into electronic     typesetting, remaining essentially unchanged. release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+}
+
+\subsection{Strike protegido com mbox}
+
+\sout{Strike protegido com mbox \mbox{the 1500s \citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five    centuries, but also the leap into electronic     typesetting, remaining essentially \citet{b1} unchanged. release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        \cite{b1}}}
+
+\subsection{Strike protegido com protec}
+\sout{Strike protegido com protec \protect\citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five    centuries, but also the leap into electronic     typesetting, remaining essentially \protect\citet{b1} unchanged. release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. \protect\cite{b1}}
+
+\subsection{Strike sem proteção}
+
+\sout{\citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five    centuries, but also the leap into electronic     typesetting, remaining essentially \citet{b1} unchanged. release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. \cite{b1}}
+
+
+\section{soulutf8}
+\subsection{Strike Longo}
+\st{\textbf{Strike Longo} the 1500s , when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five    centuries, but also the leap into electronic     typesetting, remaining essentially unchanged. release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+}
+\subsection{Strike protegido com mbox}
+\st{Strike protegido com mbox \mbox{the 1500s \citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five    centuries, but also the leap into electronic     typesetting, remaining essentially \citet{b1} unchanged. release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        \cite{b1}}}
+
+\subsection{Strike protegido com protec}
+\st{Só funciona até chamar  \protect\citep{b1}, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five    centuries, but also the leap into electronic     typesetting, remaining essentially \protect\citet{b1} unchanged. release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. \protect\cite{b1}}
+\printbibliography
+
+\end{document}
