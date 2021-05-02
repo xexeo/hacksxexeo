@@ -14,7 +14,7 @@
 %
 %\iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\ProvidesPackage{hacksxexeo}[2021/04/30 v4.0 1st dtx version of hacksxexeo]
+%<package>\ProvidesPackage{hacksxexeo}[2021/04/30 v4.0a 1st dtx version of hacksxexeo]
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage[T1]{fontenc}
@@ -79,10 +79,8 @@
 %    \begin{macrocode}
 %<*package>
 %% Esse pacote oferece 6 opções
-\newcommand{\hacksxexeoversion}{4.0}
+\newcommand{\hacksxexeoversion}{4.0a}
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
-%% essa versão 3.5 (não foi marcada)vai eliminar o uso do ed
-%% 3.6 usa cores
 %% 
 %% Options
 %%
@@ -171,7 +169,7 @@
 %% footnote indicador e rótulo
 \newcommand\ed@foot[3]% text, type, label
 {\def\@test{#3}\footnotetext[\arabic{ednote}]%
-    {{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}[\textcolor{\hx@currentcolor}{#3}]\fi:} \ednoteshape \textcolor{\hx@currentcolor}{#1}}}
+    {{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi:} \ednoteshape \textcolor{\hx@currentcolor}{#1}}}
 \def\ed@mark@style#1{#1}
 \newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}
 \newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}

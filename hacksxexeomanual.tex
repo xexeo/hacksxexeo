@@ -11,6 +11,9 @@ style=ext-authoryear-comp
 ,natbib=true]{biblatex}
 \addbibresource{hx.bib}
 \usepackage[edicao]{hacksxexeo}
+\usepackage{marvosym}
+\usepackage{pifont}
+\usepackage{fontawesome}
 \usepackage{hyperref}
 
 % para testar os comandos de troca
@@ -173,6 +176,10 @@ style=ext-authoryear-comp
     Finalmente, os rotulados, tanto para professor\profr{Exemplo rotulado}{Rot1}, como para candidato\candr{Olha a resposta}{Resposta para Rot1}. Que permitem também as versões \profr[com marcação]{Exemplo rotulado 2}{Rot2}, para \candr[ambos]{Olha a resposta 2}{Resposta para Rot2}.
     
     Uma referência pode ser pedida em um lugar sem\favorcitar, ou com\favorcitar[o experimento] comentário.
+    
+    Comentários podem usar símbolos para chamar atenção, como uma estrela\xexeo{$\star$ Uma estrelas}, ou várias\xexeo{$\star$$\star$ Duas estrelas.}, basta usar comandos \LaTeX\  comuns.
+    
+    Na lista de símbolos de \LaTeX\footnote{\url{http://tug.ctan.org/info/symbols/comprehensive/symbols-a4.pdf}} é possível encontrar várias fontes interessantes. Por exemplo, o pacote |marvosym| oferece |\Checkedbox|, |\CrossedBox| e |\HollowBox|, respectivamente \Checkedbox, \CrossedBox \  e \HollowBox. Já o fonte awesone fornece símbolos como \faCheckSquareO(|\faCheckSquareO|). O |pifont| usa o comando |ding| para gerar vários símbolos como \ding{74}, e \ding{172}.
     
     \message{****************Cores agora}
     \subsection{Trocando cores}
