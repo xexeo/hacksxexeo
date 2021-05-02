@@ -21,14 +21,14 @@
 %% 2005/12/01 or later.
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{hacksxexeo}[2021/04/30 v4.0a 1st dtx version of hacksxexeo]
+\def\hx@version{v4.0.3}
+\ProvidesPackage{hacksxexeo}[2021/04/30 \hx@version dtx version of hacksxexeo]
 %%\fi
 %%
 %%
 %% Esse pacote oferece 6 opções
-\newcommand{\hacksxexeoversion}{4.0a}
-\newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}
-%%
+\newcommand{\hacksxexeoversion}{\hx@version}
+\newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%%
 %% Options
 %%
 %%
@@ -93,7 +93,8 @@
 \fi
 %% Genérico
 \RequirePackage{xcolor}
-\RequirePackage{soulutf8 }
+\RequirePackage{soulutf8}
+\RequirePackage[normalem]{ulem}
 \RequirePackage{tocloft}
 \RequirePackage{etoolbox}
 \RequirePackage{environ}
@@ -276,7 +277,7 @@
 %% comentário, cor, indicador, textovelho, cor velho, textonovo, cor novo
 \if@showsugestao
 \newcommand{\hx@gensug}[7][Uma proposta]{%
-    \textcolor{#5}{\st{#4}}%
+    \textcolor{#5}{\sout{#4}}% CORRIGINDO AQUI
     \textcolor{#7}{#6}%
     \if@showcomentario%
     \ifstrempty{#1}{}%
