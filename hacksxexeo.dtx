@@ -14,7 +14,7 @@
 %
 %\iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\def\hx@version{v4.0.3}
+%<package>\def\hx@version{v4.1.0}
 %<package>\ProvidesPackage{hacksxexeo}[2021/04/30 \hx@version dtx version of hacksxexeo]
 %<*driver>
 \documentclass{ltxdoc}
@@ -75,9 +75,9 @@
 %Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
 %
 %
-% \changes{v4.0}{2021/04/01}{Primeira versão com dtx}
-% \changes{v1.0.3}{2021/04/05}{Consertando o strike through}
-%
+% \changes{v4.0}{2021/05/01}{Primeira versão com dtx}
+% \changes{v1.0.3}{2021/05/05}{Consertando o strike through}
+% \changes{v4.1.0}{2021/05/06}{Publicar aceitando as mudanças introduzidos}
 % \StopEventually{\newpage\PrintChanges}\newpage
 %%
 %    \begin{macrocode}
@@ -118,11 +118,12 @@
 \newif\if@modoedicao\@modoedicaofalse
 \newif\if@modosubmeter\@modosubmeterfalse
 \newif\if@modopublicar\@modopublicarfalse
+\newif\if@modopublicaraceitando\@modopublicaraceitandofalse
 \DeclareOption{edicao}{\@modoedicaotrue}
 \DeclareOption{submeter}{\@modosubmetertrue}
 \DeclareOption{publicar}{\@modopublicartrue}
+\DeclareOption{publicaraceitando}{\@modopublicartrue \@modopublicaraceitandotrue }
 \ProcessOptions\relax
-
 \if@modoedicao
 \@showassuntostrue
 \@showrascunhotrue
@@ -334,6 +335,7 @@
 %%
 %%%
 %% comentário, cor, indicador, textovelho, cor velho, textonovo, cor novo
+%% Em modo publicar coloca o textovelho
 \if@showsugestao
 \newcommand{\hx@gensug}[7][Uma proposta]{%
     \textcolor{#5}{\sout{#4}}% CORRIGINDO AQUI
@@ -341,12 +343,16 @@
     \if@showcomentario%
     \ifstrempty{#1}{}%
     {\refstepcounter{comentario}%
-        \hx@comentar{#1}{#2}{#3}%% []rótulo], cor , footnote , indicador
+        \hx@comentar{#1}{#2}{#3}%% [rótulo], cor , footnote , indicador
     }%
     \fi%
 }%% [rótulo], cor , footnote , indicador
 \else%
+\if@modopublicaraceitando
+\newcommand{\hx@gensug}[7][]{#6}%
+\else%
 \newcommand{\hx@gensug}[7][]{#4}%
+\fi%
 \fi%
 
 %%\newcommand{\profsug}[2][]{%
