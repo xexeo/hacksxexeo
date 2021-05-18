@@ -22,7 +22,7 @@
 %% 
  %\iffalse meta-comment
 \NeedsTeXFormat{LaTeX2e}
-\def\hx@version{v4.2.1}
+\def\hx@version{v4.3.0}
 \ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
 %%\fi
 %%
@@ -174,6 +174,9 @@
     \ednote[#1]{#2}{#3}%
     %\hx@ednotepre{#1}{\textcolor{#3}{#2}}{#4}{#4}{#3}
 }%
+%%
+%%
+%%
 %% Anonimização
 %% Se anonimiza, escreve anonymous
 %% se não escreve o texto
@@ -248,12 +251,21 @@
 }%
 %% comentador genérico, parte II
 %% faz o highlight , soma o step e comenta
-%% []texto hl] footnote cor indicator
+%% [texto hl] footnote cor indicator
 \newcommand{\hx@comment}[4][]{%
     \refstepcounter{comentario}% soma um ao contador
     \hx@hll{#3}{#1}% ver subfunção de impressão com hl
     \hx@comentar{#2}{#3}{#4}%
 }%
+%%
+%%
+\newcommand{\hx@xcomment}[4][]{%
+    \refstepcounter{comentario}% soma um ao contador
+    \hx@hll{#3}{#1}% ver subfunção de impressão com hl
+    \hx@comentar{\sout{#2}}{#3}{#4}%
+}%
+%%
+%%
 %% comentador genérico com rótulo
 %% [texto hl] footnote cor  indicator rótulo
 \newcommand{\hx@commentLabeled}[5][]{%
@@ -261,6 +273,14 @@
     \hx@hll{#3}{#1}%
     \hx@comentar[#5]{#2}{#3}{#4}%
 }%
+%%
+%% [texto hl] footnote cor  indicator rótulo
+\newcommand{\hx@xcommentLabeled}[5][]{%
+    \refstepcounter{comentario}%
+    \hx@hll{#3}{#1}%
+    \hx@comentar[#5]{\sout{#2}}{#3}{#4}%
+}%
+%%
 \setlength{\cftcomentarionumwidth}{2.5em}
 \else
 \newcommand{\hx@comentar}[4][]{}%
@@ -307,6 +327,14 @@
     % [texto a marcar], cor , comentário, palavra, rótulo
     \expandafter\newcommand\csname#1r\endcsname[3][]%
     {\hx@commentLabeled[##1]{##2}{#2}{#3}{##3}}%
+    % cortados
+    \expandafter\newcommand\csname#1x\endcsname[2][]%
+{%
+    %Comentários
+    \hx@xcomment[##1]{##2}{#2}{#3}}%
+\expandafter\newcommand\csname#1rx\endcsname[3][]%
+{\hx@xcommentLabeled[##1]{##2}{#2}{#3}{##3}}%
+
     %sugestões
     \expandafter\newcommand\csname#1sug\endcsname[2][]%
     {\hx@gensug[##1]{#2}{#3}{}{#2}{##2}{#2}}%

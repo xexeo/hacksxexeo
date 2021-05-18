@@ -27,7 +27,7 @@ style=ext-authoryear-comp
 
 \title{Manual do Estilo hacksxexeo \hacksxexeoversion}
 \author{Geraldo Xexéo}
-\date{Manual \hacksxexeoversion b \today\ - \ \currenttime}
+\date{Manual \hacksxexeoversion a \today\ - \ \currenttime}
 
 \makeindex
 \MakeShortVerb{\|}
@@ -159,6 +159,9 @@ style=ext-authoryear-comp
         \item \verb!\cand[texto a colorir]{comentário}!, pelo candidato.
         \item \verb!\candr[texto a colorir]{comentário}{rótulo}!, pelo candidato, que permite dar um rótulo ao comentário, que deve ser único,
         \item \verb!\favorcitar[instrução adicional]!, que pede uma citação, possivelmente com instruções adicionais.
+        \item |\profx[texto a colorir]{comentário}| que mostra um comentário pelo professor \textit{striked-out}, para mostrar que foi tratado
+        \item |\candx[texto a colorir]{comentário}| que mostra um comentário pelo candidato \textit{striked-out}, para mostrar que foi tratado
+        \item |\profrx| e |\candrx| que também mostram comentários com rótulos e \textit{striked-out}
     \end{enumerate}
     
     Os comentários podem ser listados com o comando \verb!\listofcomentario!.
@@ -201,6 +204,8 @@ style=ext-authoryear-comp
     Você pode criar \xexeo[autores com o comando]{Novo autor} \verb*|!hxautor|. Esse comando deve ser dado no preambulo.
     
     O autor pode usar o comando \xexeor[rotulado]{para comentar}{Isso é um rótulo}, ou sem marcação\xexeor{outro comentário}{outro rótulo} também.
+    
+    Os comandos |\xexeox| e |\xexeorx| também estarão disponíveis. Por exemplo, \xexeox{esta anotação} e \xexeorx{esta também}{novidade} são válidas.
     
     \begin{verbatim}
         \hxautor{xexeo}{green}{Xexéo}
