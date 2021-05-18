@@ -27,7 +27,7 @@ style=ext-authoryear-comp
 
 \title{Manual do Estilo hacksxexeo \hacksxexeoversion}
 \author{Geraldo Xexéo}
-\date{Manual \hacksxexeoversion a \today\ - \ \currenttime}
+\date{Manual \hacksxexeoversion b \today\ - \ \currenttime}
 
 \makeindex
 \MakeShortVerb{\|}
@@ -279,6 +279,7 @@ ou um parágrafo
         \item |\autoref| quebra no meio de uma remoção.
         \item |\citet| quebrou em um exemplo com pdflatex, mas não com lualatex.
         \item |\todo| e comentários como |\cand| e |\prof| não podem usar |verbatim| no texto.
+        \item uso do pacote |paralist| dá problema com |enumerate|, pacote retirado do |hacksxexeo|, efeitos não são previsíveis.
     \end{itemize}
     
     \printbibliography

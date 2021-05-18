@@ -14,7 +14,7 @@
 %
 %\iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\def\hx@version{v4.2.0}
+%<package>\def\hx@version{v4.2.1}
 %<package>\ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
 %<*driver>
 \documentclass{ltxdoc}
@@ -79,6 +79,7 @@
 % \changes{v1.0.3}{2021/05/05}{Consertando o strike through}
 % \changes{v4.1.0}{2021/05/06}{Publicar aceitando as mudanças introduzidos}
 % \changes{v4.2.0}{2021/05/18}{Comando todo}
+% \changes{v4.2.1}{2021/05/18}{Pacote paralist, herdado de código do ed, parece inútil e dar problemas com o enumerate e itemize}
 % \StopEventually{\newpage\PrintChanges}\newpage
 %%
 %    \begin{macrocode}
@@ -171,7 +172,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \ifshowednotes
-\RequirePackage{paralist}
+%%\RequirePackage{paralist}
 \ifmarginnote\RequirePackage{marginnote}\fi
 \else
 \RequirePackage{verbatim}
