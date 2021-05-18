@@ -21,7 +21,7 @@
 %% 2005/12/01 or later.
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\def\hx@version{v4.0.3}
+\def\hx@version{v4.1.0}
 \ProvidesPackage{hacksxexeo}[2021/04/30 \hx@version dtx version of hacksxexeo]
 %%\fi
 %%
@@ -62,11 +62,12 @@
 \newif\if@modoedicao\@modoedicaofalse
 \newif\if@modosubmeter\@modosubmeterfalse
 \newif\if@modopublicar\@modopublicarfalse
+\newif\if@modopublicaraceitando\@modopublicaraceitandofalse
 \DeclareOption{edicao}{\@modoedicaotrue}
 \DeclareOption{submeter}{\@modosubmetertrue}
 \DeclareOption{publicar}{\@modopublicartrue}
+\DeclareOption{publicaraceitando}{\@modopublicartrue \@modopublicaraceitandotrue }
 \ProcessOptions\relax
-
 \if@modoedicao
 \@showassuntostrue
 \@showrascunhotrue
@@ -275,6 +276,7 @@
 %%
 %%%
 %% comentário, cor, indicador, textovelho, cor velho, textonovo, cor novo
+%% Em modo publicar coloca o textovelho
 \if@showsugestao
 \newcommand{\hx@gensug}[7][Uma proposta]{%
     \textcolor{#5}{\sout{#4}}% CORRIGINDO AQUI
@@ -282,12 +284,16 @@
     \if@showcomentario%
     \ifstrempty{#1}{}%
     {\refstepcounter{comentario}%
-        \hx@comentar{#1}{#2}{#3}%% []rótulo], cor , footnote , indicador
+        \hx@comentar{#1}{#2}{#3}%% [rótulo], cor , footnote , indicador
     }%
     \fi%
 }%% [rótulo], cor , footnote , indicador
 \else%
+\if@modopublicaraceitando
+\newcommand{\hx@gensug}[7][]{#6}%
+\else%
 \newcommand{\hx@gensug}[7][]{#4}%
+\fi%
 \fi%
 
 %%\newcommand{\profsug}[2][]{%

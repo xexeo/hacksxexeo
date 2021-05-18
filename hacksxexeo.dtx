@@ -1,4 +1,4 @@
-%\iffalse meta-comment
+ %\iffalse meta-comment
 % Comandos para escrita conjunta e revisão de teses e artigos.
 % Copyleft (cl) 2021 Geraldo Xexéo
 %
@@ -14,13 +14,13 @@
 %
 %\iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\def\hx@version{v4.1.0}
-%<package>\ProvidesPackage{hacksxexeo}[2021/04/30 \hx@version dtx version of hacksxexeo]
+%<package>\def\hx@version{v4.2.0}
+%<package>\ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[rascunhos,assuntos,sugestoes,comentarios]{hacksxexeo}
+\usepackage[edicao]{hacksxexeo}
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 %%\usepackage{textcomp,url,a4wide,array}
@@ -78,6 +78,7 @@
 % \changes{v4.0}{2021/05/01}{Primeira versão com dtx}
 % \changes{v1.0.3}{2021/05/05}{Consertando o strike through}
 % \changes{v4.1.0}{2021/05/06}{Publicar aceitando as mudanças introduzidos}
+% \changes{v4.2.0}{2021/05/18}{Comando todo}
 % \StopEventually{\newpage\PrintChanges}\newpage
 %%
 %    \begin{macrocode}
@@ -115,6 +116,8 @@
 \DeclareOption{assuntos}{\@showassuntostrue}
 \newif\if@showrascunho\@showrascunhofalse
 \DeclareOption{rascunhos}{\@showrascunhotrue}
+\newif\if@showtodo\@showtodofalse
+\DeclareOption{todos}{\@showtodotrue}
 \newif\if@modoedicao\@modoedicaofalse
 \newif\if@modosubmeter\@modosubmeterfalse
 \newif\if@modopublicar\@modopublicarfalse
@@ -130,6 +133,7 @@
 \@showcomentariotrue
 \@showsugestaotrue
 \@beanonymoustrue
+\@showtodotrue
 \fi
 \if@modosubmeter
 \@showassuntosfalse
@@ -137,6 +141,7 @@
 \@showcomentariofalse
 \@showsugestaofalse
 \@beanonymoustrue
+\@showtodofalse
 \fi
 \if@naoanonimizar
 \@beanonymousfalse
@@ -147,6 +152,10 @@
 \@showrascunhofalse
 \@showcomentariofalse
 \@beanonymousfalse
+\@showtodofalse
+\fi%
+\if@showtodo
+\@showcomentariotrue
 \fi
 %% Genérico
 \RequirePackage{xcolor}
@@ -156,6 +165,8 @@
 \RequirePackage{tocloft}
 \RequirePackage{etoolbox}
 \RequirePackage{environ}
+\RequirePackage{xstring}
+\RequirePackage{csquotes}
 \RequirePackage{mdframed}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -164,7 +175,7 @@
 \ifmarginnote\RequirePackage{marginnote}\fi
 \else
 \RequirePackage{verbatim}
-\fi
+\fi%
 \ifednotebookmarks\RequirePackage{hyperref}\fi
 %
 \newcommand\ednoteshape{\sffamily}
@@ -174,7 +185,7 @@
 %% footnote indicador e rótulo
 \newcommand\ed@foot[3]% text, type, label
 {\def\@test{#3}\footnotetext[\arabic{ednote}]%
-    {{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi:} \ednoteshape \textcolor{\hx@currentcolor}{#1}}}
+    {{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi\textcolor{\hx@currentcolor}{:}} \ednoteshape \textcolor{\hx@currentcolor}{#1}}}
 \def\ed@mark@style#1{#1}
 \newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}
 \newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}
@@ -241,7 +252,7 @@
 \newcommand{\hxanoncite}[2][]{\cite[#1]{#2}}
 \ifdef{\citep}{\newcommand{\hxanoncitep}[2][]{\citep[#1]{#2}}}{\newcommand{\hxanoncitep}[2][]{\cite[#1]{#2}}}
 \ifdef{\citet}{\newcommand{\hxanoncitet}[2][]{\citet[#1]{#2}}}{\newcommand{\hxanoncitet}[2][]{\cite[#1]{#2}}}
-\fi
+\fi%|
 %% retrocompatibilidade
 \newcommand{\xanon}[2][]{\hxanon[#1]{#2}}
 \newcommand{\xanoncitep}[2][]{\hxanoncitep[#1]{#2}}
@@ -268,7 +279,7 @@
 %% se não é para mostrar, não faz nada
 \newcommand{\listofassunto}{}%
 \newcommand{\hxassunto}[2][]{}%
-\fi % @showassuntos
+\fi%| % @showassuntos
 \newcommand{\xassunto}[2][\cor@assunto]{\hxassunto[#1]{#2}}
 %%
 %%
@@ -315,20 +326,7 @@
 %% não pode perder o texto comentado
 \newcommand{\hx@comment}[4][]{#1}%
 \newcommand{\hx@commentLabeled}[5][]{#1}%
-\fi
-%% Agora os específicos
-%%\if@showcomentario
-%%\newcommand{\prof}[2][]{\hx@comment[#1]{#2}{\cor@prof}{Prof}}
-%%\newcommand{\cand}[2][]{\hx@comment[#1]{#2}{\cor@cand}{Cand}}
-%%\newcommand{\profr}[3][]{\hx@commentLabeled[#1]{#2}{\cor@prof}{Prof}{#3}}
-%%\newcommand{\candr}[3][]{\hx@commentLabeled[#1]{#2}{\cor@cand}{Cand}{#3}}
-%%\else
-%%\newcommand{\prof}[2][]{#1}
-%%\newcommand{\cand}[2][]{#1}
-%\profr[com marcação]{Exemplo rotulado 2}{Rot2}
-%%\newcommand{\profr}[3][]{#1}
-%%\newcommand{\candr}[3][]{#1}
-%%\fi
+\fi%|
 %%%
 %%
 %% Sugestões e trocas
@@ -355,26 +353,6 @@
 \fi%
 \fi%
 
-%%\newcommand{\profsug}[2][]{%
-%%    \hx@gensug[#1]{\cor@prof}{Prof}{}{\cor@prof}{#2}{\cor@prof}%
-%%}%
-%%\newcommand{\profrem}[2][]{%
-%%    \hx@gensug[#1]{\cor@prof}{Prof}{#2}{\cor@prof}{}{\cor@prof}%
-%%}%
-%%\newcommand{\proftroca}[3][]{%
-%%    \hx@gensug[#1]{\cor@prof}{Prof}{#2}{\cor@prof}{#3}{\cor@prof}%
-%%}%
-%%
-%%
-%%\newcommand{\candsug}[2][]{%
-%%    \hx@gensug[#1]{\cor@cand}{Cand}{}{\cor@cand}{#2}{\cor@cand}%
-%%}%
-%%\newcommand{\candrem}[2][]{%
-%%    \hx@gensug[#1]{\cor@cand}{Cand}{#2}{\cor@cand}{}{\cor@cand}%
-%%}
-%%\newcommand{\candtroca}[3][]{%
-%%    \hx@gensug[#1]{\cor@cand}{Cand}{#2}{\cor@cand}{#3}{\cor@cand}%
-%%}%
 %% Agora o criador
 %% criando novos autores
 %% nome do autor, cor, identificador
@@ -398,6 +376,7 @@
 }%
 \hxautor{prof}{red}{Prof}
 \hxautor{cand}{blue}{Cand}
+%%
 %%
 %%
 %% reclamações sobre citações
@@ -445,13 +424,33 @@
 \surroundwithmdframed{rascunho}
 \else
 \NewEnviron{rascunho}[1][]{}{}
-\fi
+\fi%
 %% Futuro \\
 %%
-\newcommand{\namargem}{\ed@margin{Teste}}
+%% \newcommand{\namargem}{\ed@margin{Teste}}
 %%
 %%
 %%
+%% Fazendo um todo do todonotes simples
+%
+%%\if@showtodo%
+\hxautor{hx@todoauthor}{orange}{TO DO}%
+\newcommand{\hx@todobackgroundcolor}{orange}%
+\newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
+\newcommand{\todo}[2][comentar]{%
+\IfEq{inline}{#1}%
+{%
+\begin{mdframed}[backgroundcolor=\hx@todobackgroundcolor]
+#2%
+\end{mdframed}%
+}%
+{%
+\hx@todoauthor{#2}%
+}%
+}%
+%%\else%
+%%\newcommand{\todo}[2][]{}%
+%%\fi%
 %
 %</package>
 %    \end{macrocode}

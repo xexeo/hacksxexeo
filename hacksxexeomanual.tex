@@ -68,6 +68,7 @@ style=ext-authoryear-comp
             \item \verb!rascunhos!, que cria um ambiente marcado como rascunho.
             \item \verb!sugestoes!, que permite usar comandos que inserem |\candsug|, removem |\candrem| e trocam texto marcado |\candtroca|.
             \item \verb!anonimizar!, que ativa comandos de anonimização de nomes e citações para usar em artigos a serem submetidos.
+            \item |todo|, que imita o comando todonotes.
             \item |edicao|, não importa que opções foram ativadas ou não, a opção draft ativará as opções |assuntos|, |comentarios|, |rascunhos| e |sugestoes|.
             \item |submeter|, não importa que opções foram ativadas ou não, a opção draft desativará as opções |assuntos|, |comentarios|, |rascunhos|, e |sugestoes| e ativará a opção |anonimizar|. Tem prioridade sobre |edicao|.
             \item |naoanonimizar|, que desativa a anonimização, e tem prioridade sobre |submeter| e |edicao|, permitindo trabalhar nesses modos sem anonimizar. 
@@ -226,9 +227,16 @@ ou um parágrafo
 \xexeorem{\ref{sug:com1}}, também deviam ser comentadas dentro dele.
 
 
+    \section{Todo}
     
+    A opção |todos| ativa o uso de comentários em geral e também os comentários do tipo ``to do''.
     
+    O comando |\todo[inline]{texto}| cria um todo parecido com o do pacote |todonotes|.
+    Ele pode ser usado em dois formatos, com o |inline|, ou sem. No caso do sem ele se transforma em um comentário com o nome TO DO:.
+
+    \todo[inline]{Essa é a aparência de um  |todo| com |inline|.}
     
+    \todo{Essa é a aparência de um todo sem inline}
     
     
     \message{****************Rascunho agora}
@@ -264,12 +272,13 @@ ou um parágrafo
     \end{itemize}
     
     
-    \section{Bugs conhecidos e melhorias desejadas}
+    \section{Limitações, bugs conhecidos e melhorias desejadas}
     
     \begin{itemize}
         \item Se um texto sugerido quebrar a linha, o comentário pode ficar  da mesma cor  do texto. 
         \item |\autoref| quebra no meio de uma remoção.
         \item |\citet| quebrou em um exemplo com pdflatex, mas não com lualatex.
+        \item |\todo| e comentários como |\cand| e |\prof| não podem usar |verbatim| no texto.
     \end{itemize}
     
     \printbibliography
