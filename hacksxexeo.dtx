@@ -14,7 +14,7 @@
 %
 %\iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\def\hx@version{v4.3.0}
+%<package>\def\hx@version{v4.3.1}
 %<package>\ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
 %<*driver>
 \documentclass{ltxdoc}
@@ -81,6 +81,7 @@
 % \changes{v4.2.0}{2021/05/18}{Comando todo}
 % \changes{v4.2.1}{2021/05/18}{Pacote paralist, herdado de código do ed, parece inútil e dar problemas com o enumerate e itemize}
 % \changes{v4.3.0}{2021/05/18}{Comandos que riscam os comentários, como profx}
+% \changes{v4.3.1}{2021/05/21}{Tem espaço demais entre marginnotes... tentando resolver}
 % \StopEventually
 %%
 %    \begin{macrocode}
@@ -187,52 +188,52 @@
 %% footnote indicador e rótulo
 \newcommand\ed@foot[3]% text, type, label
 {\def\@test{#3}\footnotetext[\arabic{ednote}]%
-    {{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi\textcolor{\hx@currentcolor}{:}} \ednoteshape \textcolor{\hx@currentcolor}{#1}}}
-\def\ed@mark@style#1{#1}
-\newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}
-\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}
+{{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi\textcolor{\hx@currentcolor}{:}}\ednoteshape \textcolor{\hx@currentcolor}{#1}}}%
+\def\ed@mark@style#1{#1}%
+\newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}%
+\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}%
 %% a outra mágica é aqui
-\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textcolor{\hx@currentcolor}{#1}}\else\marginpar{\textcolor{\hx@currentcolor}{#1}}\fi\fi}
+\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textcolor{\hx@currentcolor}{#1}}\else\marginpar{\textcolor{\hx@currentcolor}{#1}}\fi\fi}%
 %%
 \newcommand\Ed@note[3]% text, type, label
 {\addtocounter{ednote}{1}\message{#2!}%
-    \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\theednote}\fi\fi}
+    \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\theednote}\fi\fi}%
 \newcommand\ed@note[4]% text, type, label, margin
-{\Ed@note{#1}{#2}{#3}\ifshowednotes\ed@margin{#4:\arabic{ednote}}\fi}
-\newcommand\ednote@label{EdNote}
-\newcommand\ednote@margin{EdN}
-\newcommand\ednotelabel[1]{\def\ednote@label{#1}}
-\newcommand\ednotemargin[1]{\def\ednote@margin{#1}}
-\newcommand{\Ednote}[2][]{\Ed@note{#2}\ednote@label{#1}}
+{\Ed@note{#1}{#2}{#3}\ifshowednotes\ed@margin{#4:\arabic{ednote}}\fi}%
+\newcommand\ednote@label{EdNote}%
+\newcommand\ednote@margin{EdN}%
+\newcommand\ednotelabel[1]{\def\ednote@label{#1}}%
+\newcommand\ednotemargin[1]{\def\ednote@margin{#1}}%
+\newcommand{\Ednote}[2][]{\Ed@note{#2}\ednote@label{#1}}%
 \newcommand{\ednote}[3][]{\def\hx@currentcolor{#3}%
-    \ed@note{#2}\ednote@label{#1}\ednote@margin}
+\ed@note{#2}\ednote@label{#1}\ednote@margin}%
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%https://tex.stackexchange.com/questions/30483/how-can-i-check-in-latex-or-plain-tex-whether-a-command-exists-by-name
 %%%%%%%%%
 %% as opções comentario, assuntos e anonimizar
 %% CORES
-\newcommand{\cor@prof}{red}
-\newcommand{\cor@cand}{blue}
-\newcommand{\cor@assunto}{green}
-\newcommand{\cor@citar}{purple}
-\newcommand{\cor@hlrascunho}{yellow}
-%% Suaviação nas cores para o hilight
-\newcommand{\cor@suavizacao}{40}
+\newcommand{\cor@prof}{red}%
+\newcommand{\cor@cand}{blue}%
+\newcommand{\cor@assunto}{green}%
+\newcommand{\cor@citar}{purple}%
+\newcommand{\cor@hlrascunho}{yellow}%
+%% Suaviação nas cores para o hilight%
+\newcommand{\cor@suavizacao}{40}%
 %%Isso é um truque para o \hl do soulutf8 funcionar
 %%https://tex.stackexchange.com/questions/410295/soul-color-transparency
 %% comando para suavizar uma cor
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
 \newcommand{\hx@hll}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
-    \sethlcolor{x@coraqui}%
-    \hl{#2}}%
+\sethlcolor{x@coraqui}%
+\hl{#2}}%
 %% isolando o ednote
 %% rótulo texto cor indicador
 \newcommand{\hx@ednote}[4][]{%
-    \ednotelabel{#4}%
-    \ednotemargin{#4}%
-    \ednote[#1]{#2}{#3}%
-    %\hx@ednotepre{#1}{\textcolor{#3}{#2}}{#4}{#4}{#3}
+\ednotelabel{#4}%
+\ednotemargin{#4}%
+\ednote[#1]{#2}{#3}%
+% isso não tem - \hx@ednotepre{#1}{\textcolor{#3}{#2}}{#4}{#4}{#3}
 }%
 %%
 %%
@@ -240,28 +241,28 @@
 %% Anonimização
 %% Se anonimiza, escreve anonymous
 %% se não escreve o texto
-\newcommand{\hx@anoncitetext}{(Anonymous, Year)}
-\newcommand{\hx@anonciteptext}{(Anonymous, Year)}
-\newcommand{\hx@anoncitettext}{Anonymous (Year)}
-\newcommand{\hxdefanoncitetext}[1]{\renewcommand{\hx@anoncitetext}{#1}}
-\newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}
-\newcommand{\hxdefanoncitettext}[1]{\renewcommand{\hx@anoncitettext}{#1}}
+\newcommand{\hx@anoncitetext}{(Anonymous, Year)}%
+\newcommand{\hx@anonciteptext}{(Anonymous, Year)}%
+\newcommand{\hx@anoncitettext}{Anonymous (Year)}%
+\newcommand{\hxdefanoncitetext}[1]{\renewcommand{\hx@anoncitetext}{#1}}%
+\newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}%
+\newcommand{\hxdefanoncitettext}[1]{\renewcommand{\hx@anoncitettext}{#1}}%
 
 \if@beanonymous
-\newcommand{\hxanon}[1]{Anonymous}
-\newcommand{\hxanoncite}[2][]{\hx@anoncitetext}
-\newcommand{\hxanoncitep}[2][]{\hx@anonciteptext}
-\newcommand{\hxanoncitet}[2][]{\hx@anoncitettext}
+\newcommand{\hxanon}[1]{Anonymous}%
+\newcommand{\hxanoncite}[2][]{\hx@anoncitetext}%
+\newcommand{\hxanoncitep}[2][]{\hx@anonciteptext}%
+\newcommand{\hxanoncitet}[2][]{\hx@anoncitettext}%
 \else
-\newcommand{\hxanon}[1]{#1}
-\newcommand{\hxanoncite}[2][]{\cite[#1]{#2}}
-\ifdef{\citep}{\newcommand{\hxanoncitep}[2][]{\citep[#1]{#2}}}{\newcommand{\hxanoncitep}[2][]{\cite[#1]{#2}}}
-\ifdef{\citet}{\newcommand{\hxanoncitet}[2][]{\citet[#1]{#2}}}{\newcommand{\hxanoncitet}[2][]{\cite[#1]{#2}}}
+\newcommand{\hxanon}[1]{#1}%
+\newcommand{\hxanoncite}[2][]{\cite[#1]{#2}}%
+\ifdef{\citep}{\newcommand{\hxanoncitep}[2][]{\citep[#1]{#2}}}{\newcommand{\hxanoncitep}[2][]{\cite[#1]{#2}}}%
+\ifdef{\citet}{\newcommand{\hxanoncitet}[2][]{\citet[#1]{#2}}}{\newcommand{\hxanoncitet}[2][]{\cite[#1]{#2}}}%
 \fi%|
 %% retrocompatibilidade
-\newcommand{\xanon}[2][]{\hxanon[#1]{#2}}
-\newcommand{\xanoncitep}[2][]{\hxanoncitep[#1]{#2}}
-\newcommand{\xanoncitet}[2][]{\hxanoncitet[#1]{#2}}
+\newcommand{\xanon}[2][]{\hxanon[#1]{#2}}%
+\newcommand{\xanoncitep}[2][]{\hxanoncitep[#1]{#2}}%
+\newcommand{\xanoncitet}[2][]{\hxanoncitet[#1]{#2}}%
 %%
 %% Assuntos colore o texto apenas, pode melhorar
 %% 
