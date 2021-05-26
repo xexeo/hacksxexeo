@@ -1,15 +1,18 @@
- %\iffalse meta-comment
-% Comandos para escrita conjunta e revisão de teses e artigos.
-% Copyleft (cl) 2021 Geraldo Xexéo
+% \iffalse meta-comment
 %
-% Este arquivo é distribuído segunda a licença Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+% Copyright (C) 2021 by Geraldo Xexéo
 %
-% Partes desse documento foi distribuída sob alicença LaTeX
-% Project Public License dos arquivos CTAN e está
-% propriamente identificada.
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3 of this license or (at your option) any later
+% version. The latest version of this license is in:
 %
-% Esse material pode ser encontrado em:
-%\fi
+% http://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of
+% LaTeX version 2005/12/01 or later.
+%
+% \fi
 %
 %
 %\iffalse
@@ -39,7 +42,7 @@
 \DoNotIndex{\immediate,\openout,\closeout,\message,\typeout}
 \DoNotIndex{\section,\scshape,\arabic}
 %
-%\OnlyDescription
+
 %
 \title{Código do Estilo hacksxexeo \hacksxexeoversion}
 \author{Geraldo Xexéo}
@@ -50,48 +53,101 @@
 \MakeShortVerb{\|}
 \begin{document}
     \DocInput{hacksxexeo.dtx}
+    \newpage
+    \PrintChanges
+    \newpage
+    \PrintIndex
 \end{document}
-%
 %</driver>
-%%\fi
-%%
+% \fi
 %
-%\maketitle
+% \CheckSum{0}
 %
-%\section{Introdução}
-%
-%Este é o  pacote em evolução para fazer a edição de artigos dissertações e teses orientadas por Geraldo Xexéo. Apesar de ser uma expansão de parte da funcionalidade do pacote |ed|, ele é mais similar em funcionalidade ao pacote |color-edits|, mas só descobri isso muito tarde. Porém, ainda permite que algumas peculiaridades de minha parte sejam desenvolvidas.
-%
-% O objetivo inicial era ser um front-end para vários comandos disponibilizados por outros pacotes, de forma que eu possa mudar os pacotes que uso e manter como os comentários são feitos, e usar os nomes que quisesse, porém com o uso demandas específicas foram aparecendo e sendo implementadas.
-%
-% O pacote foi iniciado com código de Eduardo Mangeli. A funcionalidade do pacote \verb|ed| deu as inspirações. Algum código desse pacote foi copiado aqui e está marcado. Posteriormente descobri o pacote \verb|color-edits|, que forneceria, sem algumas idiossincrazias minhas, quase tudo que necessitava, mas nada do código dele foi usado.
-%
-% A retro-compatibilidade do pacote com si mesmo é essencial.
-%
-%\section{Atenção}
-%
-%Este pacote usa outro pacote que transforma o comportamento padrão do sumário e das listas no \LaTeX, que deixam de pular a página automaticamente. Não há por enquanto solução para esse problema, a não ser o óbvio: usar o comando \verb!\newpage! antes dos comandos \verb!\tableofcontents!, etc.
-%
-%Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
-%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
 %
 % \changes{v4.0}{2021/05/01}{Primeira versão com dtx}
-% \changes{v1.0.3}{2021/05/05}{Consertando o strike through}
+% \changes{v4.0.3}{2021/05/05}{Consertando o strike through}
 % \changes{v4.1.0}{2021/05/06}{Publicar aceitando as mudanças introduzidos}
 % \changes{v4.2.0}{2021/05/18}{Comando todo}
 % \changes{v4.2.1}{2021/05/18}{Pacote paralist, herdado de código do ed, parece inútil e dar problemas com o enumerate e itemize}
 % \changes{v4.3.0}{2021/05/18}{Comandos que riscam os comentários, como profx}
 % \changes{v4.3.1}{2021/05/21}{Tem espaço demais entre marginnotes... tentando resolver}
-% \StopEventually
 %%
+%
+%\maketitle
+%
+%\section{Introduction}
+%
+% This package support different forms of comments in documents that support their writing and editing.
+% It picks ideas from different packages, such as |ed|, |color-edits|, |todonotes|, and others. It was written to support my way of working, and them included 
+% suggestions from my students. The main goal was to build only a front-end to other packages, but with time, it grow in scope.
+%
+% As it is my first package, \TeX and \LaTeX programming is sometimes naive. I aimed at building it over other packages, but due to the fact that
+% many packages in this subject clash, I rewrote some code. Also, although aiming at minial interference with other packages, some decisions had to be made.
+% 
+% I had to thank Eduardo Mangeli, that did some previous code.
+%
+%
+%\section{Usage}
+%
+%Este pacote usa outro pacote que transforma o comportamento padrão do sumário e das listas no \LaTeX, que deixam de pular a página automaticamente. Não há por enquanto solução para esse problema, a não ser o óbvio: usar o comando \verb!\newpage! antes dos comandos \verb!\tableofcontents!, etc.
+%
+%Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
+% \subsection{Informing user about versions}
+%
+% \DescribeMacro{\hacksxexeoversion}
+% Provides the current version
+%
+% \DescribeMacro{\printhacksxexeoversion}
+% Provides name and version
+%
+% \subsection{Draft environment}
+% 
+% \DescribeEnv{Rascunho}
+% The draft environment ainda to allow writers to include text that is marked somehow as a draft.
+% This environment is evolving due to the different interactions with the packages it uses and user's packages.
+% It has one optional parameter that names the draft. Its default value is ``Rascunho''
+% 
+%
+%\section{Warnings}
+% This package uses another package that changes \LaTeX's standard behavior for summary and lists. When you use it, you must explicitly change pages with |\newpage| 
+% before |\tableofcontents| or similar commands.
+%
+% \StopEventually{End of Code}
+%%
+%% \section{Commented Code}
+%% \subsection{Access to the current version}
+% \begin{macro}{\hacksxexeoversion}
+% Provides current version of hacksxexeo
 %    \begin{macrocode}
-%<*package>
-%% Esse pacote oferece 6 opções
-\newcommand{\hacksxexeoversion}{\hx@version}
-\newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%% 
-%% Options
+\newcommand{\hacksxexeoversion}{\hx@version}%
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\printhacksxexeoversion}
+% Provides package name and version
+%    \begin{macrocode}
+\newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%
+%    \end{macrocode}
+% \end{macro}
+%% 
 %%
-%%
+%% \subsection{Option Processing}
+%    \begin{macrocode}
 \newif\ifshowednotes\showednotestrue
 \newif\ifmargins\marginstrue
 \newif\ifmarginnote\marginnotefalse
@@ -160,6 +216,9 @@
 \if@showtodo
 \@showcomentariotrue
 \fi
+%    \end{macrocode}
+% \subsection{Required Packages}
+%    \begin{macrocode}
 %% Genérico
 \RequirePackage{xcolor}
 \RequirePackage{soulutf8}
@@ -181,14 +240,29 @@
 \fi%
 \ifednotebookmarks\RequirePackage{hyperref}\fi
 %
+%    \end{macrocode}
+% \subsection{ed inspired code}
+% This code, inspired in the |ed| package, makes the basic mechanism for 
+% inserting comments as footnotes with an observation in the margin.
+% As an adition to |ed|, it support colors.
+%    \begin{macrocode}
 \newcommand\ednoteshape{\sffamily}
 \newcounter{ednote}
 \def\hx@currentcolor{black}
+%    \end{macrocode}
 %% a mágica é aqui
 %% footnote indicador e rótulo
+% \begin{macro}{\ed@foot}
+% This macro creates a footnote. It uses counter |ednote| in arabic. 
+% It prints the footnote using the currently defined color (That is a global variable, setted up elsewehre. This is not good programming practice,
+% but it turned out to be the easiest way of doing it in \LaTeX without more and more arguments.)
+%    \begin{macrocode}
 \newcommand\ed@foot[3]% text, type, label
 {\def\@test{#3}\footnotetext[\arabic{ednote}]%
 {{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi\textcolor{\hx@currentcolor}{:}}\ednoteshape \textcolor{\hx@currentcolor}{#1}}}%
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
 \def\ed@mark@style#1{#1}%
 \newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}%
 \newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}%
@@ -446,17 +520,26 @@
 %% Marcando ou esquendo dos rascunhos
 %% Changebar foi removido porque é ruim
 %% 
-\if@showrascunho
+%    \end{macrocode}
+% \begin{macro}{rascunho}
+% This macro creates a boxed text, with title used as a first parameter
+% It uses package |mdframed| to create the frame.
+% If rascunho is turned off as an option, it supress everything inside the body.
+%    \begin{macrocode}
+\if@showrascunho%
 \NewEnviron{rascunho}[1][Rascunho]{%
-    \hx@hll{\cor@hlrascunho}{\textbf{#1}}
+    \hx@hll{\cor@hlrascunho}{\textbf{#1}}%
     \newline%
-    \BODY
+    \BODY%
 }%
 {}%
-\surroundwithmdframed{rascunho}
-\else
-\NewEnviron{rascunho}[1][]{}{}
+\surroundwithmdframed{rascunho}%
+\else%
+\NewEnviron{rascunho}[1][]{}{}%
 \fi%
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
 %% Futuro \\
 %%
 %% \newcommand{\namargem}{\ed@margin{Teste}}
@@ -484,7 +567,6 @@
 %%\newcommand{\todo}[2][]{}%
 %%\fi%
 %
-%</package>
 %    \end{macrocode}
 % \Finale
 %
