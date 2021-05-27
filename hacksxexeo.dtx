@@ -12,12 +12,12 @@
 % and version 1.3 or later is part of all distributions of
 % LaTeX version 2005/12/01 or later.
 %
-% \fi
+% \fi
 %
 %
 %\iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
-%<package>\def\hx@version{v4.3.1}
+%<package>\def\hx@version{v4.3.2}
 %<package>\ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
 %<*driver>
 \documentclass{ltxdoc}
@@ -86,7 +86,8 @@
 % \changes{v4.2.1}{2021/05/18}{Pacote paralist, herdado de código do ed, parece inútil e dar problemas com o enumerate e itemize}
 % \changes{v4.3.0}{2021/05/18}{Comandos que riscam os comentários, como profx}
 % \changes{v4.3.1}{2021/05/21}{Tem espaço demais entre marginnotes... tentando resolver}
-%%
+% \changes{v4.3.2}{2021/05/27}{Fixing behavior of rascunho, going for internationalization}
+%
 %
 %\maketitle
 %
@@ -117,7 +118,7 @@
 %
 % \subsection{Draft environment}
 % 
-% \DescribeEnv{Rascunho}
+% \DescribeEnv{rascunho}
 % The draft environment ainda to allow writers to include text that is marked somehow as a draft.
 % This environment is evolving due to the different interactions with the packages it uses and user's packages.
 % It has one optional parameter that names the draft. Its default value is ``Rascunho''
@@ -127,10 +128,17 @@
 % This package uses another package that changes \LaTeX's standard behavior for summary and lists. When you use it, you must explicitly change pages with |\newpage| 
 % before |\tableofcontents| or similar commands.
 %
+%%
+%%
+%%   
+%%
+%%
+%%
 % \StopEventually{End of Code}
 %%
-%% \section{Commented Code}
+%% \section{Implementation}
 %% \subsection{Access to the current version}
+% We provide some macros for the user to know the version being used.
 % \begin{macro}{\hacksxexeoversion}
 % Provides current version of hacksxexeo
 %    \begin{macrocode}
@@ -186,6 +194,10 @@
 \DeclareOption{publicar}{\@modopublicartrue}
 \DeclareOption{publicaraceitando}{\@modopublicartrue \@modopublicaraceitandotrue }
 \ProcessOptions\relax
+%    \end{macrocode}
+% \section{Super Options}
+%    Some options are more general and set other options
+%    \begin{macrocode}
 \if@modoedicao
 \@showassuntostrue
 \@showrascunhotrue
@@ -218,8 +230,8 @@
 \fi
 %    \end{macrocode}
 % \subsection{Required Packages}
+% Packages that are always required
 %    \begin{macrocode}
-%% Genérico
 \RequirePackage{xcolor}
 \RequirePackage{soulutf8}
 \RequirePackage[normalem]{ulem}
@@ -232,15 +244,48 @@
 \RequirePackage{mdframed}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
+%    \end{macrocode}
+% \section{Optional Packages}
+% Package that are required only sometimes
+%    \begin{macrocode}
 \ifshowednotes
 %%\RequirePackage{paralist}
 \ifmarginnote\RequirePackage{marginnote}\fi
 \else
 \RequirePackage{verbatim}
 \fi%
-\ifednotebookmarks\RequirePackage{hyperref}\fi
-%
 %    \end{macrocode}
+% Checking if babel is loaded, use iflang
+%    \begin{macrocode}
+\@ifpackageloaded{babel}%
+{%  \message{Babel Loaded!}%
+    \RequirePackage{iflang}%
+}{%
+    \message{Babel not detected!}%
+}%
+%    \end{macrocode}
+%    \begin{macrocode}
+% |hyperref| must always be the last
+\ifednotebookmarks\RequirePackage{hyperref}\fi
+%    \end{macrocode}
+% \subsection{I18N Using Babel}
+% We can detect if babel is enable and allow for some languages.
+% If you want to use another language, just use |\setlocalecaption| to set
+% the correct value.
+% \begin{macro}{\hxdrafttitle}
+%    \begin{macrocode}
+\@ifpackageloaded{babel}%
+{%
+    \IfLanguageName{brazilian}{\def\hxdrafttitle{Rascunho}}{}
+    \IfLanguageName{portuguese}{\def\hxdrafttitle{Rascunho}}{}
+    \IfLanguageName{english}{\def\hxdrafttitle{Draft}}{}
+    \message{Babel detected!}
+}{%
+    \def\hxdrafttitle{This~is~a~Draft}%
+    \message{No Babel!}
+}%
+%    \end{macrocode}
+% \end{macro}
 % \subsection{ed inspired code}
 % This code, inspired in the |ed| package, makes the basic mechanism for 
 % inserting comments as footnotes with an observation in the margin.
@@ -286,21 +331,36 @@
 %%%%%%%%%
 %% as opções comentario, assuntos e anonimizar
 %% CORES
+%    \end{macrocode}
+% \subsection{Variáveis relacionadas a cores}
+%    \begin{macrocode}
 \newcommand{\cor@prof}{red}%
 \newcommand{\cor@cand}{blue}%
 \newcommand{\cor@assunto}{green}%
 \newcommand{\cor@citar}{purple}%
 \newcommand{\cor@hlrascunho}{yellow}%
-%% Suaviação nas cores para o hilight%
-\newcommand{\cor@suavizacao}{40}%
 %%Isso é um truque para o \hl do soulutf8 funcionar
 %%https://tex.stackexchange.com/questions/410295/soul-color-transparency
 %% comando para suavizar uma cor
+%    \end{macrocode}
+% \begin{macro}{\corleve}
+% Esse comando faz uma cor ficar mais clara para o hilight
+%%Isso é um truque para o \hl do soulutf8 funcionar
+%%https://tex.stackexchange.com/questions/410295/soul-color-transparency
+%    \begin{macrocode}
+\newcommand{\cor@suavizacao}{40}%
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+%% Problema de dar cor para o soul pode ser resolvido
+%% Aqui mudando para o ulem
 \newcommand{\hx@hll}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
 \sethlcolor{x@coraqui}%
-\hl{#2}}%
+\hl{#2}
+%% \colorbox{\corleve{#1}}{#2} 
+}%
 %% isolando o ednote
 %% rótulo texto cor indicador
 \newcommand{\hx@ednote}[4][]{%
@@ -525,10 +585,15 @@
 % This macro creates a boxed text, with title used as a first parameter
 % It uses package |mdframed| to create the frame.
 % If rascunho is turned off as an option, it supress everything inside the body.
+% Due to problems with soul accepting |\hxdrafttitle| we use
+% |\colorbox| to support multiple languages if default title is
+% used
 %    \begin{macrocode}
 \if@showrascunho%
-\NewEnviron{rascunho}[1][Rascunho]{%
-    \hx@hll{\cor@hlrascunho}{\textbf{#1}}%
+\NewEnviron{rascunho}[1][]{%
+    \ifstrempty{#1}
+    {\colorbox{\corleve{\cor@hlrascunho}}{\textbf{\hxdrafttitle}}}
+    {\hx@hll{\cor@hlrascunho}{\textbf{#1}}}%
     \newline%
     \BODY%
 }%

@@ -186,6 +186,11 @@ style=ext-authoryear-comp
     
     Na lista de símbolos de \LaTeX\footnote{\url{http://tug.ctan.org/info/symbols/comprehensive/symbols-a4.pdf}} é possível encontrar várias fontes interessantes. Por exemplo, o pacote |marvosym| oferece |\Checkedbox|, |\CrossedBox| e |\HollowBox|, respectivamente \Checkedbox, \CrossedBox \  e \HollowBox. Já o fonte awesone fornece símbolos como \faCheckSquareO(|\faCheckSquareO|). O |pifont| usa o comando |ding| para gerar vários símbolos como \ding{74}, e \ding{172}.
     
+    \xexeo[Para comprovar o funcionamento, mostramos que também é possível
+    fazer uma marcação muito longa que inclui várias linhas e continua 
+    funcionando.]{Marcação longa}
+    
+    
     \message{****************Cores agora}
     \subsection{Trocando cores}
     Cores podem ser trocadas redefinindo o valor das variáveis.
@@ -229,7 +234,7 @@ uma \xexeosug{sem comentário, ficando só a marca no texto, e não indo para a 
 Esse comando pode incluir citações \xexeorem{como \cite{Juran2010}, \citet{Juran2010}, ou  \citep{Juran2010} e referências, como  aos comentários}. 
 Referências %\xexeorem{\protect\autoref{sec:com}},
 ou um parágrafo 
-\xexeorem{\ref{sug:com1}}, também deviam ser comentadas dentro dele.
+\xexeorem{como esse a retirar}, também deviam ser comentadas dentro dele.
 
 
     \section{Todo}
@@ -254,11 +259,19 @@ ou um parágrafo
             Esse é um exemplo de rascunho.
             Deve aparecer uma caixa em volta dele.
         \end{rascunho}
+
+        \begin{rascunho}
+            Esse rascunho tem o título default.
+        \end{rascunho}
     \end{verbatim}
     
     \begin{rascunho}[Um Título de Rascunho]
         Esse é um exemplo de rascunho.
         Deve aparecer uma borda do lado interno de impressão.
+    \end{rascunho}
+
+    \begin{rascunho}
+        Esse rascunho tem o título default.
     \end{rascunho}
     
     \section{Pacotes exigidos}

@@ -19,13 +19,17 @@
 %% 
 %% and version 1.3 or later is part of all distributions of LaTeX version
 %% 2005/12/01 or later.
-
 \NeedsTeXFormat{LaTeX2e}
-\def\hx@version{v4.3.1}
+\def\hx@version{v4.3.2}
 \ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
 %%
 %%
-%% \section{Commented Code}
+%%
+%%
+%%
+%%
+%%
+%% \section{Implementation}
 %% \subsection{Access to the current version}
 \newcommand{\hacksxexeoversion}{\hx@version}%
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%
@@ -100,7 +104,6 @@
 \if@showtodo
 \@showcomentariotrue
 \fi
-%% Genérico
 \RequirePackage{xcolor}
 \RequirePackage{soulutf8}
 \RequirePackage[normalem]{ulem}
@@ -118,7 +121,23 @@
 \else
 \RequirePackage{verbatim}
 \fi%
+\@ifpackageloaded{babel}%
+{%  \message{Babel Loaded!}%
+    \RequirePackage{iflang}%
+}{%
+    \message{Babel not detected!}%
+}%
 \ifednotebookmarks\RequirePackage{hyperref}\fi
+\@ifpackageloaded{babel}%
+{%
+    \IfLanguageName{brazilian}{\def\hxdrafttitle{Rascunho}}{}
+    \IfLanguageName{portuguese}{\def\hxdrafttitle{Rascunho}}{}
+    \IfLanguageName{english}{\def\hxdrafttitle{Draft}}{}
+    \message{Babel detected!}
+}{%
+    \def\hxdrafttitle{This~is~a~Draft}%
+    \message{No Babel!}
+}%
 \newcommand\ednoteshape{\sffamily}
 \newcounter{ednote}
 \def\hx@currentcolor{black}
@@ -155,16 +174,21 @@
 \newcommand{\cor@assunto}{green}%
 \newcommand{\cor@citar}{purple}%
 \newcommand{\cor@hlrascunho}{yellow}%
-%% Suaviação nas cores para o hilight%
-\newcommand{\cor@suavizacao}{40}%
 %%Isso é um truque para o \hl do soulutf8 funcionar
 %%https://tex.stackexchange.com/questions/410295/soul-color-transparency
 %% comando para suavizar uma cor
+%%Isso é um truque para o \hl do soulutf8 funcionar
+%%https://tex.stackexchange.com/questions/410295/soul-color-transparency
+\newcommand{\cor@suavizacao}{40}%
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
+%% Problema de dar cor para o soul pode ser resolvido
+%% Aqui mudando para o ulem
 \newcommand{\hx@hll}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
 \sethlcolor{x@coraqui}%
-\hl{#2}}%
+\hl{#2}
+%% \colorbox{\corleve{#1}}{#2}
+}%
 %% isolando o ednote
 %% rótulo texto cor indicador
 \newcommand{\hx@ednote}[4][]{%
@@ -383,8 +407,10 @@
 %% Changebar foi removido porque é ruim
 %%
 \if@showrascunho%
-\NewEnviron{rascunho}[1][Rascunho]{%
-    \hx@hll{\cor@hlrascunho}{\textbf{#1}}%
+\NewEnviron{rascunho}[1][]{%
+    \ifstrempty{#1}
+    {\colorbox{\corleve{\cor@hlrascunho}}{\textbf{\hxdrafttitle}}}
+    {\hx@hll{\cor@hlrascunho}{\textbf{#1}}}%
     \newline%
     \BODY%
 }%
