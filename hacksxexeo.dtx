@@ -23,9 +23,9 @@
 \documentclass{ltxdoc}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[edicao]{hacksxexeo}
 \usepackage{csquotes}
-\usepackage[brazilian]{babel}
+\usepackage[english]{babel}
+\usepackage[edicao]{hacksxexeo}
 %%\usepackage{textcomp,url,a4wide,array}
 %%\usepackage[eso-foot,today,draft]{svninfo}
 \usepackage{xcolor}
@@ -93,8 +93,8 @@
 %
 %\section{Introduction}
 %
-% This package support different forms of comments in documents that support their writing and editing.
-% It picks ideas from different packages, such as |ed|, |color-edits|, |todonotes|, and others. It was written to support my way of working, and them included 
+% This package support different forms of comments and editorial marks.
+% It picks ideas from different packages, such as |ed|, |color-edits|, |todonotes|, and others. It was written to support my way of working, and received  
 % suggestions from my students. The main goal was to build only a front-end to other packages, but with time, it grow in scope.
 %
 % As it is my first package, \TeX and \LaTeX programming is sometimes naive. I aimed at building it over other packages, but due to the fact that
@@ -110,6 +110,9 @@
 %Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
 % \subsection{Informing user about versions}
 %
+% It is possible that the user wants to know the version
+% being used. We provide two commands for it.
+%
 % \DescribeMacro{\hacksxexeoversion}
 % Provides the current version
 %
@@ -119,10 +122,34 @@
 % \subsection{Draft environment}
 % 
 % \DescribeEnv{rascunho}
-% The draft environment ainda to allow writers to include text that is marked somehow as a draft.
-% This environment is evolving due to the different interactions with the packages it uses and user's packages.
+% The draft environment aims to allow writers to include text that is marked somehow as a draft.
+% This environment is evolving, looking for a good way to signal the draft status, due to the different interactions with the packages it uses and user's packages.
 % It has one optional parameter that names the draft. Its default value is ``Rascunho''
-% 
+% Ir the |rascunho| option is not enabled, the text inside the title and the text inside the environment will not appear. The user should remember that some options will automatically turn on the |rascunho| option, such as the option |edicao|.
+%
+%\begin{verbatim}
+%\begin{rascunho}[A draft title]
+%This is the example of a draft.
+%The title must be highlighted
+%There must be a box around it.
+%\end{rascunho}
+%
+%\begin{rascunho}
+%This draft has the default title.
+%\end{rascunho}
+%\end{verbatim}
+%
+%\begin{rascunho}[A draft title]
+% This is the example of a draft.
+%
+% The title must be highlighted
+%
+% There must be a box around it.
+%\end{rascunho}
+%
+%\begin{rascunho}
+% This draft has the default title.
+%\end{rascunho}% 
 %
 %\section{Warnings}
 % This package uses another package that changes \LaTeX's standard behavior for summary and lists. When you use it, you must explicitly change pages with |\newpage| 
