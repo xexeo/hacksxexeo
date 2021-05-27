@@ -40,6 +40,30 @@
 \newif\ifmargins\marginstrue
 \newif\ifmarginnote\marginnotefalse
 \newif\ifednotebookmarks\ednotebookmarksfalse
+\newif\if@showcomentario\@showcomentariofalse
+\newif\if@naoanonimizar\@naoanonimizarfalse
+\newif\if@showdraft\@showdraftfalse
+\newif\if@showassuntos\@showassuntosfalse
+\newif\if@showsugestao\@showsugestaofalse
+\newif\if@beanonymous\@beanonymousfalse
+\newif\if@showtodo\@showtodofalse
+\newif\if@modoedicao\@modoedicaofalse
+\newif\if@modosubmeter\@modosubmeterfalse
+\newif\if@modopublicar\@modopublicarfalse
+\newif\if@modopublicaraceitando\@modopublicaraceitandofalse
+\DeclareOption{rascunhos}{\@showdrafttrue}
+\DeclareOption{comentarios}{\@showcomentariotrue}
+\DeclareOption{anonimizar}{\@beanonymoustrue}
+\DeclareOption{naoanonimizar}{\@naoanonimizartrue}
+\DeclareOption{sugestion}{\@showsugestaotrue}
+\DeclareOption{assuntos}{\@showassuntostrue}
+\DeclareOption{edicao}{\@modoedicaotrue}
+\DeclareOption{submeter}{\@modosubmetertrue}
+\DeclareOption{publicar}{\@modopublicartrue}
+\DeclareOption{publicaraceitando}{
+    \@modopublicartrue
+    \@modopublicaraceitandotrue
+}
 \DeclareOption{show}{\showednotestrue\message{ed.sty: showing ednotes}}
 \DeclareOption{hide}{\showednotesfalse\message{ed.sty: hiding ednotes}}
 \DeclareOption{draft}{\showednotestrue\message{ed.sty: showing ednotes}}
@@ -47,36 +71,24 @@
 \DeclareOption{nomargins}{\marginsfalse}
 \DeclareOption{marginnote}{\marginnotetrue}
 \DeclareOption{pdfbookmarks}{\ednotebookmarkstrue}
-%%%
-\newif\if@showcomentario\@showcomentariofalse
-\DeclareOption{comentarios}{\@showcomentariotrue}
-\newif\if@beanonymous\@beanonymousfalse
-\DeclareOption{anonimizar}{\@beanonymoustrue}
-\newif\if@naoanonimizar\@naoanonimizarfalse
-\DeclareOption{naoanonimizar}{\@naoanonimizartrue}
-%% As 3 opções a seguir tem comportamento
-%% dependente de comentarios (colocam ou não)
-\newif\if@showsugestao\@showsugestaofalse
-\DeclareOption{sugestoes}{
-    \@showsugestaotrue}
-\newif\if@showassuntos\@showassuntosfalse
-\DeclareOption{assuntos}{\@showassuntostrue}
-\newif\if@showrascunho\@showrascunhofalse
-\DeclareOption{rascunhos}{\@showrascunhotrue}
-\newif\if@showtodo\@showtodofalse
+\DeclareOption{comments}{\@showcomentariotrue}
+\DeclareOption{anonimize}{\@beanonymoustrue}
+\DeclareOption{noanonimize}{\@naoanonimizartrue}
+\DeclareOption{sugestions}{\@showsugestaotrue}
+\DeclareOption{subjects}{\@showassuntostrue}
+\DeclareOption{drafts}{\@showdrafttrue}
 \DeclareOption{todos}{\@showtodotrue}
-\newif\if@modoedicao\@modoedicaofalse
-\newif\if@modosubmeter\@modosubmeterfalse
-\newif\if@modopublicar\@modopublicarfalse
-\newif\if@modopublicaraceitando\@modopublicaraceitandofalse
-\DeclareOption{edicao}{\@modoedicaotrue}
-\DeclareOption{submeter}{\@modosubmetertrue}
-\DeclareOption{publicar}{\@modopublicartrue}
-\DeclareOption{publicaraceitando}{\@modopublicartrue \@modopublicaraceitandotrue }
+\DeclareOption{editing}{\@modoedicaotrue}
+\DeclareOption{submetting}{\@modosubmetertrue}
+\DeclareOption{publishing}{\@modopublicartrue}
+\DeclareOption{acceptedpublishing}{
+    \@modopublicartrue
+    \@modopublicaraceitandotrue
+}
 \ProcessOptions\relax
 \if@modoedicao
 \@showassuntostrue
-\@showrascunhotrue
+\@showdrafttrue
 \@showcomentariotrue
 \@showsugestaotrue
 \@beanonymoustrue
@@ -84,7 +96,7 @@
 \fi
 \if@modosubmeter
 \@showassuntosfalse
-\@showrascunhofalse
+\@showdraftfalse
 \@showcomentariofalse
 \@showsugestaofalse
 \@beanonymoustrue
@@ -96,7 +108,7 @@
 \if@modopublicar
 \@showassuntosfalse
 \@showsugestaofalse
-\@showrascunhofalse
+\@showdraftfalse
 \@showcomentariofalse
 \@beanonymousfalse
 \@showtodofalse
@@ -113,8 +125,6 @@
 \RequirePackage{xstring}
 \RequirePackage{csquotes}
 \RequirePackage{mdframed}
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
 \ifshowednotes
 %%\RequirePackage{paralist}
 \ifmarginnote\RequirePackage{marginnote}\fi
@@ -128,57 +138,59 @@
     \message{Babel not detected!}%
 }%
 \ifednotebookmarks\RequirePackage{hyperref}\fi
-\@ifpackageloaded{babel}%
-{%
-    \IfLanguageName{brazilian}{\def\hxdrafttitle{Rascunho}}{}
-    \IfLanguageName{portuguese}{\def\hxdrafttitle{Rascunho}}{}
-    \IfLanguageName{english}{\def\hxdrafttitle{Draft}}{}
-    \message{Babel detected!}
-}{%
-    \def\hxdrafttitle{This~is~a~Draft}%
-    \message{No Babel!}
-}%
-\newcommand\ednoteshape{\sffamily}
-\newcounter{ednote}
-\def\hx@currentcolor{black}
-%% a mágica é aqui
-%% footnote indicador e rótulo
-\newcommand\ed@foot[3]% text, type, label
-{\def\@test{#3}\footnotetext[\arabic{ednote}]%
-{{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi\textcolor{\hx@currentcolor}{:}}\ednoteshape \textcolor{\hx@currentcolor}{#1}}}%
-\def\ed@mark@style#1{#1}%
-\newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}%
-\newcommand\ed@footnote[3]{\ed@mark{\arabic{ednote}}\ed@foot{#1}{#2}{#3}}%
-%% a outra mágica é aqui
-\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textcolor{\hx@currentcolor}{#1}}\else\marginpar{\textcolor{\hx@currentcolor}{#1}}\fi\fi}%
-%%
-\newcommand\Ed@note[3]% text, type, label
-{\addtocounter{ednote}{1}\message{#2!}%
-    \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\theednote}\fi\fi}%
-\newcommand\ed@note[4]% text, type, label, margin
-{\Ed@note{#1}{#2}{#3}\ifshowednotes\ed@margin{#4:\arabic{ednote}}\fi}%
-\newcommand\ednote@label{EdNote}%
-\newcommand\ednote@margin{EdN}%
-\newcommand\ednotelabel[1]{\def\ednote@label{#1}}%
-\newcommand\ednotemargin[1]{\def\ednote@margin{#1}}%
-\newcommand{\Ednote}[2][]{\Ed@note{#2}\ednote@label{#1}}%
-\newcommand{\ednote}[3][]{\def\hx@currentcolor{#3}%
-\ed@note{#2}\ednote@label{#1}\ednote@margin}%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%https://tex.stackexchange.com/questions/30483/how-can-i-check-in-latex-or-plain-tex-whether-a-command-exists-by-name
-%%%%%%%%%
-%% as opções comentario, assuntos e anonimizar
-%% CORES
 \newcommand{\cor@prof}{red}%
 \newcommand{\cor@cand}{blue}%
 \newcommand{\cor@assunto}{green}%
 \newcommand{\cor@citar}{purple}%
-\newcommand{\cor@hlrascunho}{yellow}%
-%%Isso é um truque para o \hl do soulutf8 funcionar
-%%https://tex.stackexchange.com/questions/410295/soul-color-transparency
-%% comando para suavizar uma cor
-%%Isso é um truque para o \hl do soulutf8 funcionar
-%%https://tex.stackexchange.com/questions/410295/soul-color-transparency
+\newcommand{\cor@hldraft}{yellow}%
+\@ifpackageloaded{babel}%
+{%
+    \IfLanguageName{brazilian}{\def\hxdrafttitle{draft}}{}%
+    \IfLanguageName{portuguese}{\def\hxdrafttitle{draft}}{}%
+    \IfLanguageName{english}{\def\hxdrafttitle{Draft}}{}%
+    \IfLanguageName{brazilian}{\def\hxcommentstitle{Lista de Comentários}}{}%
+    \IfLanguageName{portuguese}{\def\hxcommentstitle{Lista de Comentários}}{}%
+    \IfLanguageName{english}{\def\hxcommentstitle{List of Comments}}{}%
+    \IfLanguageName{brazilian}{\def\hxsugstitle{Lista de Sugestões}}{}%
+    \IfLanguageName{portuguese}{\def\hxsugstitle{Lista de Sugestões}}{}%
+    \IfLanguageName{english}{\def\hxsugstitle{List of Suggestions}}{}%
+    \IfLanguageName{brazilian}{\def\hxsubjtitle{Lista de Assuntos}}{}%
+    \IfLanguageName{portuguese}{\def\hxsubjtitle{Lista de Assuntos}}{}%    \IfLanguageName{english}{\def\hxsubjtitle{List of Subjects}}{}%
+
+    \message{Babel detected!}
+}{%
+    \def\hxdrafttitle{Draft}%
+    \def\hxcommentstitle{List of Comments}%
+    \def\\hxsugstitle{List of Suggestions}%
+    \def\hxsubjtitle{List of Subjects}%
+    \message{No Babel!}
+}%
+\newcounter{hxnote}
+\newcommand\hx@noteshape{\sffamily}
+\def\hx@currentcolor{black}
+%% footnote indicador e rótulo
+\newcommand\ed@foot[3]% text, type, label
+{\def\@test{#3}\footnotetext[\arabic{hxnote}]%
+{{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi\textcolor{\hx@currentcolor}{:}}\hx@noteshape \textcolor{\hx@currentcolor}{#1}}}%
+\def\ed@mark@style#1{#1}%
+\newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}%
+\newcommand\ed@footnote[3]{\ed@mark{\arabic{hxnote}}\ed@foot{#1}{#2}{#3}}%
+\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textcolor{\hx@currentcolor}{#1}}\else\marginpar{\textcolor{\hx@currentcolor}{#1}}\fi\fi}%
+\newcommand\Hx@note[3]% text, type, label
+{\addtocounter{hxnote}{1}\message{#2!}%
+    \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\thehxnote}\fi\fi}%
+\newcommand\hx@note[4]% text, type, label, margin
+{\Hx@note{#1}{#2}{#3}\ifshowednotes\ed@margin{#4:\arabic{hxnote}}\fi}%
+\newcommand\hxnote@label{Editor}%
+\newcommand\hxnote@margin{Ed}%
+\newcommand\hxnotelabel[1]{\def\hxnote@label{#1}}%
+\newcommand\hxnotemargin[1]{\def\hxnote@margin{#1}}%
+\newcommand{\Hxnote}[2][]{\Hx@note{#2}\hxnote@label{#1}}%
+\newcommand{\hxnote}[3][]{\def\hx@currentcolor{#3}%
+\hx@note{#2}\hxnote@label{#1}\hxnote@margin}%
+%%%https://tex.stackexchange.com/questions/30483/how-can-i-check-in-latex-or-plain-tex-whether-a-command-exists-by-name
+%% as opções comentario, assuntos e anonimizar
+%% CORES
 \newcommand{\cor@suavizacao}{40}%
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
 %% Problema de dar cor para o soul pode ser resolvido
@@ -191,24 +203,17 @@
 }%
 %% isolando o ednote
 %% rótulo texto cor indicador
-\newcommand{\hx@ednote}[4][]{%
-\ednotelabel{#4}%
-\ednotemargin{#4}%
-\ednote[#1]{#2}{#3}%
+\newcommand{\hx@hxnote}[4][]{%
+\hxnotelabel{#4}%
+\hxnotemargin{#4}%
+\hxnote[#1]{#2}{#3}%
 }%
-%%
-%%
-%%
-%% Anonimização
-%% Se anonimiza, escreve anonymous
-%% se não escreve o texto
 \newcommand{\hx@anoncitetext}{(Anonymous, Year)}%
 \newcommand{\hx@anonciteptext}{(Anonymous, Year)}%
 \newcommand{\hx@anoncitettext}{Anonymous (Year)}%
 \newcommand{\hxdefanoncitetext}[1]{\renewcommand{\hx@anoncitetext}{#1}}%
 \newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}%
 \newcommand{\hxdefanoncitettext}[1]{\renewcommand{\hx@anoncitettext}{#1}}%
-
 \if@beanonymous
 \newcommand{\hxanon}[1]{Anonymous}%
 \newcommand{\hxanoncite}[2][]{\hx@anoncitetext}%
@@ -224,13 +229,10 @@
 \newcommand{\xanon}[2][]{\hxanon[#1]{#2}}%
 \newcommand{\xanoncitep}[2][]{\hxanoncitep[#1]{#2}}%
 \newcommand{\xanoncitet}[2][]{\hxanoncitet[#1]{#2}}%
-%%
-%% Assuntos colore o texto apenas, pode melhorar
-%%
 \if@showassuntos
 %% Cria a lista
 %% cria o título
-\newcommand{\listassunto}{Lista de Assuntos}%
+\newcommand{\listassunto}{\hxsubjtitle}%
 %% cria a lista, depende do pacoto tcloft
  \@ifundefined{chapter}{\newlistof[section]{assunto}{aaa}{\listassunto}}{\newlistof[chapter]{assunto}{aaa}{\listassunto}}%
 %%
@@ -249,25 +251,23 @@
 \fi%| % @showassuntos
 \newcommand{\xassunto}[2][\cor@assunto]{\hxassunto[#1]{#2}}
 %%
-%%
-%%
 \if@showcomentario
 %% Resolve a lista de comentários
-\newcommand{\listcomentario}{Lista de Comentários}%
+\newcommand{\listcomentario}{\hxcommentstitle}%
 %% cria a lista
 \@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}%%
 %%
 %% Comentador genérico - parte I
-%% faz o ednote e soma na lista
+%% faz o hxnote e soma na lista
 %% []rótulo], texto , cor, indicador
 \newcommand{\hx@comentar}[4][]{%
     \ifstrempty{#4}{%
         % rótulo texto cor indicador
-        \hx@ednote[#1]{#2}{#3}{Comentário}% faz a nota de rodapé do ed
+        \hx@hxnote[#1]{#2}{#3}{Comentário}% faz a nota de rodapé do ed
         \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#2}}%
     }%
     {%
-        \hx@ednote[#1]{#2}{#3}{#4}%
+        \hx@hxnote[#1]{#2}{#3}{#4}%
         \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#4: #2}}%
     }%
 }%
@@ -311,11 +311,6 @@
 \newcommand{\hx@comment}[4][]{#1}%
 \newcommand{\hx@commentLabeled}[5][]{#1}%
 \fi%|
-%%%
-%%
-%% Sugestões e trocas
-%%
-%%%
 %% comentário, cor, indicador, textovelho, cor velho, textonovo, cor novo
 %% Em modo publicar coloca o textovelho
 \if@showsugestao
@@ -336,38 +331,6 @@
 \newcommand{\hx@gensug}[7][]{#4}%
 \fi%
 \fi%
-
-%% Agora o criador
-%% criando novos autores
-%% nome do autor, cor, identificador
-\newcommand{\hxautor}[3]{%
-    % hxcomment - texto a hl, cor, comentário, indicador de pessoa
-    \expandafter\newcommand\csname#1\endcsname[2][]%
-    {%
-        %Comentários
-        \hx@comment[##1]{##2}{#2}{#3}}%
-    % [texto a marcar], cor , comentário, palavra, rótulo
-    \expandafter\newcommand\csname#1r\endcsname[3][]%
-    {\hx@commentLabeled[##1]{##2}{#2}{#3}{##3}}%
-    % cortados
-    \expandafter\newcommand\csname#1x\endcsname[2][]%
-{%
-    %Comentários
-    \hx@xcomment[##1]{##2}{#2}{#3}}%
-\expandafter\newcommand\csname#1rx\endcsname[3][]%
-{\hx@xcommentLabeled[##1]{##2}{#2}{#3}{##3}}%
-
-    %sugestões
-    \expandafter\newcommand\csname#1sug\endcsname[2][]%
-    {\hx@gensug[##1]{#2}{#3}{}{#2}{##2}{#2}}%
-    %
-    \expandafter\newcommand\csname#1rem\endcsname[2][]%
-    {\hx@gensug[##1]{#2}{#3}{##2}{#2}{}{#2}}
-    \expandafter\newcommand\csname#1troca\endcsname[3][]%
-    {\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
-}%
-\hxautor{prof}{red}{Prof}
-\hxautor{cand}{blue}{Cand}
 %%
 %%
 %%
@@ -387,7 +350,7 @@
 \newcommand{\hx@commentref}[3][]{%
     \refstepcounter{comentarioref}%
     \hx@hll{#3}{#1}%
-    \hx@ednote{#2}{#3}{Citar}%
+    \hx@hxnote{#2}{#3}{Citar}%
     \addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#2}}%
 }%
 \setlength{\cftcomentariorefnumwidth}{2.5em}%
@@ -403,30 +366,48 @@
 %%
 %%
 %%
-%% Marcando ou esquendo dos rascunhos
+%% Marcando ou esquendo dos drafts
 %% Changebar foi removido porque é ruim
 %%
-\if@showrascunho%
-\NewEnviron{rascunho}[1][]{%
+\if@showdraft%
+\NewEnviron{draft}[1][]{%
     \ifstrempty{#1}
-    {\colorbox{\corleve{\cor@hlrascunho}}{\textbf{\hxdrafttitle}}}
-    {\hx@hll{\cor@hlrascunho}{\textbf{#1}}}%
+    {\colorbox{\corleve{\cor@hldraft}}{\textbf{\hxdrafttitle}}}
+    {\hx@hll{\cor@hldraft}{\textbf{#1}}}%
     \newline%
     \BODY%
 }%
 {}%
-\surroundwithmdframed{rascunho}%
+\surroundwithmdframed{draft}%
 \else%
-\NewEnviron{rascunho}[1][]{}{}%
+\NewEnviron{draft}[1][]{}{}%
 \fi%
-%% Futuro \\
-%%
-%% \newcommand{\namargem}{\ed@margin{Teste}}
-%%
-%%
-%%
-%% Fazendo um todo do todonotes simples
-%%\if@showtodo%
+%% nome do autor, cor, identificador
+\newcommand{\hxautor}[3]{%
+%% hxcomment - texto a hl, cor, comentário, indicador de pessoa
+\expandafter\newcommand\csname#1\endcsname[2][]%
+{%
+\hx@comment[##1]{##2}{#2}{#3}}%
+\expandafter\newcommand\csname#1r\endcsname[3][]%
+{\hx@commentLabeled[##1]{##2}{#2}{#3}{##3}}%
+%% cortados
+\expandafter\newcommand\csname#1x\endcsname[2][]%
+{%
+%% Comentários
+\hx@xcomment[##1]{##2}{#2}{#3}}%
+%% [texto a marcar], cor , comentário, palavra, rótulo
+\expandafter\newcommand\csname#1rx\endcsname[3][]%
+{\hx@xcommentLabeled[##1]{##2}{#2}{#3}{##3}}%
+%% sugestões
+\expandafter\newcommand\csname#1sug\endcsname[2][]%
+{\hx@gensug[##1]{#2}{#3}{}{#2}{##2}{#2}}%
+\expandafter\newcommand\csname#1rem\endcsname[2][]%
+{\hx@gensug[##1]{#2}{#3}{##2}{#2}{}{#2}}
+\expandafter\newcommand\csname#1troca\endcsname[3][]%
+{\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
+}%
+\hxautor{prof}{red}{Prof}
+\hxautor{cand}{blue}{Cand}
 \hxautor{hx@todoauthor}{orange}{TO DO}%
 \newcommand{\hx@todobackgroundcolor}{orange}%
 \newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
@@ -441,9 +422,7 @@
 \hx@todoauthor{#2}%
 }%
 }%
-%%\else%
-%%\newcommand{\todo}[2][]{}%
-%%\fi%
+\let\rascunho=\draft
 \endinput
 %%
 %% End of file `hacksxexeo.sty'.
