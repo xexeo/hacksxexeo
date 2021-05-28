@@ -24,13 +24,6 @@
 \ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
 %%
 %%
-%%
-%%
-%%
-%%
-%%
-%% \section{Implementation}
-%% \subsection{Access to the current version}
 \newcommand{\hacksxexeoversion}{\hx@version}%
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%
 %%
@@ -43,7 +36,7 @@
 \newif\if@showcomentario\@showcomentariofalse
 \newif\if@naoanonimizar\@naoanonimizarfalse
 \newif\if@showdraft\@showdraftfalse
-\newif\if@showassuntos\@showassuntosfalse
+\newif\if@showsubjects\@showsubjectsfalse
 \newif\if@showsugestao\@showsugestaofalse
 \newif\if@beanonymous\@beanonymousfalse
 \newif\if@showtodo\@showtodofalse
@@ -56,7 +49,7 @@
 \DeclareOption{anonimizar}{\@beanonymoustrue}
 \DeclareOption{naoanonimizar}{\@naoanonimizartrue}
 \DeclareOption{sugestion}{\@showsugestaotrue}
-\DeclareOption{assuntos}{\@showassuntostrue}
+\DeclareOption{assuntos}{\@showsubjectstrue}
 \DeclareOption{edicao}{\@modoedicaotrue}
 \DeclareOption{submeter}{\@modosubmetertrue}
 \DeclareOption{publicar}{\@modopublicartrue}
@@ -75,7 +68,7 @@
 \DeclareOption{anonimize}{\@beanonymoustrue}
 \DeclareOption{noanonimize}{\@naoanonimizartrue}
 \DeclareOption{sugestions}{\@showsugestaotrue}
-\DeclareOption{subjects}{\@showassuntostrue}
+\DeclareOption{subjects}{\@showsubjectstrue}
 \DeclareOption{drafts}{\@showdrafttrue}
 \DeclareOption{todos}{\@showtodotrue}
 \DeclareOption{editing}{\@modoedicaotrue}
@@ -87,7 +80,7 @@
 }
 \ProcessOptions\relax
 \if@modoedicao
-\@showassuntostrue
+\@showsubjectstrue
 \@showdrafttrue
 \@showcomentariotrue
 \@showsugestaotrue
@@ -95,7 +88,7 @@
 \@showtodotrue
 \fi
 \if@modosubmeter
-\@showassuntosfalse
+\@showsubjectsfalse
 \@showdraftfalse
 \@showcomentariofalse
 \@showsugestaofalse
@@ -106,7 +99,7 @@
 \@beanonymousfalse
 \fi
 \if@modopublicar
-\@showassuntosfalse
+\@showsubjectsfalse
 \@showsugestaofalse
 \@showdraftfalse
 \@showcomentariofalse
@@ -140,31 +133,50 @@
 \ifednotebookmarks\RequirePackage{hyperref}\fi
 \newcommand{\cor@prof}{red}%
 \newcommand{\cor@cand}{blue}%
-\newcommand{\cor@assunto}{green}%
+\newcommand{\cor@subject}{green}%
 \newcommand{\cor@citar}{purple}%
 \newcommand{\cor@hldraft}{yellow}%
+\def\hxdrafttitle{Standard Draft}%
+\def\hxcommentstitle{Standard List of Comments}%
+\def\hxsubjtitle{Standard List of Subjects}%
+\def\hxcitationstitle{Standard List of Citation Needs}%
+\def\hxpleasecitetext{Plese cite}
+\def\hxpleasecitemessage{something to support this information}
+\def\hxpleasecitemarginnote{Cite}%
 \@ifpackageloaded{babel}%
 {%
-    \IfLanguageName{brazilian}{\def\hxdrafttitle{draft}}{}%
-    \IfLanguageName{portuguese}{\def\hxdrafttitle{draft}}{}%
-    \IfLanguageName{english}{\def\hxdrafttitle{Draft}}{}%
-    \IfLanguageName{brazilian}{\def\hxcommentstitle{Lista de Comentários}}{}%
-    \IfLanguageName{portuguese}{\def\hxcommentstitle{Lista de Comentários}}{}%
-    \IfLanguageName{english}{\def\hxcommentstitle{List of Comments}}{}%
-    \IfLanguageName{brazilian}{\def\hxsugstitle{Lista de Sugestões}}{}%
-    \IfLanguageName{portuguese}{\def\hxsugstitle{Lista de Sugestões}}{}%
-    \IfLanguageName{english}{\def\hxsugstitle{List of Suggestions}}{}%
-    \IfLanguageName{brazilian}{\def\hxsubjtitle{Lista de Assuntos}}{}%
-    \IfLanguageName{portuguese}{\def\hxsubjtitle{Lista de Assuntos}}{}%    \IfLanguageName{english}{\def\hxsubjtitle{List of Subjects}}{}%
-
-    \message{Babel detected!}
-}{%
-    \def\hxdrafttitle{Draft}%
-    \def\hxcommentstitle{List of Comments}%
-    \def\\hxsugstitle{List of Suggestions}%
-    \def\hxsubjtitle{List of Subjects}%
-    \message{No Babel!}
+    \IfLanguageName{brazilian}%
+    {%
+        \def\hxdrafttitle{draft}%
+        \def\hxcommentstitle{Lista de Comentários}%
+        \def\hxsubjtitle{Lista de Assuntos}%
+        \def\hxcitationstitle{Necessidades de Citação}%
+        \def\hxpleasecitetext{Favor citar}%
+        \def\hxpleasecitemessage{alguma coisa que suporte este texto}%
+        \def\hxpleasecitemarginnote{Citar}%
+    }{}%
+    \IfLanguageName{portuguese}%
+    {%
+        \def\hxdrafttitle{draft}%
+        \def\hxcommentstitle{Lista de Comentários}%
+        \def\hxsubjtitle{Lista de Assuntos}%
+        \def\hxcitationstitle{Necessidades de Citação}%
+        \def\hxpleasecitetext{Favor citar}%
+        \def\hxpleasecitemessage{alguma coisa que suporte este texto}%
+        \def\hxpleasecitemarginnote{Citar}%
+    }{}%
+    \IfLanguageName{english}%
+    {%
+        \def\hxdrafttitle{Draft}%
+        \def\hxcommentstitle{List of Comments}%
+        \def\hxsubjtitle{List of Subjects}%
+        \def\hxcitationstitle{List of Citation Needs}%
+        \def\hxpleasecitetext{Plese cite}
+        \def\hxpleasecitemessage{something to support this information}
+        \def\hxpleasecitemarginnote{Cite}%
+    }{}%
 }%
+{}%
 \newcounter{hxnote}
 \newcommand\hx@noteshape{\sffamily}
 \def\hx@currentcolor{black}
@@ -193,15 +205,11 @@
 %% CORES
 \newcommand{\cor@suavizacao}{40}%
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
-%% Problema de dar cor para o soul pode ser resolvido
-%% Aqui mudando para o ulem
 \newcommand{\hx@hll}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
 \sethlcolor{x@coraqui}%
 \hl{#2}
-%% \colorbox{\corleve{#1}}{#2}
 }%
-%% isolando o ednote
 %% rótulo texto cor indicador
 \newcommand{\hx@hxnote}[4][]{%
 \hxnotelabel{#4}%
@@ -212,7 +220,7 @@
 \newcommand{\hx@anonciteptext}{(Anonymous, Year)}%
 \newcommand{\hx@anoncitettext}{Anonymous (Year)}%
 \newcommand{\hxdefanoncitetext}[1]{\renewcommand{\hx@anoncitetext}{#1}}%
-\newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}%
+\newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}
 \newcommand{\hxdefanoncitettext}[1]{\renewcommand{\hx@anoncitettext}{#1}}%
 \if@beanonymous
 \newcommand{\hxanon}[1]{Anonymous}%
@@ -229,33 +237,32 @@
 \newcommand{\xanon}[2][]{\hxanon[#1]{#2}}%
 \newcommand{\xanoncitep}[2][]{\hxanoncitep[#1]{#2}}%
 \newcommand{\xanoncitet}[2][]{\hxanoncitet[#1]{#2}}%
-\if@showassuntos
-%% Cria a lista
-%% cria o título
-\newcommand{\listassunto}{\hxsubjtitle}%
+\if@showsubjects
+\newcommand{\listsubject}{\hxsubjtitle}%
 %% cria a lista, depende do pacoto tcloft
- \@ifundefined{chapter}{\newlistof[section]{assunto}{aaa}{\listassunto}}{\newlistof[chapter]{assunto}{aaa}{\listassunto}}%
+\@ifundefined{chapter}
+ {\newlistof[section]{subject}{aaa}{\listsubject}}
+ {\newlistof[chapter]{subject}{aaa}{\listsubject}}%
 %%
-\newcommand{\hxassunto}[2][\cor@assunto]{%
-    \refstepcounter{assunto}%
+\newcommand{\hxsubject}[2][\cor@subject]{%
+    \refstepcounter{subject}%
     \sethlcolor{#1}%
     \hl{#2}%
     \par%
-    \addcontentsline{aaa}{assunto}{\protect\numberline{\theassunto}{#2}}%
+    \addcontentsline{aaa}{subject}{\protect\numberline{\thesubject}{#2}}%
 }%
-\setlength{\cftassuntonumwidth}{2.5em}%
+\setlength{\cftsubjectnumwidth}{2.5em}%
 \else%
-%% se não é para mostrar, não faz nada
-\newcommand{\listofassunto}{}%
-\newcommand{\hxassunto}[2][]{}%
-\fi%| % @showassuntos
-\newcommand{\xassunto}[2][\cor@assunto]{\hxassunto[#1]{#2}}
-%%
+\newcommand{\listofsubject}{}%
+\newcommand{\hxsubject}[2][]{}%
+\fi%
 \if@showcomentario
 %% Resolve a lista de comentários
 \newcommand{\listcomentario}{\hxcommentstitle}%
 %% cria a lista
-\@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}%%
+\@ifundefined{chapter}
+{\newlistof[section]{comentario}{ccc}{\listcomentario}}
+{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}%%
 %%
 %% Comentador genérico - parte I
 %% faz o hxnote e soma na lista
@@ -331,26 +338,17 @@
 \newcommand{\hx@gensug}[7][]{#4}%
 \fi%
 \fi%
-%%
-%%
-%%
-%% reclamações sobre citações
-%%
-%%
 \if@showcomentario%
-%% cria o título
-\newcommand{\listcomentarioref}{Necessidades de Citação}%
-%% cria a lista
+\newcommand{\listcomentarioref}{\hxcitationstitle}%
 \@ifundefined{chapter}{ \newlistof[section]{comentarioref}{ccr}{\listcomentarioref}}{\newlistof[chapter]{comentarioref}{ccr}{\listcomentarioref}}%
 \else%
-%% se não é para mostrar, não faz nada
 \newcommand{\listofcomentarioref}{}%
 \fi%
 \if@showcomentario%
 \newcommand{\hx@commentref}[3][]{%
     \refstepcounter{comentarioref}%
     \hx@hll{#3}{#1}%
-    \hx@hxnote{#2}{#3}{Citar}%
+    \hx@hxnote{#2}{#3}{\hxpleasecitemarginnote}%
     \addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#2}}%
 }%
 \setlength{\cftcomentariorefnumwidth}{2.5em}%
@@ -358,8 +356,8 @@
 \newcommand{\hx@commentref}[3]{}%
 \fi%
 \if@showcomentario
-\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{%
-    \hx@commentref{Por favor citar #1}{\cor@citar}}%
+\newcommand{\favorcitar}[1][\hxpleasecitemessage]{%
+    \hx@commentref{\hxpleasecitetext \  #1}{\cor@citar}}%
 \else%
 \newcommand{\favorcitar}[1][]{}%
 \fi%
@@ -408,9 +406,8 @@
 }%
 \hxautor{prof}{red}{Prof}
 \hxautor{cand}{blue}{Cand}
-\hxautor{hx@todoauthor}{orange}{TO DO}%
+\hxautor{hx@todoauthor}{orange}{To do}%
 \newcommand{\hx@todobackgroundcolor}{orange}%
-\newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
 \newcommand{\todo}[2][comentar]{%
 \IfEq{inline}{#1}%
 {%
@@ -422,7 +419,10 @@
 \hx@todoauthor{#2}%
 }%
 }%
-\let\rascunho=\draft
+\newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
+\let\rascunho=\draft%
+\let\pleasecite=\favorcitar%
+\let\hxauthor=\hxautor%
 \endinput
 %%
 %% End of file `hacksxexeo.sty'.

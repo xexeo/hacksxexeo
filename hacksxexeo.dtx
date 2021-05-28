@@ -28,7 +28,7 @@
 \usepackage[edicao]{hacksxexeo}
 %%\usepackage{textcomp,url,a4wide,array}
 %%\usepackage[eso-foot,today,draft]{svninfo}
-\usepackage{xcolor}
+%%\usepackage{xcolor}
 \usepackage{datetime}
 \usepackage{hyperref}
 \hxautor{xexeo}{green}{Xexéo}
@@ -44,7 +44,7 @@
 %
 
 %
-\title{Código do Estilo hacksxexeo \hacksxexeoversion}
+\title{hacksxexeo \hacksxexeoversion}
 \author{Geraldo Xexéo}
 \date{\today\ - \ \currenttime}
 \GetFileInfo{hacksxexeo.sty}
@@ -58,6 +58,8 @@
     \newpage
     \PrintIndex
     \listofcomentario
+    \listofcomentarioref
+    \listofsubject
 \end{document}
 %</driver>
 % \fi
@@ -108,7 +110,7 @@
 %
 %Este pacote usa outro pacote que transforma o comportamento padrão do sumário e das listas no \LaTeX, que deixam de pular a página automaticamente. Não há por enquanto solução para esse problema, a não ser o óbvio: usar o comando \verb!\newpage! antes dos comandos \verb!\tableofcontents!, etc.
 %
-%Se você usar o pacote \verb!hyperref!, as listas podem ser clicadas para atingir o local do comentário.
+%Se você usar o pacote \verb!hyperref!\pleasecite, as listas podem ser clicadas para atingir o local do comentário.
 % \subsection{Informing user about versions}
 %
 % It is possible that the user wants to know the version
@@ -123,10 +125,11 @@
 % \subsection{Draft environment}
 % 
 % \DescribeEnv{draft}
-% The draft environment aims to allow writers to include text that is marked somehow as a draft.
+% The draft environment aims to allow writers to include text that is marked somehow as a draft. It was motivated because my students liked to hide text from me because ``it was only a draft'', but I need to have some way to measure if they were advancing. Marking text as a draft allowed them to be free of the fear of showing errors to me. We could also use it while writing papers, since we are not native language speakers. I see it most as a psychological support to writing without fear of making mistakes.
+%
 % This environment is evolving, looking for a good way to signal the draft status, due to the different interactions with the packages it uses and user's packages.
-% It has one optional parameter that names the draft. Its default value is ``draft''
-% Ir the |draft| option is not enabled, the text inside the title and the text inside the environment will not appear. The user should remember that some options will automatically turn on the |draft| option, such as the option |edicao|.
+% It has one optional parameter that names the draft. Its default value is ``Draft''
+% If the |draft| option is not enabled, the text inside the title and the text inside the environment will not appear. The user should remember that some options will automatically turn on the |draft| option, such as the option |edicao|.
 %
 %\begin{verbatim}
 %\begin{draft}[A draft title]
@@ -157,20 +160,24 @@
 %
 % This is to be done\prof{Comment}.
 %
+%\section{Subjects}
+%
+%\hxsubject{Example of a subject}
+%
 %\section{Warnings}
 % This package uses another package that changes \LaTeX's standard behavior for summary and lists. When you use it, you must explicitly change pages with |\newpage| 
 % before |\tableofcontents| or similar commands.
 %
-%%
-%%
-%%   
-%%
-%%
+% 
 %%
 % \StopEventually{End of Code}
 %%
-%% \section{Implementation}
-%% \subsection{Access to the current version}
+% \section{Implementation}
+% This package was initially written in Portuguese. As it become more
+% useful, it was translated to English. There are still some signs 
+% of this in the code.
+%
+% \subsection{Access to the current version}
 % We provide some macros for the user to know the version being used.
 % \begin{macro}{\hacksxexeoversion}
 % Provides current version of hacksxexeo
@@ -197,7 +204,7 @@
 \newif\if@showcomentario\@showcomentariofalse
 \newif\if@naoanonimizar\@naoanonimizarfalse
 \newif\if@showdraft\@showdraftfalse
-\newif\if@showassuntos\@showassuntosfalse
+\newif\if@showsubjects\@showsubjectsfalse
 \newif\if@showsugestao\@showsugestaofalse
 \newif\if@beanonymous\@beanonymousfalse
 \newif\if@showtodo\@showtodofalse
@@ -213,7 +220,7 @@
 \DeclareOption{anonimizar}{\@beanonymoustrue}
 \DeclareOption{naoanonimizar}{\@naoanonimizartrue}
 \DeclareOption{sugestion}{\@showsugestaotrue}
-\DeclareOption{assuntos}{\@showassuntostrue}
+\DeclareOption{assuntos}{\@showsubjectstrue}
 \DeclareOption{edicao}{\@modoedicaotrue}
 \DeclareOption{submeter}{\@modosubmetertrue}
 \DeclareOption{publicar}{\@modopublicartrue}
@@ -235,7 +242,7 @@
 \DeclareOption{anonimize}{\@beanonymoustrue}
 \DeclareOption{noanonimize}{\@naoanonimizartrue}
 \DeclareOption{sugestions}{\@showsugestaotrue}
-\DeclareOption{subjects}{\@showassuntostrue}
+\DeclareOption{subjects}{\@showsubjectstrue}
 \DeclareOption{drafts}{\@showdrafttrue}
 \DeclareOption{todos}{\@showtodotrue}
 \DeclareOption{editing}{\@modoedicaotrue}
@@ -247,10 +254,10 @@
 }
 \ProcessOptions\relax
 %    \end{macrocode}
-% \subsection{Fixing the Super Options}
+% \subsubsection{Fixing the Super Options}
 %    \begin{macrocode}
 \if@modoedicao
-\@showassuntostrue
+\@showsubjectstrue
 \@showdrafttrue
 \@showcomentariotrue
 \@showsugestaotrue
@@ -258,7 +265,7 @@
 \@showtodotrue
 \fi
 \if@modosubmeter
-\@showassuntosfalse
+\@showsubjectsfalse
 \@showdraftfalse
 \@showcomentariofalse
 \@showsugestaofalse
@@ -269,7 +276,7 @@
 \@beanonymousfalse
 \fi
 \if@modopublicar
-\@showassuntosfalse
+\@showsubjectsfalse
 \@showsugestaofalse
 \@showdraftfalse
 \@showcomentariofalse
@@ -285,7 +292,7 @@
 %\begin{itemize}
 %    \item xcolor - used to support colors 
 %    \item soulutf8 - this is a variation of soul, used for highlighting
-% \item ulem - used to support strikethrought
+% \item ulem - used to support strikethrought\todo{I must complete this explanation list}
 %\end{itemize}
 %    \begin{macrocode}
 \RequirePackage{xcolor}
@@ -298,7 +305,7 @@
 \RequirePackage{csquotes}
 \RequirePackage{mdframed}
 %    \end{macrocode}
-% \section{Optional Packages}
+% \subsection{Optional Packages}
 % Package that are required only sometimes
 %    \begin{macrocode}
 \ifshowednotes
@@ -321,15 +328,16 @@
 % |hyperref| must always be the last
 \ifednotebookmarks\RequirePackage{hyperref}\fi
 %    \end{macrocode}
-% \subsection{Variáveis relacionadas a cores}
+% \subsection{Color related variables}
 %    \begin{macrocode}
 \newcommand{\cor@prof}{red}%
 \newcommand{\cor@cand}{blue}%
-\newcommand{\cor@assunto}{green}%
+\newcommand{\cor@subject}{green}%
 \newcommand{\cor@citar}{purple}%
 \newcommand{\cor@hldraft}{yellow}%
 %    \end{macrocode}
-% \subsection{I18N Using Babel}
+%
+% \subsection{I18N Almost Using Babel}
 % We can detect if babel is enable and allow for some languages.
 % If you want to use another language, you must set new values
 % for the command |\hxdrafttitle|.
@@ -339,32 +347,52 @@
 % but up to now this seems to be the easiest way of doing it.
 %
 % The advantage of this way is that any user can |\renewcommand{\hxdrafttitle}{some text}|.
-% \begin{macro}{\hxdrafttitle}
 %    \begin{macrocode}
+\def\hxdrafttitle{Standard Draft}%
+\def\hxcommentstitle{Standard List of Comments}%
+\def\hxsubjtitle{Standard List of Subjects}%
+\def\hxcitationstitle{Standard List of Citation Needs}%
+\def\hxpleasecitetext{Plese cite}
+\def\hxpleasecitemessage{something to support this information}
+\def\hxpleasecitemarginnote{Cite}%
+%
 \@ifpackageloaded{babel}%
 {%
-    \IfLanguageName{brazilian}{\def\hxdrafttitle{draft}}{}%
-    \IfLanguageName{portuguese}{\def\hxdrafttitle{draft}}{}%
-    \IfLanguageName{english}{\def\hxdrafttitle{Draft}}{}%
-    \IfLanguageName{brazilian}{\def\hxcommentstitle{Lista de Comentários}}{}%
-    \IfLanguageName{portuguese}{\def\hxcommentstitle{Lista de Comentários}}{}%
-    \IfLanguageName{english}{\def\hxcommentstitle{List of Comments}}{}%
-    \IfLanguageName{brazilian}{\def\hxsugstitle{Lista de Sugestões}}{}%
-    \IfLanguageName{portuguese}{\def\hxsugstitle{Lista de Sugestões}}{}%
-    \IfLanguageName{english}{\def\hxsugstitle{List of Suggestions}}{}%
-    \IfLanguageName{brazilian}{\def\hxsubjtitle{Lista de Assuntos}}{}%
-    \IfLanguageName{portuguese}{\def\hxsubjtitle{Lista de Assuntos}}{}%    \IfLanguageName{english}{\def\hxsubjtitle{List of Subjects}}{}%
-            
-    \message{Babel detected!}
-}{%
-    \def\hxdrafttitle{Draft}%
-    \def\hxcommentstitle{List of Comments}%
-    \def\\hxsugstitle{List of Suggestions}%
-    \def\hxsubjtitle{List of Subjects}%
-    \message{No Babel!}
+    \IfLanguageName{brazilian}%
+    {%
+        \def\hxdrafttitle{draft}%
+        \def\hxcommentstitle{Lista de Comentários}%
+        \def\hxsubjtitle{Lista de Assuntos}%
+        \def\hxcitationstitle{Necessidades de Citação}%        
+        \def\hxpleasecitetext{Favor citar}%
+        \def\hxpleasecitemessage{alguma coisa que suporte este texto}%
+        \def\hxpleasecitemarginnote{Citar}%
+    }{}%
+%    
+    \IfLanguageName{portuguese}%
+    {%
+        \def\hxdrafttitle{draft}%
+        \def\hxcommentstitle{Lista de Comentários}%
+        \def\hxsubjtitle{Lista de Assuntos}%
+        \def\hxcitationstitle{Necessidades de Citação}%        
+        \def\hxpleasecitetext{Favor citar}%
+        \def\hxpleasecitemessage{alguma coisa que suporte este texto}%
+        \def\hxpleasecitemarginnote{Citar}%
+    }{}%
+%    
+    \IfLanguageName{english}%
+    {%
+        \def\hxdrafttitle{Draft}%
+        \def\hxcommentstitle{List of Comments}%
+        \def\hxsubjtitle{List of Subjects}%
+        \def\hxcitationstitle{List of Citation Needs}%
+        \def\hxpleasecitetext{Plese cite}
+        \def\hxpleasecitemessage{something to support this information}
+        \def\hxpleasecitemarginnote{Cite}%
+    }{}%
 }%
+{}%
 %    \end{macrocode}
-% \end{macro}
 % \subsection{ed inspired code}
 % This code, inspired in the |ed| package, makes the basic mechanism for 
 % inserting comments as footnotes with an observation in the margin.
@@ -429,24 +457,26 @@
 %% CORES
 %    \end{macrocode}
 % \begin{macro}{\corleve}
-% Esse comando faz uma cor ficar mais clara para o hilight
-% Isso é um truque para o \hl do soulutf8 funcionar
+% Make a color lighter for later use in highlightings
+% This code is more complex than it shuould be because o |soulutf8|'s package |\hl| behavior. Solution found in: 
 % \url{https://tex.stackexchange.com/questions/410295/soul-color-transparency}
 %    \begin{macrocode}
 \newcommand{\cor@suavizacao}{40}%
 \newcommand{\corleve}[1]{#1!\cor@suavizacao!white}
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{\hx@hll}
+% Light highlight makes a |\hl| that is lighter
 %    \begin{macrocode}
-%% Problema de dar cor para o soul pode ser resolvido
-%% Aqui mudando para o ulem
 \newcommand{\hx@hll}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
 \sethlcolor{x@coraqui}%
 \hl{#2}
-%% \colorbox{\corleve{#1}}{#2} 
 }%
-%% isolando o ednote
+%    \end{macrocode}
+% \end{macro}
+% Isolating hxnote
+%    \begin{macrocode}
 %% rótulo texto cor indicador
 \newcommand{\hx@hxnote}[4][]{%
 \hxnotelabel{#4}%
@@ -456,14 +486,37 @@
 }%
 %    \end{macrocode}
 % \subsection{Anonimization}
-% Will write anonymous or cite anonymous
+% Will write anonymous or cite anonymous. 
+% The user has a way to configure the citation as he or she wants.
+% \begin{macro}{\hx@anoncitetext}
+% \begin{macro}{\hx@anonciteptext}
+% \begin{macro}{\hx@anoncitettext}
+%
+% Default values for anonymous citation.
+%
 %    \begin{macrocode}
 \newcommand{\hx@anoncitetext}{(Anonymous, Year)}%
 \newcommand{\hx@anonciteptext}{(Anonymous, Year)}%
 \newcommand{\hx@anoncitettext}{Anonymous (Year)}%
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \begin{macro}{\hxdefanoncitetext}
+% \begin{macro}{\hxdefanonciteptext}
+% \begin{macro}{\hxdefanoncitettext}
+% These macros allow to define how anonymous citations will appear is
+% anonymous mode is activated. For exemplo, one can change all the
+% citation formats to |[0]|.
+%    \begin{macrocode}
 \newcommand{\hxdefanoncitetext}[1]{\renewcommand{\hx@anoncitetext}{#1}}%
-\newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}%
+\newcommand{\hxdefanonciteptext}[1]{\renewcommand{\hx@anonciteptext}{#1}}
 \newcommand{\hxdefanoncitettext}[1]{\renewcommand{\hx@anoncitettext}{#1}}%
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%    \begin{macrocode}
 \if@beanonymous
 \newcommand{\hxanon}[1]{Anonymous}%
 \newcommand{\hxanoncite}[2][]{\hx@anoncitetext}%
@@ -484,38 +537,36 @@
 % The idea of subjects is to have one subject for each paragraph
 % Currently is just a list of subjects and and a highlight
 %    \begin{macrocode}
-\if@showassuntos
-%% Cria a lista
-%% cria o título
-\newcommand{\listassunto}{\hxsubjtitle}%
+\if@showsubjects
+\newcommand{\listsubject}{\hxsubjtitle}%
 %% cria a lista, depende do pacoto tcloft
- \@ifundefined{chapter}{\newlistof[section]{assunto}{aaa}{\listassunto}}{\newlistof[chapter]{assunto}{aaa}{\listassunto}}%
+\@ifundefined{chapter}
+ {\newlistof[section]{subject}{aaa}{\listsubject}}
+ {\newlistof[chapter]{subject}{aaa}{\listsubject}}%
 %%
-\newcommand{\hxassunto}[2][\cor@assunto]{%
-    \refstepcounter{assunto}%
+\newcommand{\hxsubject}[2][\cor@subject]{%
+    \refstepcounter{subject}%
     \sethlcolor{#1}%
     \hl{#2}%
     \par%
-    \addcontentsline{aaa}{assunto}{\protect\numberline{\theassunto}{#2}}%
+    \addcontentsline{aaa}{subject}{\protect\numberline{\thesubject}{#2}}%
 }%
-\setlength{\cftassuntonumwidth}{2.5em}%
+\setlength{\cftsubjectnumwidth}{2.5em}%
 \else%
-%% se não é para mostrar, não faz nada
-\newcommand{\listofassunto}{}%
-\newcommand{\hxassunto}[2][]{}%
-\fi%| % @showassuntos
-\newcommand{\xassunto}[2][\cor@assunto]{\hxassunto[#1]{#2}}
-%%
+\newcommand{\listofsubject}{}%
+\newcommand{\hxsubject}[2][]{}%
+\fi%
 %    \end{macrocode}
-% \subsection{Editoria Comments}
-% The idea of subjects is to have one subject for each paragraph
-% Currently is just a list of subjects and and a highlight
+% \subsection{Editorial Comments}
+% The main subject of this package
 %    \begin{macrocode}
 \if@showcomentario
 %% Resolve a lista de comentários
 \newcommand{\listcomentario}{\hxcommentstitle}%
 %% cria a lista
-\@ifundefined{chapter}{\newlistof[section]{comentario}{ccc}{\listcomentario}}{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}%%
+\@ifundefined{chapter}
+{\newlistof[section]{comentario}{ccc}{\listcomentario}}
+{\newlistof[chapter]{comentario}{ccc}{\listcomentario}}%%
 %%
 %% Comentador genérico - parte I
 %% faz o hxnote e soma na lista
@@ -595,28 +646,22 @@
 \fi%
 \fi%
 %    \end{macrocode}
-% \subsection{Creating Authors}
+% \subsection{Citations Needed}
+% One common error of students is not to cite correctly.
+% Citation errors are so common that I decided to provide the option to have an optional list just for them.
+% They are enable together with commentaries, users can use them or not.
 %    \begin{macrocode}
-%%
-%%
-%%
-%% reclamações sobre citações
-%%
-%%
 \if@showcomentario%
-%% cria o título
-\newcommand{\listcomentarioref}{Necessidades de Citação}%
-%% cria a lista
+\newcommand{\listcomentarioref}{\hxcitationstitle}%
 \@ifundefined{chapter}{ \newlistof[section]{comentarioref}{ccr}{\listcomentarioref}}{\newlistof[chapter]{comentarioref}{ccr}{\listcomentarioref}}%
 \else%
-%% se não é para mostrar, não faz nada
 \newcommand{\listofcomentarioref}{}%
 \fi%
 \if@showcomentario%
 \newcommand{\hx@commentref}[3][]{%
     \refstepcounter{comentarioref}%
     \hx@hll{#3}{#1}%
-    \hx@hxnote{#2}{#3}{Citar}%
+    \hx@hxnote{#2}{#3}{\hxpleasecitemarginnote}%
     \addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#2}}%
 }%
 \setlength{\cftcomentariorefnumwidth}{2.5em}%
@@ -624,8 +669,8 @@
 \newcommand{\hx@commentref}[3]{}%
 \fi%
 \if@showcomentario
-\newcommand{\favorcitar}[1][algo que suporte essa afirmação]{%
-    \hx@commentref{Por favor citar #1}{\cor@citar}}%
+\newcommand{\favorcitar}[1][\hxpleasecitemessage]{%
+    \hx@commentref{\hxpleasecitetext \  #1}{\cor@citar}}%
 \else%
 \newcommand{\favorcitar}[1][]{}%
 \fi%
@@ -636,7 +681,7 @@
 %% Changebar foi removido porque é ruim
 %% 
 %    \end{macrocode}
-% \begin{macro}{draft}
+% \begin{environment}{draft}
 % This macro creates a boxed text, with title used as a first parameter
 % It uses package |mdframed| to create the frame.
 % If draft is turned off as an option, it supress everything inside the body.
@@ -658,8 +703,11 @@
 \NewEnviron{draft}[1][]{}{}%
 \fi%
 %    \end{macrocode}
-% \end{macro}
+% \end{environment}
 % \subsection{Powerful command to create editors and authors}
+% This allows for many types of comments. This was the reason I started
+% using a front-end to |ed|, and later decided to use colors, that |ed| dones not support.
+% If I had known of |color-edits|, maybe this package was never done. I actually implemented the same functionalities without knowing about that package. One day, looking for other editorial packages that used editorial symbols, I found |color-edits|, but it was too late, I was already hooked on \LaTeX\  programming addiction.
 %% nome do autor, cor, identificador
 % \begin{macro}{\hxautor}
 %    \begin{macrocode}
@@ -691,15 +739,19 @@
 \hxautor{cand}{blue}{Cand}
 %    \end{macrocode}
 % \end{macro}
+% \subsection{To do notes}
+% This was developed because some of my students started a text using |todonotes|, before being aware of my package, therefore I need to have some compatibility to make de change. With time it became useful and I will try to make something better in the future.
 % \begin{macro}{\todo}
 % Fazendo um todo do todonotes simples. 
 %
 % If option inline is not used, it is only a front-end to 
-% an editorial comment.
+% an editorial comment for a user called ``To do''. If it is used, it tries to simulate
+% the simplest behavior of |todonotes| package.
+% In the future this can be enhanced, since package |mdframe| is very powerful.
+% If the non-inline version is used, the to do note will not appear in the List of Commentaries.
 %    \begin{macrocode}
-\hxautor{hx@todoauthor}{orange}{TO DO}%
+\hxautor{hx@todoauthor}{orange}{To do}%
 \newcommand{\hx@todobackgroundcolor}{orange}%
-\newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
 \newcommand{\todo}[2][comentar]{%
 \IfEq{inline}{#1}%
 {%
@@ -713,9 +765,19 @@
 }%
 %    \end{macrocode}
 % \end{macro}
-%  \subsection{Portuguese Commands}
+% \begin{macro}{\hxdefinetodocolor}
+% Allows the definition of a background color for todo notes.
 %    \begin{macrocode}
-\let\rascunho=\draft
+\newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
+%    \end{macrocode}
+% \end{macro}
+%  \subsection{Portuguese/English, or inverse translation table}
+% These next lines of code made easy to convert this package to English, because it was written in Portuguese, for Brazilian researchers.
+% Some commands were rewritten in English with time, such as |rascunho|, but the Portuguese version will always be maintained, while other were translated using only his mechanism.
+%    \begin{macrocode}
+\let\rascunho=\draft%
+\let\pleasecite=\favorcitar%
+\let\hxauthor=\hxautor%
 %    \end{macrocode}
 % \Finale
 %
