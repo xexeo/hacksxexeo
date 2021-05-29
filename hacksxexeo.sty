@@ -22,6 +22,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \def\hx@version{v4.4.0}
 \ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
+    %based on other implementations of to do in different packages.}
 \newcommand{\hacksxexeoversion}{\hx@version}%
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%
 %%
@@ -419,8 +420,8 @@
 \expandafter\newcommand\csname#1swap\endcsname[3][]%
 {\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
 }%
-\hxautor{hxprof}{red}{Prof}
-\hxautor{hxcand}{blue}{Cand}
+\hxautor{hxauthor}{red}{Author}
+\hxautor{hxeditor}{blue}{Editor}
 \hxautor{hx@todoauthor}{orange}{To do}%
 \newcommand{\hx@todobackgroundcolor}{orange}%
 \newcommand{\todo}[2][comentar]{%
@@ -438,7 +439,7 @@
 \let\rascunho=\hxdraft%
 \let\hxassunto=\hxsubject%
 \let\pleasecite=\favorcitar%
-\let\hxauthor=\hxautor%
+\let\hxnamedef=\hxautor%
 \let\listofcomments=\listofcomentario%
 \let\listofcitationneeds=\listofcomentarioref%
 \let\listofassunto=\listofsubject%

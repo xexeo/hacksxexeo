@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[T1]{fontenc}
+\usepackage{mlmodern}
 \usepackage{csquotes}
 \usepackage[brazilian]{babel}
 \usepackage{xcolor}
@@ -64,9 +64,9 @@ style=ext-authoryear-comp
         \item Ativar as opções desejadas entre\footnote{A funcionalidade |biblatex| foi removida por não ser necessária como foi planejada, apoiar o uso do pacote |CoppeTeX|}:
         \begin{enumerate}
             \item \verb!assuntos!, que cria cabeçalhos para parágrafos para indicar do que falam.
-            \item \verb!comentarios!, que permite comentários editoriais com os comandos |\cand{}|, |\candr|, e outros.
+            \item \verb!comentarios!, que permite comentários editoriais com os comandos |\hxcand{}|, |\hxcandr|, e outros.
             \item \verb!rascunhos!, que cria um ambiente marcado como rascunho.
-            \item \verb!sugestoes!, que permite usar comandos que inserem |\candsug|, removem |\candrem| e trocam texto marcado |\candtroca|.
+            \item \verb!sugestoes!, que permite usar comandos que inserem |\hxcandsug|, removem |\hxcandrem| e trocam texto marcado |\hxcandtroca|.
             \item \verb!anonimizar!, que ativa comandos de anonimização de nomes e citações para usar em artigos a serem submetidos.
             \item |todo|, que imita o comando todonotes.
             \item |edicao|, não importa que opções foram ativadas ou não, a opção draft ativará as opções |assuntos|, |comentarios|, |rascunhos| e |sugestoes|.
@@ -154,14 +154,14 @@ style=ext-authoryear-comp
     
     Vários comandos foram criados, mas os que devem ser usados são:
     \begin{enumerate}
-        \item \verb!\prof[texto a colorir]{comentário}!, pelo professor, ou
-        \item \verb!\profr[texto a colorir]{comentário}{rótulo}!, pelo professor, que permite dar um rótulo ao comentário, que deve ser único,
-        \item \verb!\cand[texto a colorir]{comentário}!, pelo candidato.
-        \item \verb!\candr[texto a colorir]{comentário}{rótulo}!, pelo candidato, que permite dar um rótulo ao comentário, que deve ser único,
+        \item \verb!\hxprof[texto a colorir]{comentário}!, pelo professor, ou
+        \item \verb!\hxprofr[texto a colorir]{comentário}{rótulo}!, pelo professor, que permite dar um rótulo ao comentário, que deve ser único,
+        \item \verb!\hxcand[texto a colorir]{comentário}!, pelo candidato.
+        \item \verb!\hxcandr[texto a colorir]{comentário}{rótulo}!, pelo candidato, que permite dar um rótulo ao comentário, que deve ser único,
         \item \verb!\favorcitar[instrução adicional]!, que pede uma citação, possivelmente com instruções adicionais.
-        \item |\profx[texto a colorir]{comentário}| que mostra um comentário pelo professor \textit{striked-out}, para mostrar que foi tratado
-        \item |\candx[texto a colorir]{comentário}| que mostra um comentário pelo candidato \textit{striked-out}, para mostrar que foi tratado
-        \item |\profrx| e |\candrx| que também mostram comentários com rótulos e \textit{striked-out}
+        \item |\hxprofx[texto a colorir]{comentário}| que mostra um comentário pelo professor \textit{striked-out}, para mostrar que foi tratado
+        \item |\hxcandx[texto a colorir]{comentário}| que mostra um comentário pelo candidato \textit{striked-out}, para mostrar que foi tratado
+        \item |\hxprofrx| e |\hxcandrx| que também mostram comentários com rótulos e \textit{striked-out}
     \end{enumerate}
     
     Os comentários podem ser listados com o comando \verb!\listofcomentario!.
@@ -171,14 +171,14 @@ style=ext-authoryear-comp
     \message{****************Examplar comentarios agora}
     \subsection{Exemplos}
     
-    O primeiro exemplo é simples, apenas um comentário do professor\prof{Primeiro comentário é simples.}.
-    O segundo comentário terá \prof[uma parte colorida]{O segundo exemplo é com uma parte marcada}.
+    O primeiro exemplo é simples, apenas um comentário do professor\hxprof{Primeiro comentário é simples.}.
+    O segundo comentário terá \hxprof[uma parte colorida]{O segundo exemplo é com uma parte marcada}.
     
     A marcação é suavizada em relação a cor definida. Atualmente o valor é de \makeatletter$\cor@suavizacao\%$\makeatother.
     
-    Um comentário do candidato é similar professor\cand{Primeira comentário do candidato é simples.}. A segunda citação tera \cand[uma parte colorida]{O quarto exemplo é com uma parte marcada}.
+    Um comentário do candidato é similar professor\hxcand{Primeira comentário do candidato é simples.}. A segunda citação tera \hxcand[uma parte colorida]{O quarto exemplo é com uma parte marcada}.
     
-    Finalmente, os rotulados, tanto para professor\profr{Exemplo rotulado}{Rot1}, como para candidato\candr{Olha a resposta}{Resposta para Rot1}. Que permitem também as versões \profr[com marcação]{Exemplo rotulado 2}{Rot2}, para \candr[ambos]{Olha a resposta 2}{Resposta para Rot2}.
+    Finalmente, os rotulados, tanto para professor\hxprofr{Exemplo rotulado}{Rot1}, como para candidato\hxcandr{Olha a resposta}{Resposta para Rot1}. Que permitem também as versões \hxprofr[com marcação]{Exemplo rotulado 2}{Rot2}, para \hxcandr[ambos]{Olha a resposta 2}{Resposta para Rot2}.
     
     Uma referência pode ser pedida em um lugar sem\favorcitar, ou com\favorcitar[o experimento] comentário.
     
@@ -224,12 +224,12 @@ Um tipo especial de comentários são as sugestões.
 
 Elas funcionam com uma lógica diferente dos comentários nos parâmetros, onde o comentário é opcional.
 
-Este parágrafo \profsug[Uma sugestão para inserir]{tem uma sugestão com comentário} e 
-uma \profsug{sem comentário, ficando só a marca no texto, e não indo para a lista de comentários}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \profrem[Aqui remove]{remover} ou \proftroca[trocando a palavra]{cambiar}{trocar.}
+Este parágrafo \hxprofsug[Uma sugestão para inserir]{tem uma sugestão com comentário} e 
+uma \hxprofsug{sem comentário, ficando só a marca no texto, e não indo para a lista de comentários}, usando o comando \verb*|\hxprofsug|, que só tem uma inserção de texto. Também é possível \hxprofrem[Aqui remove]{remover} ou \hxproftroca[trocando a palavra]{cambiar}{trocar.}
 
 Isso também pode ser feito com os nomes definidos. 
 Este parágrafo \xexeosug[Uma sugestão para inserir]{tem uma sugestão com comentário} e 
-uma \xexeosug{sem comentário, ficando só a marca no texto, e não indo para a lista de comentários\label{sug:com1}}, usando o comando \verb*|\profsug|, que só tem uma inserção de texto. Também é possível \xexeorem[Aqui remove]{remover} ou \xexeotroca[trocando a palavra]{cambiar}{trocar.}
+uma \xexeosug{sem comentário, ficando só a marca no texto, e não indo para a lista de comentários\label{sug:com1}}, usando o comando \verb*|\hxprofsug|, que só tem uma inserção de texto. Também é possível \xexeorem[Aqui remove]{remover} ou \xexeotroca[trocando a palavra]{cambiar}{trocar.}
 
 Esse comando pode incluir citações \xexeorem{como \cite{Juran2010}, \citet{Juran2010}, ou  \citep{Juran2010} e referências, como  aos comentários}. 
 Referências %\xexeorem{\protect\autoref{sec:com}},
@@ -296,7 +296,7 @@ ou um parágrafo
         \item Se um texto sugerido quebrar a linha, o comentário pode ficar  da mesma cor  do texto. 
         \item |\autoref| quebra no meio de uma remoção.
         \item |\citet| quebrou em um exemplo com pdflatex, mas não com lualatex.
-        \item |\todo| e comentários como |\cand| e |\prof| não podem usar |verbatim| no texto.
+        \item |\todo| e comentários como |\hxcand| e |\hxprof| não podem usar |verbatim| no texto.
         \item uso do pacote |paralist| dá problema com |enumerate|, pacote retirado do |hacksxexeo|, efeitos não são previsíveis.
         \item Em algumas ocasiões, há espaço demais entre as notas de margem.
     \end{itemize}
