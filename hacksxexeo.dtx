@@ -24,21 +24,23 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{csquotes}
-\usepackage[english]{babel}
-\usepackage[edicao]{hacksxexeo}
-%%\usepackage{textcomp,url,a4wide,array}
-%%\usepackage[eso-foot,today,draft]{svninfo}
-%%\usepackage{xcolor}
+\usepackage[brazilian,english]{babel}
 \usepackage{datetime}
 \usepackage{indentfirst}
 \usepackage{enumitem}
 \setlist{noitemsep}
 \setlength{\parskip}{0.5em}
 \usepackage{tocbasic} % for the next 3 commands
-\DeclareTOCStyleEntry[numwidth=25pt]{tocline}{figure}
-\DeclareTOCStyleEntry[numwidth=25pt]{tocline}{section}
-\DeclareTOCStyleEntry[numwidth=25pt]{tocline}{subsection}
+\DeclareTOCStyleEntry[numwidth=35pt]{tocline}{figure}
+\DeclareTOCStyleEntry[numwidth=35pt]{tocline}{section}
+\DeclareTOCStyleEntry[numwidth=35pt]{tocline}{subsection}
 \usepackage{marvosym}
+\usepackage[backend=biber,style=alphabetic,natbib]{biblatex}
+\addbibresource{hacksxexeo.bib}
+\usepackage[edicao]{hacksxexeo}
+%%\usepackage{textcomp,url,a4wide,array}
+%%\usepackage[eso-foot,today,draft]{svninfo}
+%%\usepackage{xcolor}
 \usepackage{hyperref}
 \hxautor{xexeo}{red}{Xexéo}
 %
@@ -51,7 +53,7 @@
 \DoNotIndex{\immediate,\openout,\closeout,\message,\typeout}
 \DoNotIndex{\section,\scshape,\arabic}
 %
-
+%
 %
 \title{hacksxexeo \hacksxexeoversion}
 \author{Geraldo Xexéo}
@@ -62,12 +64,15 @@
 \MakeShortVerb{\|}
 \begin{document}
     \DocInput{hacksxexeo.dtx}
+    \printbibliography
     \newpage
     \PrintChanges
     \newpage
     \PrintIndex
     \listofcomments
+    \newpage
     \listofcitationneeds
+    \newpage
     \listofsubject
 \end{document}
 %</driver>
@@ -107,23 +112,37 @@
 %
 %\section{Introduction}
 %
-% This package supports editorial comments and gives some extra support for writing papers.
-% It picks ideas from different packages, such as |ed|, |color-edits|, and |todonotes|, and from my practice writing papers and supervising thesis. 
+% This package supports editorial comments and gives some extra support for writing papers, or any document that involves more than one author or editor.
+%
+% In this document\xexeo[the reader will see some uses]{This is an exemple of using this package to make a comment with highlighted text} of the package, since it is distributted with the |editing| option turned on. A final version, with no comments, would be used with the |publish| option. 
+% 
+% \section{How to get hacksxexeo}
+%
+% It is available as open source at \url{https://github.com/xexeo/hacksxexeo}. 
+%
+%You can make suggestions using GitHub's ``Issues'' feature.
+%
+% \subsection{A bit of context}
 %
 % |hacksxexeo| was written to support my way of working, and received  
 % suggestions from my students. The starting goal was to build only a front-end to put together other packages, but with time, and the difficulty to make differente packages with commands that have the same name work together, it grow in scope.
 %
-% It is available as open source at \url{https://github.com/xexeo/hacksxexeo}. You can make suggestions using GitHub's ``Issues'' feature.
-%
+% It picks ideas from different packages, such as |ed|\citep{ed}, |color-edits|\citep{color-edits}, and |todonote|\citep{todonotes}, and from my practice writing papers and supervising thesis.  
 % As it is my first package, \TeX\  and \LaTeX\  programming is sometimes naive. However, due to the large amount of available code, and sites as StackExchange, this is not a rule. You can also use GitHub to complain about bugs.
 %
-% In this document\xexeo[the reader will see some uses]{This is an exemple of using this package to make a comment with highlighted text} of the package, since it is distributted with the |editing| option turned on. A final version, with no comments, would be used with the |publish| option. 
-% 
+% \section{The Portuguese origin}
+%
+% Originally, |hacksxexeo| was written in Portuguese. The Portuguese commands are still available.
+%
 % \section{Package Options}
 %
-% There are two types of options. The first type enable specific commands, such as 
-% the |draft| command. They are named \textit{command oriented options}. The second type  represent a state
+% There are two types of options. The first type enables the visualization of the result of specific macros or environmnets, such as 
+% the |hxdraft| environment. They are named \textit{command oriented options}. 
+%
+%
+%The second type  represent a state
 % of the text, which can be editing (a continuos state), submit, or publish, and some variations. They are named \textit{state oriented options}.
+%
 % If they appear together, state oriented commands have precedence over the others. The user should avoid mixing them.
 %
 %
@@ -131,7 +150,7 @@
 % \begin{itemize}
 %    \item |subjects|, \DescribeMacro{subjects} enables the use of |\subject|, which is proposed as a paragraph heading describing its subject;
 %    \item |comments|,\DescribeMacro{comments} enables all editorial comments and the command |\pleasecite|;
-%    \item |drafts|,\DescribeMacro{drafts} enables the |\draft| command;
+%    \item |drafts|,\DescribeMacro{drafts} enables the |\hxdraft| command;
 %    \item |suggestions|,\DescribeMacro{suggestions} enables the comments definided in the suggestion section of this text.
 %    \item |anonymize|,\DescribeMacro{anonymize} enables anonimization commands, and
 %    \item |todos|,\DescribeMacro{todos} enables the to do family of  commands.
@@ -146,10 +165,21 @@
 % \item |editing|, \DescribeMacro{editing} enables |subjects|, |comments|, |drafts| and |suggestions|.
 % \end{itemize}
 %
+% \subsection{General behavior}
+%
+% The general behavior of this package is to provide different 
+% ways of marking your text, for example with comments, to do notes, that can be totally supressed when desired. Mostly, this can be easilly done using one the the 3 main text states: editing, submit and publish. 
+%
 % 
-% Users should use the |editing| state most of the time. When submitting, the |submit| state will provide 
-% a clean article, without any comments. Most of the times the article should be anonymized,
+% Users should use the |editing| state most of the time. In this state, all
+% marking will appear and the anonymization will be off.
+%
+% When submitting, the |submit| state will provide 
+% a clean article, without any markings. Most of the times the article should be anonymized,
 % but if this is not enforced, it is possible to use the options |submit| and |noanonymize| together. |publish| will never anonymize.
+%
+% The goal is to make the |submit| and |publish| documents states minimally
+% invasive, to avoid any clash with publishers' styles. A clash will be considered a bug, and should be reported to the authors.
 %
 %
 %\section{Version}
@@ -175,6 +205,8 @@
 %
 %\printhacksxexeoversion
 %
+% Please state the version when reporting bugs.
+%
 %\section{Editorial comments}
 %
 % This is the main reason of this package.
@@ -187,7 +219,7 @@
 % \subsection{Creating authors}
 % 
 % \DescribeMacro{\hxauthor}
-% This macro creates a series of commands based on the desired base command name. The command name is, usually, the name of the author or his/her function in the work being done.
+% This macro creates a series of commands based on a desired base command name. The command name is, usually, the name of the author or his/her function in the work being done.
 %
 %  The syntax is:
 %
@@ -206,11 +238,11 @@
 % be identified with ``Xexéo''\xexeo{This is the example of the minimal use of an editorial command}.
 %
 %
-% The \meta{name} and \meta{author-name} are different to support for short command names and characters not supported in \LaTeX\  commands. Therefore, if you name is \textit{Gutemberg} you can create a family of commenting comments based on |\gut|, but use ``Gutemberg'' as your identifier.
+% The \meta{name} and \meta{author-name} are different to support short command names and characters not supported in \LaTeX\  macros. Therefore, if you name is \textit{Gutemberg} you can create a family of commenting macros based on |\gut|, but use ``Gutemberg'' as your identifier.
 %
 %
-% \DescribeMacro{prof}\DescribeMacro{cand} 
-% Some authors are pre-defined in the style, |prof| and |cand|, to represent the professor and the graduate candidate. 
+% \DescribeMacro{\hxprof}\DescribeMacro{\hxcand} 
+% Two authors are pre-defined in the style, |hxprof| and |hxcand|, to represent the professor and the graduate candidate. 
 %
 % \subsection{Available commands}
 %
@@ -219,26 +251,26 @@
 % \subsubsection{Comments}
 %
 % \DescribeMacro{\<name>}
-% \DescribeMacro{\prof}
-% \DescribeMacro{\cand}
+% \DescribeMacro{\hxprof}
+% \DescribeMacro{\hxcand}
 % |\<name>| \oarg{selection}\marg{footnote comment} 
 %
-% |\prof| \oarg{selection}\marg{footnote comment}
+% |\hxprof| \oarg{selection}\marg{footnote comment}
 %
-% |\cand| \oarg{selection}\marg{footnote comment}  
+% |\hxcand| \oarg{selection}\marg{footnote comment}  
 %
-% These commands will make a comment in the form of a footnote\prof{Simplest footnote comment}. It can also be used to \cand[highlight some text]{Comment with highlighting}.
+% These commands will make a comment in the form of a footnote\hxprof{Simplest footnote comment}. It can also be used to \hxcand[highlight some text]{Comment with highlighting}.
 %
 % \DescribeMacro{\<name>r}
-% \DescribeMacro{\profr}
-% \DescribeMacro{\candr}
+% \DescribeMacro{\hxprofr}
+% \DescribeMacro{\hxcandr}
 % |\<name>r| \oarg{selection}\marg{footnote comment}\marg{label}
 %
-% |\profr| \oarg{selection}\marg{footnote comment}\marg{label}
+% |\hxprofr| \oarg{selection}\marg{footnote comment}\marg{label}
 %
-% |\candr| \oarg{selection}\marg{footnote comment}\marg{label}
+% |\hxcandr| \oarg{selection}\marg{footnote comment}\marg{label}
 %
-% This command will make a comment in the form of a labeled footnote\profr{labeled footnote comment}{First label}. It can also be used to \profr[highlight some text]{labeled 
+% This command will make a comment in the form of a labeled footnote\hxprofr{labeled footnote comment}{First label}. It can also be used to \hxprofr[highlight some text]{labeled 
 % comment with highlighting}{Yet Another label}. The label must be unique, since it is used as a \LaTeX\  |label| too.
 %
 %
@@ -252,28 +284,28 @@
 % 
 %
 % \DescribeMacro{\<name>x}
-% \DescribeMacro{\profx}
-% \DescribeMacro{\candx}
+% \DescribeMacro{\hxprofx}
+% \DescribeMacro{\hxcandx}
 % |\<name>x| \oarg{selection}\marg{footnote comment} 
 %
-% |\profx| \oarg{selection}\marg{footnote comment} 
+% |\hxprofx| \oarg{selection}\marg{footnote comment} 
 %
 % |\<cand>x| \oarg{selection}\marg{footnote comment} 
 %
-% This command will make a comment in the form of a footnote\candx{Simplest footnote 
-% comment}, however the comment is striked through. It can also be used to \profx[highlight some text]{Comment with highlighting}.
+% This command will make a comment in the form of a footnote\hxcandx{Simplest footnote 
+% comment}, however the comment is striked through. It can also be used to \hxprofx[highlight some text]{Comment with highlighting}.
 %
 % \DescribeMacro{\<name>rx}
-% \DescribeMacro{\profrx}
-% \DescribeMacro{\candrx}
+% \DescribeMacro{\hxprofrx}
+% \DescribeMacro{\hxcandrx}
 % |\<name>rx| \oarg{selection}\marg{footnote comment}\marg{label}
 %
-% |\profrx| \oarg{selection}\marg{footnote comment}\marg{label}
+% |\hxprofrx| \oarg{selection}\marg{footnote comment}\marg{label}
 %
-% |\candrx| \oarg{selection}\marg{footnote comment}\marg{label}
+% |\hxcandrx| \oarg{selection}\marg{footnote comment}\marg{label}
 %
 %
-% This command will make a comment in the form of a labeled footnote\profrx{labeled footnote comment}{Second label}, however the comment is striked through. It can also be used to \profrx[highlight some text]{labeled comment with highlighting}{New label}. The label must be unique, since it is used as a \LaTeX\  |label| too.
+% This command will make a comment in the form of a labeled footnote\hxprofrx{labeled footnote comment}{Second label}, however the comment is striked through. It can also be used to \hxprofrx[highlight some text]{labeled comment with highlighting}{New label}. The label must be unique, since it is used as a \LaTeX\  |label| too.
 %
 % \subsection{Text Modification - Suggestions}
 % Sometimes one of the authors wants to insert, remove or edit some
@@ -281,51 +313,51 @@
 % he or she can make a suggestion, that will appear with his or her color.
 %
 % \DescribeMacro{\<name>sug}
-% \DescribeMacro{\profsug}
-% \DescribeMacro{\candsug}
+% \DescribeMacro{\hxprofsug}
+% \DescribeMacro{\hxcandsug}
 % |\<name>sug|\oarg{comment}\marg{suggested text}
 %
-% |\profsug|\oarg{comment}\marg{suggested text}
+% |\hxprofsug|\oarg{comment}\marg{suggested text}
 %
-% |\candsug|\oarg{comment}\marg{suggested text}
+% |\hxcandsug|\oarg{comment}\marg{suggested text}
 %
 %  This macro supports making a suggestion. It inserts text, using the color chosen 
 % by the author. It is also possible to make a comment, but in this command the command 
 % is the optional argument.
 % 
 % As example, in this paragraph the 
-%  \profsug{inserted text} will appears in the red, and it is 
-% possible to \candsug[I want to insert this]{use a comment}.
+%  \hxprofsug{inserted text} will appears in the red, and it is 
+% possible to \hxcandsug[I want to insert this]{use a comment}.
 %
 % \DescribeMacro{\<name>rem}
-% \DescribeMacro{\profrem}
-% \DescribeMacro{\candrem}
+% \DescribeMacro{\hxprofrem}
+% \DescribeMacro{\hxcandrem}
 % |\<name>rem|\oarg{comment}\marg{suggested removal}
 %
-% |\profrem|\oarg{comment}\marg{suggested removal}
+% |\hxprofrem|\oarg{comment}\marg{suggested removal}
 %
-% |\candrem|\oarg{comment}\marg{suggested removal}
+% |\hxcandrem|\oarg{comment}\marg{suggested removal}
 %
 % This macro is used to suggest removals. 
 %
-% This is an example \profrem{that is quite good}. Again, it is also possible to comment
-% the \profrem[Repeated words]{the removal} removal.
+% This is an example \hxprofrem{that is quite good}. Again, it is also possible to comment
+% the \hxprofrem[Repeated words]{the removal} removal.
 %
 %
 %
 % \DescribeMacro{\<name>swap}
-% \DescribeMacro{\profswap}
-% \DescribeMacro{\candswap}
+% \DescribeMacro{\hxprofswap}
+% \DescribeMacro{\hxcandswap}
 % |\<name>swap|\oarg{comment}\marg{suggested removal}\marg{suggested insertion}
 %
-% |\profswap|\oarg{comment}\marg{suggested removal}\marg{suggested insertion}
+% |\hxprofswap|\oarg{comment}\marg{suggested removal}\marg{suggested insertion}
 %
-% |\candwap|\oarg{comment}\marg{suggested removal}\marg{suggested insertion}
+% |\hxcandwap|\oarg{comment}\marg{suggested removal}\marg{suggested insertion}
 %
 % 
 % This will work as the union of a removal and a suggestion. Actually, both are simplified forms of this command.
 %
-% \profswap{This should work like this.}{This is an example of how the command should work.}
+% \hxprofswap{This should work like this.}{This is an example of how the command should work.}
 %
 % \subsection{A tip for using comments}
 % 
@@ -348,36 +380,41 @@
 %
 % \section{Draft environment}
 % 
-% \DescribeEnv{draft}
-% The draft environment aims to allow writers to include text that is marked somehow as a draft. It was motivated because my students liked to hide text from me because ``it was only a draft'', but I need to have some way to measure if they were advancing. Marking text as a draft allowed them to be free of the fear of showing errors to me. We could also use it while writing papers, since we are not native language speakers. I see it most as a psychological support to writing without fear of making mistakes.
+% \DescribeEnv{hxdraft}
+% The |hxdraft| environment aims to allow writers to include text that is marked somehow as a draft. It was motivated because my students liked to hide text from me because ``it was only a draft'', but I need to have some way to measure if they were advancing. Marking text as a draft allowed them to be free of the fear of showing errors to me. We could also use it while writing papers, since we are not native language speakers. I see it most as a psychological support to writing without fear of making mistakes.
 %
 % This environment is evolving, looking for a good way to signal the draft status, due to the different interactions with the packages it uses and user's packages.
 % It has one optional parameter that names the draft. Its default value is ``Draft''
 % If the |draft| option is not enabled, the text inside the title and the text inside the environment will not appear. The user should remember that some options will automatically turn on the |draft| option, such as the option |edicao|.
 %
+%
+% The example:
+%
 %\begin{verbatim}
-%\begin{draft}[A draft title]
+%\begin{hxdraft}[A draft title]
 %This is the example of a draft.
 %The title must be highlighted
 %There must be a box around it.
 %\end{draft}
 %
-%\begin{draft}
+%\begin{hxdraft}
 %This draft has the default title.
 %\end{draft}
 %\end{verbatim}
 %
-%\begin{draft}[A draft title]
+% generates:
+%
+%\begin{hxdraft}[A draft title]
 % This is the example of a draft.
 %
 % The title must be highlighted
 %
 % There must be a box around it.
-%\end{draft}
+%\end{hxdraft}
 %
-%\begin{draft}
+%\begin{hxdraft}
 % This draft has the default title.
-%\end{draft}% 
+%\end{hxdraft}% 
 %
 %
 % \section{Subjects}
@@ -388,12 +425,23 @@
 % These are supposed to help organizing a text by giving a ``title'' for each
 % paragraph.
 %
-% \hxsubject{Example of a subject}
+% The example:
 %
+%\begin{verbatim}
+% \hxsubject{Example of a subject}
 % A subject is the main subject of a paragraph
 %
 % \hxsubject[pink]{A pink colored subject}
+% You can use other colors, such as pink.%
+%\end{verbatim}
 %
+%
+% generates:
+%
+% \hxsubject{Example of a subject}
+% A subject is the main subject of a paragraph
+%
+% \hxsubject[pink]{A pink colored subject}
 % You can use other colors, such as pink.
 %
 % \section{Lists}
@@ -414,13 +462,72 @@
 % A todo without a inline option is equivent to a comment of
 % author ``To do''. With the option, the text will appear inside an orange box, as in the example below.
 %
+%
+% The example:
+%
+%\begin{verbatim}
+% \todo[inline]{This command can have other options, 
+%based on other implementations of to do in different packages.}
+%\end{verbatim}
+%
+% generates:
+%
 % \todo[inline]{This command can have other options, based on other implementations of to do in different packages}.
+%
+% It is possible to change the background color of the box using \DescribeMacro{\hxdefinetodocolor}
+%
+%  |\hxdefinetodocolor|\marg{color}. 
+%
+%
+%
+% The example:
+%
+%\begin{verbatim}
+% \hxdefinetodocolor{yellow}
+% \todo[inline]{This command can have other options, 
+%based on other implementations of to do in different packages.}
+%\end{verbatim}
+%
+% generates:
+%
+% \hxdefinetodocolor{yellow}
+% \todo[inline]{This command can have other options, 
+    %based on other implementations of to do in different packages.}
+%
 %
 %\section{Warnings}
 % This package uses another package that changes \LaTeX's standard behavior for summary and lists. When you use it, you must explicitly change pages with |\newpage| 
 % before |\tableofcontents| or similar commands.
 %
 %
+% \section{The commands in Portuguese}
+% This section is in Brazilian Portuguese.
+%
+%\selectlanguage{brazilian}
+% A Tabela \ref{tab:e2p} Mostra o mapeamento em inglês e português.  
+% 
+% \begin{table}[htb]
+% \caption{Tradução dos comandos para português.}     
+%\begin{tabular}{ccc}
+%    \hline
+%    Tipo & Inglês & Português \\
+%    \hline
+%    environment & |hxdraft| &|rascunho|\\
+%    macro & |\hxauthor| &|\hxautor|  \\
+%    macro & |\hxsubject| & |\hxassunto|\\
+%    macro & |\listofcomment| & |\listofcomentario|\\
+%    macro & |\listofsubject| & |\listofassunto|\\
+%    macro & |\listofcitationneeds| & |\listofcomentarioref|\\
+%    macro & |\todo| & |\todo| \\
+%    \hline
+%\end{tabular}
+% \label{tab:e2p}
+% \end{table}
+%
+% \subsection{Opções em Português}
+%
+% As seguintes opções são aceitas em português, todas sem acentos ou cedilha: anonimizar, naoanonimizar, rascunhos, assuntos, comentarios, edicao, submeter, publicar, sugestoes, publicaraceitando. 
+%\selectlanguage{english}
 %\section{Comparision with other packages}
 %
 % It is interesting to compare this package with other 3:
@@ -981,7 +1088,7 @@
 % used
 %    \begin{macrocode}
 \if@showdraft%
-\NewEnviron{draft}[1][]{%
+\NewEnviron{hxdraft}[1][]{%
 \ifstrempty{#1}%
 {\colorbox{\corleve{\cor@hldraft}}{\textbf{\hxdrafttitle}}}%
 {\hx@hll{\cor@hldraft}{\textbf{#1}}}%
@@ -989,7 +1096,7 @@
 \BODY%
 }%
 {}%
-\surroundwithmdframed{draft}%
+\surroundwithmdframed{hxdraft}%
 \else%
 \NewEnviron{draft}[1][]{}{}%
 \fi%
@@ -1028,8 +1135,8 @@
 \expandafter\newcommand\csname#1swap\endcsname[3][]%
 {\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
 }%
-\hxautor{prof}{red}{Prof}
-\hxautor{cand}{blue}{Cand}
+\hxautor{hxprof}{red}{Prof}
+\hxautor{hxcand}{blue}{Cand}
 %    \end{macrocode}
 % \end{macro}
 % \subsection{To do notes}
@@ -1068,7 +1175,7 @@
 % These next lines of code made easy to convert this package to English, because it was written in Portuguese, for Brazilian researchers.
 % Some commands were rewritten in English with time, such as |rascunho|, but the Portuguese version will always be maintained, while other were translated using only his mechanism.
 %    \begin{macrocode}
-\let\rascunho=\draft%
+\let\rascunho=\hxdraft%
 \let\hxassunto=\hxsubject%
 \let\pleasecite=\favorcitar%
 \let\hxauthor=\hxautor%

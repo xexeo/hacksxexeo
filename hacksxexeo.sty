@@ -381,7 +381,7 @@
 \newcommand{\favorcitar}[1][]{}%
 \fi%
 \if@showdraft%
-\NewEnviron{draft}[1][]{%
+\NewEnviron{hxdraft}[1][]{%
 \ifstrempty{#1}%
 {\colorbox{\corleve{\cor@hldraft}}{\textbf{\hxdrafttitle}}}%
 {\hx@hll{\cor@hldraft}{\textbf{#1}}}%
@@ -389,7 +389,7 @@
 \BODY%
 }%
 {}%
-\surroundwithmdframed{draft}%
+\surroundwithmdframed{hxdraft}%
 \else%
 \NewEnviron{draft}[1][]{}{}%
 \fi%
@@ -419,8 +419,8 @@
 \expandafter\newcommand\csname#1swap\endcsname[3][]%
 {\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
 }%
-\hxautor{prof}{red}{Prof}
-\hxautor{cand}{blue}{Cand}
+\hxautor{hxprof}{red}{Prof}
+\hxautor{hxcand}{blue}{Cand}
 \hxautor{hx@todoauthor}{orange}{To do}%
 \newcommand{\hx@todobackgroundcolor}{orange}%
 \newcommand{\todo}[2][comentar]{%
@@ -435,7 +435,7 @@
 }%
 }%
 \newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
-\let\rascunho=\draft%
+\let\rascunho=\hxdraft%
 \let\hxassunto=\hxsubject%
 \let\pleasecite=\favorcitar%
 \let\hxauthor=\hxautor%
