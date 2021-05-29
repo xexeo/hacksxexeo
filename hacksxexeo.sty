@@ -26,21 +26,21 @@
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%
 %%
 %%
-\newif\ifshowednotes\showednotestrue
-\newif\ifmargins\marginstrue
-\newif\ifmarginnote\marginnotefalse
-\newif\ifednotebookmarks\ednotebookmarksfalse
-\newif\if@showcomentario\@showcomentariofalse
-\newif\if@naoanonimizar\@naoanonimizarfalse
-\newif\if@showdraft\@showdraftfalse
-\newif\if@showsubjects\@showsubjectsfalse
-\newif\if@showsugestao\@showsugestaofalse
-\newif\if@beanonymous\@beanonymousfalse
-\newif\if@showtodo\@showtodofalse
-\newif\if@modoedicao\@modoedicaofalse
-\newif\if@modosubmeter\@modosubmeterfalse
-\newif\if@modopublicar\@modopublicarfalse
-\newif\if@modopublicaraceitando\@modopublicaraceitandofalse
+\newif\ifshowednotes\showednotestrue%
+\newif\ifmargins\marginstrue%
+\newif\ifmarginnote\marginnotefalse%
+\newif\ifednotebookmarks\ednotebookmarksfalse%
+\newif\if@showcomentario\@showcomentariofalse%
+\newif\if@naoanonimizar\@naoanonimizarfalse%
+\newif\if@showdraft\@showdraftfalse%
+\newif\if@showsubjects\@showsubjectsfalse%
+\newif\if@showsugestao\@showsugestaofalse%
+\newif\if@beanonymous\@beanonymousfalse%
+\newif\if@showtodo\@showtodofalse%
+\newif\if@modoedicao\@modoedicaofalse%
+\newif\if@modosubmeter\@modosubmeterfalse%
+\newif\if@modopublicar\@modopublicarfalse%
+\newif\if@modopublicaraceitando\@modopublicaraceitandofalse%
 \DeclareOption{rascunhos}{\@showdrafttrue}
 \DeclareOption{comentarios}{\@showcomentariotrue}
 \DeclareOption{anonimizar}{\@beanonymoustrue}
@@ -115,11 +115,12 @@
 \RequirePackage{xstring}
 \RequirePackage{csquotes}
 \RequirePackage{mdframed}
-\ifshowednotes
-%%\RequirePackage{paralist}
-\ifmarginnote\RequirePackage{marginnote}\fi
-\else
-\RequirePackage{verbatim}
+\ifshowednotes%
+\ifmarginnote%
+\RequirePackage{marginnote}%
+\fi%
+\else%
+\RequirePackage{verbatim}%
 \fi%
 \@ifpackageloaded{babel}%
 {%  \message{Babel Loaded!}%
@@ -174,29 +175,51 @@
     }{}%
 }%
 {}%
-\newcounter{hxnote}
-\newcommand\hx@noteshape{\sffamily}
-\def\hx@currentcolor{black}
+\newcounter{hxnote}%
+\newcommand\hx@noteshape{\sffamily}%
+\def\hx@currentcolor{black}%
 %% footnote indicador e rótulo
-\newcommand\ed@foot[3]% text, type, label
+\newcommand\hx@foot[3]%
 {\def\@test{#3}\footnotetext[\arabic{hxnote}]%
-{{\scshape{\textcolor{\hx@currentcolor}{#2}}\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}\fi\textcolor{\hx@currentcolor}{:}}\hx@noteshape \textcolor{\hx@currentcolor}{#1}}}%
-\def\ed@mark@style#1{#1}%
-\newcommand\ed@mark[1]{\ed@mark@style{\footnotemark[#1]}}%
-\newcommand\ed@footnote[3]{\ed@mark{\arabic{hxnote}}\ed@foot{#1}{#2}{#3}}%
-\newcommand\ed@margin[1]{\ifmargins\ifmarginnote\marginnote{\textcolor{\hx@currentcolor}{#1}}\else\marginpar{\textcolor{\hx@currentcolor}{#1}}\fi\fi}%
+{{\scshape{\textcolor{\hx@currentcolor}{#2}}%
+\if\@test\@empty\else\label{ed:#3}\textcolor{\hx@currentcolor}{[#3]}%
+\fi\textcolor{\hx@currentcolor}{:}}%
+\hx@noteshape\textcolor{\hx@currentcolor}{#1}}}%
+\def\hx@mark@style#1{#1}%
+\newcommand\hx@mark[1]{\hx@mark@style{\footnotemark[#1]}}%
+\newcommand\hx@footnote[3]{\hx@mark{\arabic{hxnote}}\hx@foot{#1}{#2}{#3}}%
+\newcommand\hx@margin[1]{%
+\ifmargins%
+\ifmarginnote%
+\marginnote{%
+\textcolor{\hx@currentcolor}{#1}}%
+\else%
+\marginpar{\textcolor{\hx@currentcolor}{#1}}%
+\fi%
+\fi}%
 \newcommand\Hx@note[3]% text, type, label
-{\addtocounter{hxnote}{1}\message{#2!}%
-    \ifshowednotes\ed@footnote{#1}{#2}{#3}\ifednotebookmarks\belowpdfbookmark{#2: #1}{#2.\thehxnote}\fi\fi}%
+{\addtocounter{hxnote}{1}%
+\ifshowednotes%
+\hx@footnote{#1}{#2}{#3}%
+\ifednotebookmarks%
+\belowpdfbookmark{#2: #1}{#2.\thehxnote}%
+\fi
+\fi}%
 \newcommand\hx@note[4]% text, type, label, margin
-{\Hx@note{#1}{#2}{#3}\ifshowednotes\ed@margin{#4:\arabic{hxnote}}\fi}%
+{\Hx@note{#1}{#2}{#3}%
+\ifshowednotes\hx@margin{#4:\arabic{hxnote}}%
+\fi}%
 \newcommand\hxnote@label{Editor}%
 \newcommand\hxnote@margin{Ed}%
 \newcommand\hxnotelabel[1]{\def\hxnote@label{#1}}%
 \newcommand\hxnotemargin[1]{\def\hxnote@margin{#1}}%
 \newcommand{\Hxnote}[2][]{\Hx@note{#2}\hxnote@label{#1}}%
-\newcommand{\hxnote}[3][]{\def\hx@currentcolor{#3}%
-\hx@note{#2}\hxnote@label{#1}\hxnote@margin}%
+\newcommand{\hxnote}[3][]{%
+\def\hx@currentcolor{#3}%
+\hx@note{#2}%
+\hxnote@label{#1}%
+\hxnote@margin%
+}%
 %%%https://tex.stackexchange.com/questions/30483/how-can-i-check-in-latex-or-plain-tex-whether-a-command-exists-by-name
 %% as opções comentario, assuntos e anonimizar
 %% CORES
@@ -205,7 +228,7 @@
 \newcommand{\hx@hll}[2]% % Depedendo do soulutf8
 {\colorlet{x@coraqui}{\corleve{#1}}%
 \sethlcolor{x@coraqui}%
-\hl{#2}
+\hl{#2}%
 }%
 %% rótulo texto cor indicador
 \newcommand{\hx@hxnote}[4][]{%
@@ -238,15 +261,15 @@
 \newcommand{\listsubject}{\hxsubjtitle}%
 %% cria a lista, depende do pacoto tcloft
 \@ifundefined{chapter}
- {\newlistof[section]{subject}{aaa}{\listsubject}}
- {\newlistof[chapter]{subject}{aaa}{\listsubject}}%
+{\newlistof[section]{subject}{aaa}{\listsubject}}
+{\newlistof[chapter]{subject}{aaa}{\listsubject}}%
 %%
 \newcommand{\hxsubject}[2][\cor@subject]{%
-    \refstepcounter{subject}%
-    \sethlcolor{#1}%
-    \hl{#2}%
-    \par%
-    \addcontentsline{aaa}{subject}{\protect\numberline{\thesubject}{#2}}%
+\refstepcounter{subject}%
+\sethlcolor{#1}%
+\hl{#2}%
+\par%
+\addcontentsline{aaa}{subject}{\protect\numberline{\thesubject}{#2}}%
 }%
 \setlength{\cftsubjectnumwidth}{2.5em}%
 \else%
@@ -265,46 +288,45 @@
 %% faz o hxnote e soma na lista
 %% []rótulo], texto , cor, indicador
 \newcommand{\hx@comentar}[4][]{%
-    \ifstrempty{#4}{%
-        % rótulo texto cor indicador
-        \hx@hxnote[#1]{#2}{#3}{Comentário}% faz a nota de rodapé do ed
-        \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#2}}%
-    }%
-    {%
-        \hx@hxnote[#1]{#2}{#3}{#4}%
-        \addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#4: #2}}%
-    }%
+\ifstrempty{#4}{%
+\hx@hxnote[#1]{#2}{#3}{Comentário}% faz a nota de rodapé do ed
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#2}}%
+}%
+{%
+\hx@hxnote[#1]{#2}{#3}{#4}%
+\addcontentsline{ccc}{comentario}{\protect\numberline{\thecomentario}{#4: #2}}%
+}%
 }%
 %% comentador genérico, parte II
 %% faz o highlight , soma o step e comenta
 %% [texto hl] footnote cor indicator
 \newcommand{\hx@comment}[4][]{%
-    \refstepcounter{comentario}% soma um ao contador
-    \hx@hll{#3}{#1}% ver subfunção de impressão com hl
-    \hx@comentar{#2}{#3}{#4}%
+\refstepcounter{comentario}% soma um ao contador
+\hx@hll{#3}{#1}% ver subfunção de impressão com hl
+\hx@comentar{#2}{#3}{#4}%
 }%
 %%
 %%
 \newcommand{\hx@xcomment}[4][]{%
-    \refstepcounter{comentario}% soma um ao contador
-    \hx@hll{#3}{#1}% ver subfunção de impressão com hl
-    \hx@comentar{\sout{#2}}{#3}{#4}%
+\refstepcounter{comentario}% soma um ao contador
+\hx@hll{#3}{#1}% ver subfunção de impressão com hl
+\hx@comentar{\sout{#2}}{#3}{#4}%
 }%
 %%
 %%
 %% comentador genérico com rótulo
 %% [texto hl] footnote cor  indicator rótulo
 \newcommand{\hx@commentLabeled}[5][]{%
-    \refstepcounter{comentario}%
-    \hx@hll{#3}{#1}%
-    \hx@comentar[#5]{#2}{#3}{#4}%
+\refstepcounter{comentario}%
+\hx@hll{#3}{#1}%
+\hx@comentar[#5]{#2}{#3}{#4}%
 }%
 %%
 %% [texto hl] footnote cor  indicator rótulo
 \newcommand{\hx@xcommentLabeled}[5][]{%
-    \refstepcounter{comentario}%
-    \hx@hll{#3}{#1}%
-    \hx@comentar[#5]{\sout{#2}}{#3}{#4}%
+\refstepcounter{comentario}%
+\hx@hll{#3}{#1}%
+\hx@comentar[#5]{\sout{#2}}{#3}{#4}%
 }%
 %%
 \setlength{\cftcomentarionumwidth}{2.5em}
@@ -319,14 +341,14 @@
 %% Em modo publicar coloca o textovelho
 \if@showsugestao
 \newcommand{\hx@gensug}[7][Uma proposta]{%
-    \textcolor{#5}{\sout{#4}}% CORRIGINDO AQUI
-    \textcolor{#7}{#6}%
-    \if@showcomentario%
-    \ifstrempty{#1}{}%
-    {\refstepcounter{comentario}%
-        \hx@comentar{#1}{#2}{#3}%% [rótulo], cor , footnote , indicador
-    }%
-    \fi%
+\textcolor{#5}{\sout{#4}}% CORRIGINDO AQUI
+\textcolor{#7}{#6}%
+\if@showcomentario%
+\ifstrempty{#1}{}%
+{\refstepcounter{comentario}%
+\hx@comentar{#1}{#2}{#3}%% [rótulo], cor , footnote , indicador
+}%
+\fi%
 }%% [rótulo], cor , footnote , indicador
 \else%
 \if@modopublicaraceitando
@@ -343,10 +365,10 @@
 \fi%
 \if@showcomentario%
 \newcommand{\hx@commentref}[3][]{%
-    \refstepcounter{comentarioref}%
-    \hx@hll{#3}{#1}%
-    \hx@hxnote{#2}{#3}{\hxpleasecitemarginnote}%
-    \addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#2}}%
+\refstepcounter{comentarioref}%
+\hx@hll{#3}{#1}%
+\hx@hxnote{#2}{#3}{\hxpleasecitemarginnote}%
+\addcontentsline{ccr}{comentarioref}{\protect\numberline{\thecomentarioref}{#2}}%
 }%
 \setlength{\cftcomentariorefnumwidth}{2.5em}%
 \else%
@@ -354,17 +376,17 @@
 \fi%
 \if@showcomentario
 \newcommand{\favorcitar}[1][\hxpleasecitemessage]{%
-    \hx@commentref{\hxpleasecitetext \  #1}{\cor@citar}}%
+\hx@commentref{\hxpleasecitetext\  #1}{\cor@citar}}%
 \else%
 \newcommand{\favorcitar}[1][]{}%
 \fi%
 \if@showdraft%
 \NewEnviron{draft}[1][]{%
-    \ifstrempty{#1}
-    {\colorbox{\corleve{\cor@hldraft}}{\textbf{\hxdrafttitle}}}
-    {\hx@hll{\cor@hldraft}{\textbf{#1}}}%
-    \newline%
-    \BODY%
+\ifstrempty{#1}%
+{\colorbox{\corleve{\cor@hldraft}}{\textbf{\hxdrafttitle}}}%
+{\hx@hll{\cor@hldraft}{\textbf{#1}}}%
+\newline%
+\BODY%
 }%
 {}%
 \surroundwithmdframed{draft}%
@@ -414,12 +436,12 @@
 }%
 \newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
 \let\rascunho=\draft%
-\let\hxassunto=\hxsubject
+\let\hxassunto=\hxsubject%
 \let\pleasecite=\favorcitar%
 \let\hxauthor=\hxautor%
-\let\listofcomments=\listofcomentario
-\let\listofcitationneeds=\listofcomentarioref
-\let\listofassunto=\listofsubject
+\let\listofcomments=\listofcomentario%
+\let\listofcitationneeds=\listofcomentarioref%
+\let\listofassunto=\listofsubject%
 \endinput
 %%
 %% End of file `hacksxexeo.sty'.
