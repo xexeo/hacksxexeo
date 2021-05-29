@@ -20,15 +20,12 @@
 %% and version 1.3 or later is part of all distributions of LaTeX version
 %% 2005/12/01 or later.
 \NeedsTeXFormat{LaTeX2e}
-\def\hx@version{v4.3.2}
+\def\hx@version{v4.4.0}
 \ProvidesPackage{hacksxexeo}[2021/05/18 \hx@version dtx version of hacksxexeo]
-%%
-%%
 \newcommand{\hacksxexeoversion}{\hx@version}%
 \newcommand{\printhacksxexeoversion}{hacksxexeo v. \hacksxexeoversion}%
 %%
 %%
-%% \subsection{Option Processing}
 \newif\ifshowednotes\showednotestrue
 \newif\ifmargins\marginstrue
 \newif\ifmarginnote\marginnotefalse
@@ -48,7 +45,7 @@
 \DeclareOption{comentarios}{\@showcomentariotrue}
 \DeclareOption{anonimizar}{\@beanonymoustrue}
 \DeclareOption{naoanonimizar}{\@naoanonimizartrue}
-\DeclareOption{sugestion}{\@showsugestaotrue}
+\DeclareOption{sugestoes}{\@showsugestaotrue}
 \DeclareOption{assuntos}{\@showsubjectstrue}
 \DeclareOption{edicao}{\@modoedicaotrue}
 \DeclareOption{submeter}{\@modosubmetertrue}
@@ -66,15 +63,15 @@
 \DeclareOption{pdfbookmarks}{\ednotebookmarkstrue}
 \DeclareOption{comments}{\@showcomentariotrue}
 \DeclareOption{anonimize}{\@beanonymoustrue}
-\DeclareOption{noanonimize}{\@naoanonimizartrue}
-\DeclareOption{sugestions}{\@showsugestaotrue}
+\DeclareOption{noanonymize}{\@naoanonimizartrue}
+\DeclareOption{suggestions}{\@showsugestaotrue}
 \DeclareOption{subjects}{\@showsubjectstrue}
 \DeclareOption{drafts}{\@showdrafttrue}
 \DeclareOption{todos}{\@showtodotrue}
 \DeclareOption{editing}{\@modoedicaotrue}
-\DeclareOption{submetting}{\@modosubmetertrue}
-\DeclareOption{publishing}{\@modopublicartrue}
-\DeclareOption{acceptedpublishing}{
+\DeclareOption{submit}{\@modosubmetertrue}
+\DeclareOption{publish}{\@modopublicartrue}
+\DeclareOption{acceptingpublish}{
     \@modopublicartrue
     \@modopublicaraceitandotrue
 }
@@ -361,12 +358,6 @@
 \else%
 \newcommand{\favorcitar}[1][]{}%
 \fi%
-%%
-%%
-%%
-%% Marcando ou esquendo dos drafts
-%% Changebar foi removido porque é ruim
-%%
 \if@showdraft%
 \NewEnviron{draft}[1][]{%
     \ifstrempty{#1}
@@ -403,6 +394,8 @@
 {\hx@gensug[##1]{#2}{#3}{##2}{#2}{}{#2}}
 \expandafter\newcommand\csname#1troca\endcsname[3][]%
 {\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
+\expandafter\newcommand\csname#1swap\endcsname[3][]%
+{\hx@gensug[##1]{#2}{#3}{##2}{#2}{##3}{#2}}%
 }%
 \hxautor{prof}{red}{Prof}
 \hxautor{cand}{blue}{Cand}
@@ -421,8 +414,12 @@
 }%
 \newcommand{\hxdefinetodocolor}[1]{\renewcommand{\hx@todobackgroundcolor}{#1}}%
 \let\rascunho=\draft%
+\let\hxassunto=\hxsubject
 \let\pleasecite=\favorcitar%
 \let\hxauthor=\hxautor%
+\let\listofcomments=\listofcomentario
+\let\listofcitationneeds=\listofcomentarioref
+\let\listofassunto=\listofsubject
 \endinput
 %%
 %% End of file `hacksxexeo.sty'.
