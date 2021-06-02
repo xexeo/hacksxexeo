@@ -1,5 +1,3 @@
-# hacksxexeo
-Pequenos comandos LaTeX para usar na orientação
+# Evite usar este pacote, agora use o [coop-writing](https://github.com/xexeo/coop-writing/)
 
-Leia o [manual em PDF](hacksxexeo.pdf)
 
